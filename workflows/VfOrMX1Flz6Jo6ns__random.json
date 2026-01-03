@@ -1,0 +1,336 @@
+{
+  "updatedAt": "2025-12-24T09:40:20.535Z",
+  "createdAt": "2025-12-16T08:24:27.245Z",
+  "id": "VfOrMX1Flz6Jo6ns",
+  "name": "Random",
+  "description": null,
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "authentication": "serviceAccount",
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1525afR3nUoeuGgmrjC8_SZgsJlPqvAO6",
+          "mode": "list",
+          "cachedResultName": "Random",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1525afR3nUoeuGgmrjC8_SZgsJlPqvAO6"
+        },
+        "event": "fileCreated",
+        "options": {
+          "fileType": "all"
+        }
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        -144
+      ],
+      "id": "3fef0584-19c3-435e-b15d-c1a0f9fc6e0d",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleApi": {
+          "id": "UYxtbEdIRgABKCQN",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {
+          "binaryPropertyName": "data"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -192,
+        -160
+      ],
+      "id": "b035194a-cc94-4da8-9827-bf8c40491007",
+      "name": "Download file",
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleApi": {
+          "id": "UYxtbEdIRgABKCQN",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d0cde515-9ba1-4c2a-9753-3e96c5806967",
+              "leftValue": "={{ $json.mimeType }}",
+              "rightValue": "application/pdf",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -384,
+        -144
+      ],
+      "id": "a6d5e1e7-8d52-4908-9a5d-1408be64d331",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const fileId = $json.id;\n\nconst prompt = `\nExtrae los datos del pedido del PDF.\nDevuelve SOLO JSON válido (sin texto adicional).\n`;\n\nreturn {\n  openaiBody: {\n    model: \"gpt-4o-mini\",\n    input: [{\n      role: \"user\",\n      content: [\n        { type: \"input_file\", file_id: fileId },\n        { type: \"input_text\", text: prompt.trim() }\n      ]\n    }],\n    text: { format: { type: \"json_object\" } }\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        256,
+        -160
+      ],
+      "id": "c9273e3a-afb1-4c4f-9304-85b3644469bd",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/files",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpBearerAuth",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "purpose",
+              "value": "user_data"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        32,
+        -160
+      ],
+      "id": "92aefa2a-b5c3-4dce-8448-ccaaf10ae180",
+      "name": "Subir PDF",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "retryOnFail": false,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "Fb5EZ7r56FOl5M3A",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/responses",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{$json.openaiBody}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        480,
+        -160
+      ],
+      "id": "b21618b0-a772-4861-a832-394365d6c502",
+      "name": "OpenAI",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "retryOnFail": false,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "Fb5EZ7r56FOl5M3A",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const resp = $json;\n\nlet text = \"\";\nfor (const block of (resp.output ?? [])) {\n  for (const part of (block.content ?? [])) {\n    if (part.type === \"output_text\" && part.text) text += part.text;\n  }\n}\n\nif (!text) throw new Error(\"No encontré output_text en la respuesta\");\n\nreturn [{ json: JSON.parse(text) }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        -160
+      ],
+      "id": "d2606c61-71bf-42b0-96ac-7608597093b7",
+      "name": "Code in JavaScript1"
+    }
+  ],
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Subir PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Subir PDF": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "b84682f3-d19d-4daa-9409-b6bb7b54266e",
+  "activeVersionId": null,
+  "versionCounter": 30,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-12-16T08:24:27.245Z",
+      "createdAt": "2025-12-16T08:24:27.245Z",
+      "role": "workflow:owner",
+      "workflowId": "VfOrMX1Flz6Jo6ns",
+      "projectId": "5DRxsE1egf1baMP6",
+      "project": {
+        "updatedAt": "2025-12-16T07:05:26.416Z",
+        "createdAt": "2025-12-16T07:00:37.382Z",
+        "id": "5DRxsE1egf1baMP6",
+        "name": "P GA <procesos@gomezaparicio.es>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "projectRelations": [
+          {
+            "updatedAt": "2025-12-16T07:00:37.382Z",
+            "createdAt": "2025-12-16T07:00:37.382Z",
+            "userId": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
+            "projectId": "5DRxsE1egf1baMP6",
+            "user": {
+              "updatedAt": "2026-01-03T06:48:17.640Z",
+              "createdAt": "2025-12-16T07:00:36.626Z",
+              "id": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
+              "email": "procesos@gomezaparicio.es",
+              "firstName": "P",
+              "lastName": "GA",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "gR8RJ0nGarvRBlGa",
+                "userActivatedAt": 1766491998544
+              },
+              "disabled": false,
+              "mfaEnabled": true,
+              "lastActiveAt": "2026-01-03",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}
