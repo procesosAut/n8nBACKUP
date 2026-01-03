@@ -1,0 +1,927 @@
+{
+  "updatedAt": "2025-12-25T10:08:44.337Z",
+  "createdAt": "2025-12-25T09:26:48.910Z",
+  "id": "mjl6YkaUAAneckil",
+  "name": "Random v2.3",
+  "description": null,
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "authentication": "serviceAccount",
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1525afR3nUoeuGgmrjC8_SZgsJlPqvAO6",
+          "mode": "list",
+          "cachedResultName": "Random",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1525afR3nUoeuGgmrjC8_SZgsJlPqvAO6"
+        },
+        "event": "fileCreated",
+        "options": {
+          "fileType": "all"
+        }
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1968,
+        448
+      ],
+      "id": "fbf4e301-3bb0-45c3-af81-3f5a96f44b4f",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleApi": {
+          "id": "ePv2Ty1cw3gq6g7N",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {
+          "binaryPropertyName": "data"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -1536,
+        432
+      ],
+      "id": "2bac6f70-f995-470d-aeea-780fbcf27f3e",
+      "name": "Download file",
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleApi": {
+          "id": "ePv2Ty1cw3gq6g7N",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/responses",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{$json.openaiBody}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        256,
+        48
+      ],
+      "id": "c321a479-0218-45f9-9cdf-b653715dbbaa",
+      "name": "OpenAI",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "retryOnFail": false,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "Fb5EZ7r56FOl5M3A",
+          "name": "Http Open AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Conexión con Google DRIVE\nRecoge el PDF de la carpeta ",
+        "height": 288,
+        "width": 656,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2032,
+        352
+      ],
+      "id": "1b42d9b5-d08a-44fc-879d-ea10aef8b1d0",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const fileId = $items(\"Subir PDF a OpenAI\")[0].json.id;  // ✅ file-...\nconst prompt = ($node[\"PromptConfig\"].json.promptCabecera || \"\").trim();\n\nif (!fileId?.startsWith(\"file-\")) {\n  throw new Error(`fileId inválido (esperaba file-...): ${fileId}`);\n}\n\nconst schema = {\n  type: \"object\",\n  additionalProperties: false,\n  properties: {\n    cliente: { type: \"string\" },\n    contacto: { type: \"string\" },\n    suReferencia: { type: \"string\" },\n    numeroOf: { type: \"integer\" },\n    numeroOtCliente: { type: \"string\" },\n    isbnPack: { type: \"string\" },\n    fechaEntrega: { type: \"string\" },\n    sinRetraso: { type: \"boolean\" },\n    tirada: { type: \"integer\" },\n    quiereVerFerros: { type: \"integer\" },\n    certificacion: { type: \"integer\" },\n    observacionesPedido: { type: \"string\" },\n    titulo: { type: \"string\" },\n    sello: { type: \"string\" },\n    isbn: { type: \"string\" },\n    codProyecto: { type: \"string\" },\n    anchoPaginaCm: { type: \"number\" },\n    altoPaginaCm: { type: \"number\" },\n    unionPliegos: { type: \"integer\" },\n    encuadernacion: { type: \"integer\" },\n    solapa: { type: \"boolean\" },\n    hendidoCortesia: { type: \"boolean\" },\n    observacionesEncuadernacion: { type: \"string\" }\n  },\n  required: [] // nada requerido\n};\n\n\nreturn {\n  openaiBody: {\n    model: \"gpt-5.1\",\n    input: [{\n      role: \"user\",\n      content: [\n        { type: \"input_file\", file_id: fileId },\n        { type: \"input_text\", text: prompt }\n      ]\n    }],\n    text: {\n      format: {\n        type: \"json_schema\",\n        name: \"cabecera_pedido\",\n        strict: false,\n        schema\n      }\n    }\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        64,
+        48
+      ],
+      "id": "cc3bcc2e-24a0-478e-8dbb-f3e3815a570b",
+      "name": "Build OpenAI Body (schema)"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Soporta \"Full Response\" ON/OFF:\nconst body = $json.body ?? $json;\n\nconst text =\n  body.output?.flatMap(o => o.content || [])\n    ?.find(c => c.type === \"output_text\")\n    ?.text;\n\nif (!text) throw new Error(\"No encuentro output_text en la respuesta de OpenAI\");\n\nlet data;\ntry {\n  data = JSON.parse(text);\n} catch (e) {\n  throw new Error(\"El output_text no es JSON parseable: \" + e.message + \"\\n\\n\" + text);\n}\n\n// Limpieza: borra 0, \"\", null, [], {} EXCEPTO estos campos:\nconst keepAlways = new Set([\n  \"cliente\", \"contacto\", \"sinRetraso\", \"unionPliegos\", \"encuadernacion\", \"solapa\", \"hendidoCortesia\"\n]);\n\nfunction isEmpty(v) {\n  if (v === null || v === undefined) return true;\n  if (typeof v === \"string\" && v.trim() === \"\") return true;\n  if (typeof v === \"number\" && v === 0) return true;\n  if (Array.isArray(v) && v.length === 0) return true;\n  if (typeof v === \"object\" && !Array.isArray(v) && Object.keys(v).length === 0) return true;\n  return false;\n}\n\nfor (const k of Object.keys(data)) {\n  if (keepAlways.has(k)) continue;\n  if (isEmpty(data[k])) delete data[k];\n}\n\nreturn [{ json: data }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        48
+      ],
+      "id": "eb7e518a-ae02-4790-b713-44da7ce3fbc6",
+      "name": "Parse output_text"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d0cde515-9ba1-4c2a-9753-3e96c5806967",
+              "leftValue": "={{ $json.mimeType }}",
+              "rightValue": "application/pdf",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1760,
+        448
+      ],
+      "id": "3b05510b-e0e6-44bf-b33f-a12349e2a4b8",
+      "name": "solo PDF"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/files",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpBearerAuth",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "purpose",
+              "value": "user_data"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1136,
+        576
+      ],
+      "id": "e3e026fa-f7c8-4694-af3c-628ba927bad9",
+      "name": "Subir PDF a OpenAI",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "retryOnFail": false,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "Fb5EZ7r56FOl5M3A",
+          "name": "Http Open AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f0ce385a-7aee-445a-9af9-1acee2a8952e",
+              "name": "promptCabecera",
+              "value": "Actúas como un extractor de datos de documentos. Tu tarea es analizar el PDF adjunto y devolver EXCLUSIVAMENTE un JSON válido que cumpla ESTRICTAMENTE el esquema proporcionado.\n\n### REGLAS OBLIGATORIAS:\n1) Devuelve SOLO JSON. Sin texto adicional. Sin markdown. Sin explicaciones.\n2) El JSON debe ser válido (comillas dobles, sin trailing commas).\n3) Cumple el esquema al 100%:\n   - No inventes campos que no existan en el esquema.\n   - No devuelvas claves extra fuera del esquema.\n   - Respeta tipos (string/number/boolean/array/object) y enum si existen.\n4) Si un dato no aparece en el PDF:\n   - Usa null si el esquema lo permite.\n   - Si NO permite null, usa el valor vacío adecuado: \"\" para string, 0 para number, false para boolean, [] para arrays, {} para objetos (solo si el esquema lo permite).\n   - Si un campo indica \"siempre vacío\", debe devolverse como cadena vacía (\"\") aunque se detecte contenido.\n5) Normalización:\n   - Fechas en formato \"YYYY-MM-DD\" si el esquema no indica otro.\n   - Importes numéricos sin símbolo de moneda (ej: 174.00).\n   - Medidas: conserva unidades solo si el esquema lo pide; si no, usa número limpio.\n   - En la recogida de datos mantén tildes y caracteres originales.\n   - Si un texto contiene comillas internas, escápalas con una barra invertida: \\\"\n    EN LA BUSQUEDA DE DATOS:\n        - Coincidencia sin distinguir mayúsculas/minúsculas.\n        - Ignora acentos/diacríticos\n        - Colapsa espacios múltiples y recorta espacios sobrantes\n6) Consistencia:\n   - Si hay tablas/listas (servicios, componentes, direcciones), devuélvelas como arrays.\n   - No mezcles datos de secciones distintas.\n7) Verificación final antes de responder:\n   - Revisa que el JSON parsea.\n   - Revisa que cumple el esquema.\n   - Revisa que no hay texto fuera del JSON.\n\n### MODELO DE SALIDA:\n{\n \"cliente\": 0,\n  \"contacto\": 0,\n  \"suReferencia\": \"\", // siempre vacío\n  \"numeroOf\": 001/001,\n  \"numeroOtCliente\": \"\",\n  \"isbnPack\": \"\",\n  \"fechaEntrega\": \"\",\n  \"sinRetraso\": false,\n  \"tirada\": 0,\n  \"precioUnitarioSinIVA\": 0,\n  \"precioToltalSinIVA\": 0,\n  \"quiereVerFerros\": 0,\n  \"certificacion\": 0,\n  \"observacionesPedido\": \"\",\n  \"titulo\": \"\",\n  \"sello\": \"\",\n  \"isbn\": \"9783161484100\",\n  \"codProyecto\": \"\",\n  \"anchoPaginaCm\": 0.0,\n  \"altoPaginaCm\": 0.0,\n  \"unionPliegos\": 0,\n  \"encuadernacion\": 0,\n  \"cabezada\": 0,\n  \"cabezadaColor\": 0, // siempre vacío\n  \"cabezadaColorOtro\": \"\", \n  \"guardasAparte\": 0, \n  \"guardasImpresas\": 0, \n  \"cintaRegistro\": 0, \n  \"cintaRegistroColor\": 0, // siempre vacío\n  \"cintaRegistroColorOtro\": \"\", \n  \"calibreCarton\": 0, \n  \"tipoLomo\": 0, \n  \"solapa\": false, // siempre tiene que aparecer\n  \"hendidoCortesia\": false, // siempre tiene que aparecer\n  \"espiralMaterial\": 0, // siempre vacío\n  \"espiralColor\": 0, // siempre vacío\n  \"espiralColorOtro\": \"\", // siempre vacío\n  \"espiralLado\": 0, // siempre vacío\n  \"wireoMaterial\": 0, // siempre vacío\n  \"wireoColor\": 0, // siempre vacío\n  \"wireoColorOtro\": \"\", // siempre vacío\n  \"wireoLado\": 0, // siempre vacío\n  \"observacionesEncuadernacion\": \"\"\n}\n\n### REGLAS POR CAMPO:\n   - \"cliente\": Devuelve 18.\n   - \"contacto\": \n            Busca en el PDF solo en la parte inferior de la orden (el último cuarto de la página). Dentro de ese bloque, localiza el nombre y apellidos juntos.\n            Reglas:\n                Coincidencia sin distinguir mayúsculas/minúsculas.\n                Ignora acentos/diacríticos (Á= A, É= E, Í= I, Ó= O, Ú= U, Ü= U, Ñ= N).\n                Colapsa espacios múltiples y recorta espacios sobrantes.\n                Si varias líneas del mapa coinciden tras normalizar (por ejemplo, duplicados con y sin acento), devuelve el usuarioId menor.\n                Si no hay coincidencia, devuelve 0.\n                Salida: devuelve solo el número usuarioId (entero, sin comillas).\n                Mapa nombre → usuarioId:\n                Marta Álvarez = 3\n                Víctor Benayas = 4\n                Raúl Bernardo = 5\n                José Antonio Cabezas = 7\n                Sonia López = 18\n                Rocío Martínez = 21\n                Daniel Pamos = 26\n                Víctor Benayas = 38\n                Guillermo Manzano = 283\n                Cecilia Porzio = 335\n                Wilfred Santana = 415\n                Sarai Paz = 477\n                Juan Jose Hernandez = 485\n                Judit Franco = 498\n                CAROLINA JIMÉNEZ = 507\n                Devuelve únicamente el número.\n   - \"numeroOf\": Números debajo de Ed/Enc (ej.: \"001/001\").\n   - \"numeroOtCliente\": Número de Pedido.\n   - \"fechaEntrega\": Fecha prevista fin (AAAA-MM-DD).\n   - \"sinRetraso\": Devuelve true si aparece la palabra literal \"URGENTE\" o \"URGENTES\", si no aparece ninguna refenrencia devuelve false.\n   - \"tirada\": Valor del tiraje.\n   - \"precioUnitarioSinIVA\": 0, // no devuelvas nada. Dejalo a 0.\n   - \"precioToltalSinIVA\": 0, // Valor de precio, devuelve solo la cifra con dos decimales.\n   - \"quiereVerFerros\": Devuelve el nñumero 1 = si detectas “ferro digital”, 2 = si detectas “ferro físico” o 3 si no se menciona o detectas nada.\n   - \"certificacion\": \n            Identifica el bloque correcto “Descripción (del artículo)” siguiendo esta lógica:\n                1. LOCALIZACIÓN DEL BLOQUE:\n                    - Busca una línea exacta con el texto “Descripción”.\n                    - Dentro de las 10 líneas siguientes, debe aparecer al menos uno de estos rótulos de ficha: Autor, Ed/Enc, Colección, Tiraje, Formato, Nº Páginas, Solapa, Grosor, Código Barras.\n                    - Si “Descripción” forma parte de una tabla o cabecera (por ejemplo en “Servicios” o “Componentes”), descártalo: no es el bloque de ficha del artículo.\n                2. DEFINICIÓN DEL BLOQUE:\n                    - El bloque comienza en la línea inmediatamente posterior a “Descripción”.\n                    - Finaliza al encontrar alguno de estos rótulos: Autor, Ed/Enc, Colección, Tiraje, Formato, Nº Páginas, Solapa, Grosor, Código Barras, Servicios, Componentes, Observaciones.\n                3. ALCANCE DE BÚSQUEDA:\n                    - La búsqueda de certificación se limita **únicamente** a ese bloque validado.\n                4. DETECCIÓN DE CERTIFICACIÓN (valores literales y sensibles a mayúsculas/minúsculas):\n                    - Si aparece exactamente “FSC Mix” ⇒ devuelve 2.\n                    - Si **no** aparece “FSC Mix” pero sí aparece exactamente “PEFC” ⇒ devuelve 4.\n                    - En cualquier otro caso ⇒ devuelve 0.\n                    - Si ambos aparecen ⇒ da prioridad a “FSC Mix” (devuelve 2).\n                5. EXCLUSIONES EXPLÍCITAS:\n                    Ignora cualquier mención a “FSC”, “FSC®”, “FSC Mix”, “PEFC” si:\n                    - Está en cabeceras, pies de página o notas legales (ej.: “empresa certificada FSC®…”).\n                    - Está dentro de las tablas o secciones “Servicios” o “Componentes” (ej.: “MB PRIME BRIGHT… (FSC)”).\n                6. SALIDA:\n                    Devuelve **únicamente** el valor en “certificacion”: 2, 4 o 0. No devuelvas ningún texto adicional.\n   - \"observacionesPedido\":\n            - Objetivo: SIEMPRE devuelve las dos primeras líneas del bloque “Observaciones”. Si hay un renglón vacio entre ellas no lo cuentes, devuelve las dos primeras con texto.\n            - Analiza el resto y solo devuelve lo relacionado con Urgencias, Modelos, indicaciones de cuidado o advertencias, nada más.\n            - Palabra clave: “topo”: Solo cuenta “topo” como palabra independiente. Si hay una mención válida (no negada), añade solo “Colocar topo”.\n            - Estilo de salida:\n                - Elimina relleno (“gracias”, “saludos”) y frases irrelevantes.\n                - Mantén ortografía original salvo limpieza mínima de espacios.\n                - Reglas de calidad:\n                - Prioriza claridad y concisión. Une frases relacionadas en una sola línea si procede.\n                - No inventes datos; no infieras campos técnicos.\n                - No repitas información ya cubierta por los datos estructurados del pedido.\n            - Acuerdate de registrar las dos primeras lineas de Observaciones siempre\n   - \"titulo\": Descripción del artículo. Si aparece FSC Mix al lado o debajo, ignóralo.\n   - \"isbn\": segunda línea debajo de Código Artículo,\n   - \"codProyecto\": primera línea debajo de Código Artículo,\n   - \"anchoPaginaCm\"/\"altoPaginaCm\": Convierte mm a cm (1 decimal. Si decimal es 0, devuelve entero).\n   - \"unionPliegos\": Devuelve 2 si detectas “FRESADO” o 1 si detectas “COSIDO”.\n   - \"encuadernacion\": Devuelve el número 1=Cartoné, 2=Flexible, 3=Rústica, 4=Espiral, 5=Grapa, 6=Wire-o, 7=Otro.\n   - \"cabezada\": Devuelve 1 si aparece \"Cabezada SI\" y encuadernación es igual a 1=Cartoné o 2=Flexible, si no 0.\n   - \"cabezadaColorOtro\": Si cabezada=1, busca el color y devuélvelo. Si hay observaciones relacionadas tambien devuelvelas.\n   - \"guardasAparte\": Devuelve 1 si encuadernación ∈ {1,2}, si no 0.\n   - \"guardasImpresas\": Devuelve 1 si aparece “guardas impresas” o \"guardas impresas SI\" y encuadernación ∈ {1,2}, si no 0.\n   - \"cintaRegistro\": Devuelve 1 si aparece “Cinta de registro SI” o \"Cinta registro SI\" y encuadernación ∈ {1,2}, si aparece “Cinta de registro NO\" o \"Cinta registro NO\" devuelve 0. Si no encuentras color tambien devuelve 0.\n   - \"cintaRegistroColorOtro\": Si cintaRegistro=1, busca el color y devuélvelo. Si hay observaciones relacionadas tambien devuelvelas.\n   - Calibre:\n        MAPEO (calibre → ID):\n            - 1,5 → 1\n            - 2,0 → 2\n            - 2,5 → 3\n            - 3,0 → 4\n            - 2,0 + espuma 3 → 5\n            - 2,5 + espuma 3 → 6\n            - 3,0 + espuma 3 → 7\n            - 1,75 → 8\n            - 2,25 → 9\n            - 2,75 → 10\n        REGLAS DE DETECCIÓN:\n               1. **Scope**:\n                  - Prioriza coincidencias cercanas a palabras clave como: “calibre”, “cartón”, “cartone”, “tapa”, “cubierta”, “caja rígida”.\n                  - Si no se encuentran cerca de esas palabras, busca en todo el PDF.\n               2. **Normalización previa**:\n                  - Ignora mayúsculas, minúsculas y acentos.\n                  - Considera \".\" igual a \",\" (ej.: “2.5” se interpreta como “2,5”).\n                  - Elimina espacios innecesarios.\n                  - “foam”, “esp.” y “espuma” se consideran equivalentes.\n                  - “mm” es opcional y puede omitirse.\n               3. **Orden de detección (prioridad)**:\n                  a) Detecta primero patrones que indiquen combinaciones con espuma 3 (acepta formatos con \"+\", \"con\", \"y\", incluso en orden invertido).  \n                  b) Si no hay espuma, busca solo el calibre exacto (usando el mapeo anterior).\n               4. **Desempate**:\n                  - Si aparecen varios valores posibles:\n                  - Prioriza el más específico (el que incluye espuma).\n                  - Si tienen misma especificidad, elige el más cercano al contexto (palabras clave del Scope).\n                  - Si persiste el empate → devuelve 0.\n        SALIDA:\n            Devuelve únicamente el número del ID (ej.: 3).  \n            Si no hay coincidencia inequívoca, devuelve 0.\n        EJEMPLOS:\n            - “2,5 mm” → 3  \n            - “3,0 + espuma 3” → 7  \n            - “2.0 + FOAM 3” → 5  \n            - “1,75” → 8  \n            - “2,0 y 2,5 sin claridad” → 0\n        Solo si encuadernación ∈ {1,2}, si no 0.\n        Devuelve exclusivamente el ID correspondiente al calibreCarton según la tabla.  \n        Si no se encuentra una coincidencia inequívoca, devuelve 0.\n    - \"tipoLomo\": Devuelve 1 = “lomo cuadrado”, 2 = “lomo redondo” si encuadernación ∈ {1,2}, si no 0\n    - \"solapa\": Devuelve siempre este campo. true si aparece literalmente \"CON SOLAPA\" o \"CON SOLAPAS\". false si aparece \"SIN SOLAPA\", \"SIN SOLAPAS\" o no aparece nada. Coincidencia insensible a mayúsculas/minúsculas ni acentos..\n    - \"hendidoCortesia\": Devuelve siempre este campo. true si aparece literalmente \"CON HENDIDO\" o no aparece nada. false si aparece \"SIN HENDIDO\" o encuadernación = Cartoné, Flexible, Espiral. Coincidencia insensible a mayúsculas/minúsculas ni acentos. Si aparece \"HENDIDO\" y no aparece CON o SIN devuelve true. Los campos como “espiral...” o “wireo...” solo se rellenan si aparecen explícitamente en el PDF, si no mantener en 0 o \"\".\n    - \"observacionesEncuadernacion\": Solo si detectas \"Guardas impresas NO\" busca referencia al material de impresión, ejemplo \"Geltex\".\n\n",
+              "type": "string"
+            },
+            {
+              "id": "c96c9a1c-073d-4f7e-b50a-3cd080f922a9",
+              "name": "promptInteriores",
+              "value": "Actúas como un extractor de datos de documentos. Tu tarea es analizar el PDF adjunto y devolver EXCLUSIVAMENTE un JSON válido que cumpla ESTRICTAMENTE el esquema proporcionado.\n\n### REGLAS OBLIGATORIAS:\n1) Devuelve SOLO JSON. Sin texto adicional. Sin markdown. Sin explicaciones.\n2) El JSON debe ser válido (comillas dobles, sin trailing commas).\n3) Cumple el esquema al 100%:\n   - No inventes campos que no existan en el esquema.\n   - No devuelvas claves extra fuera del esquema.\n   - Respeta tipos (string/number/boolean/array/object) y enum si existen.\n4) Si un dato no aparece en el PDF:\n   - Usa null si el esquema lo permite.\n   - Si NO permite null, usa el valor vacío adecuado: \"\" para string, 0 para number, false para boolean, [] para arrays, {} para objetos (solo si el esquema lo permite).\n   - Si un campo indica \"siempre vacío\", debe devolverse como cadena vacía (\"\") aunque se detecte contenido.\n5) Normalización:\n   - Fechas en formato \"YYYY-MM-DD\" si el esquema no indica otro.\n   - Importes numéricos sin símbolo de moneda (ej: 174.00).\n   - Medidas: conserva unidades solo si el esquema lo pide; si no, usa número limpio.\n   - En la recogida de datos mantén tildes y caracteres originales.\n   - Si un texto contiene comillas internas, escápalas con una barra invertida: \\\"\n    EN LA BUSQUEDA DE DATOS:\n        - Coincidencia sin distinguir mayúsculas/minúsculas.\n        - Ignora acentos/diacríticos\n        - Colapsa espacios múltiples y recorta espacios sobrantes\n6) Consistencia:\n   - Si hay tablas/listas (servicios, componentes, direcciones), devuélvelas como arrays.\n   - No mezcles datos de secciones distintas.\n7) Verificación final antes de responder:\n   - Revisa que el JSON parsea.\n   - Revisa que cumple el esquema.\n   - Revisa que no hay texto fuera del JSON\n\n### MODELO DE SALIDA:\n{\n  \"interiores\": [\n    {\n      \"papel_id\": 0,\n      \"propietarioPapel\": 0,\n      \"tipoImpresion\": 0,\n      \"calidad\": 0,\n      \"paginas\": 0,\n      \"plegadoOCortado\": 0,\n      \"maquina\": 0,\n      \"observaciones\": \"\",\n      \"papelPedido\": {\n        \"refPedido\": \"\",\n        \"gramaje\": 0,\n        \"anchoBobinaCm\": 0,\n        \"upsCalc\": 0,\n        \"ups\": 0,\n        \"metros\": 0,\n        \"kg\": 0\n      }\n    }\n  ]\n}\n\n### CAMPOS DE INTERIORES:\nBasate en este prompt modo\": \"interior\"\nSi detectas cualquier evidencia de cubierta, no devuelvas coincidencia; sigue buscando SOLO interiores.\n    1. NORMALIZACIÓN (BÁSICA)\n        3.1. Ignora mayúsculas/minúsculas y acentos.\n        3.2. Colapsa espacios/saltos múltiples a un solo espacio.\n        3.3. Elimina guiones de final de línea por OCR (ej.: ORI- A → ORIA).\n        3.4. Al comparar CÓDIGOS, ignora espacios y guiones internos (p. ej., MBBSTF SC-54 ≈ MBBSTFSC54).\n    2. MAPEO (CÓDIGO → ID)\n        4.1. MBBSTF → \"papel_id\":  634\n          Descripción equivalente: HOLMEN BOOK\n        4.2. YLTE-35 → \"papel_id\":  241\n          Descripción equivalente: HYLTE POCKET\n        4.3. AB0015- → \"papel_id\":  =570\n          Descripción equivalente: ORIA PRINTIVORY\n        4.4. ABALFO- → \"papel_id\":  =573\n          Descripción equivalente: ORIABULKIVORY\n        4.5. MBTRDH- → \"papel_id\":  =694\n          Descripción equivalente: HOLMEN BOOK CREAM\n    En la salida, papel_id debe ser igual a id y propietarioPapel = 2.\n    3. ORDEN DE BÚSQUEDA (PARA EN LA 1ª COINCIDENCIA)\n        5.1. Componentes → “Código”\n         a) Busca cualquiera de los 4 códigos del punto 4 (con la normalización del punto 3).\n         b) Si encuentras uno, devuelve el JSON con:\n          — id y papel_id según el mapeo.\n         c) Termina.\n        5.2. Componentes → “Descripción” (solo si 5.1 falló)\n         a) Busca una descripción equivalente del punto 4 (tolerante a espacios y pequeñas variaciones; no hace falta regex avanzada).\n         b) Si encuentras una, devuelve el JSON con:\n          — id y papel_id del mapeo correspondiente.\n          — codigo = el código equivalente (del punto 4).\n          — whereFound = \"Componentes.Descripción\".\n          — match = el fragmento exacto de la descripción.\n        c) Termina. \n    SI:\n    - \"papel_id\":  634 devuleve \"calidad\": \"Ahuesado volumen 2\", \"gramaje\": 55, \"refPedido\": \"Holmen Cream Mano 2 (RANDOM)\" y \"anchoBobinaCm\": 54\n    - \"papel_id\":  241 devuleve \"calidad\": \"Ahuesado volumen 1.8\", \"gramaje\": 70, \"refPedido\": \"Hylte Pocket Creamy 1.8 (RANDOM)\" y \"anchoBobinaCm\": 35\n    - \"papel_id\":  570 devuleve \"calidad\": \"Ahuesado\", \"gramaje\": 80, \"refPedido\": \"Ahuesado Oria (RANDOM)\" y \"anchoBobinaCm\": 38\n    - \"papel_id\":  573 devuleve \"calidad\": \"Ahuesado volumen 1.5\", \"gramaje\": 80, \"refPedido\": \"Oria Bulk Ivory Vol 1,5 (RANDOM)\" y \"anchoBobinaCm\": 35\n    - \"papel_id\":  694 devuleve \"calidad\": \"Ahuesado volumen 1.8\", \"gramaje\": 70, \"refPedido\": \"Holmen Book Cream 1.8 (RANDOM)\" y \"anchoBobinaCm\": 35\n\n    4. PROHIBICIONES\n        4.1. No uses “Observaciones” ni otras secciones para decidir la cubierta.\n        4.2. No devuelvas nada fuera del JSON indicado.\n        4.3. No inventes códigos/IDs que no estén en el mapeo del punto 4.\n            UNICAMENTE si no encuantras código o referencia, completa el json con los datos del papel que encuentres en observaciones basandote en la siguiente tabla.\n            devuleve literalmente \"Ahuesado\" si aparece solo la referencia ahuesado\n            devuleve literalmente \"Ahuesado volumen 1.5\" si aparece solo la referencia ahuesado mano 1.5 o ahuesado 1.5\n            devuleve literalmente \"Ahuesado volumen 1.6\" si aparece solo la referencia ahuesado mano 1.6 o ahuesado 1.6\n            devuleve literalmente \"Ahuesado volumen 1.8\" si aparece solo la referencia ahuesado mano 1.6 o ahuesado 1.8\n            devuleve literalmente \"Ahuesado volumen 2\" si aparece solo la referencia ahuesado mano 2.0 o ahuesado 2.0 o ahuesado 2\n            devuleve literalmente \"Estucado semimate\" si aparece solo la referencia Estudado o Estucado semimate\n            devuleve literalmente \"Offset blanco\" si aparece solo la referencia Offset blanco\n            devuleve literalmente \"Offset Blanco Volumen\" si aparece solo la referencia Offset Blanco Volumen\n            En estos casos deja \"papel_id\": 0 y propietarioPapel = 1.\n        4.4. Filtro anti-cubierta (obligatorio)\n            Antes de aceptar una coincidencia, verifica que el texto NO contiene ninguna señal de cubierta:\n            Códigos: C1SBSFG, FBEXFSC.\n            Términos: SBS, CARTULINA, SUPREMO, BRIGHT NEW, 2/C, 4/0, 4/1, 4/4, PLASTIFICAD(O|A).\n            Si aparece cualquiera de las anteriores ⇒ descarta la coincidencia para interiores.\n        4.5. Ámbito de búsqueda preferente (interiores)\n            Prioriza zonas con “TRIPA”, “INTERIOR”, “Componentes” de interiores, o entorno del bloque donde se listan páginas y impresión (suele estar cerca del interior).\n            Evita filas de Componentes con gramajes ≥ 200 g salvo que el texto contenga palabras típicas de interiores (p. ej., “offset book”, “ahuesado”, “bulk”, “ivory”). (Heurística: cubierta suele ir ≥200 g, interior mucho más bajo.)\n        4.6. Exclusión de cubierta\n            Si en el documento aparece FBEXFSC o C1SBSFG, ignora ese bloque por completo al extraer interiores (son referencias de cubierta).\n    5. Tipo de impresión (interiores)\n        Si ves 1/1 o la palabra NEGRO (o “Inkjet Premium” en impresión interior), devuelve tipoImpresion = 2; si no, 1.\n    6.  Solo usar “Observaciones” si no hay código\n        Mantén tu regla: si no hay código/descr. del mapeo (punto 4), entonces sí toma la descripción y gramaje de Observaciones, pero con papel_id = 0 y propietarioPapel = 1.\n            \"interiores\": [\n                {\n                \"papel_id\": 0, // solo estas referencias 634, 241, 570, 573 o 694, si no 0\n                \"propietarioPapel\": 0,     \n                \"tipoImpresion\": 0, // si aparece 1/1 o la palabra NEGRO devuelve 2, si no devuelve 1\n                \"calidad\": \"\" // devuelve descripción del papel si no hay id de papel,\n                \"paginas\": 0, // Basate en este prompt TAREA: Devuelve el siguiente campo:\n                \"paginas\": <número entero>\n                            REGLAS (aplica en este orden, sin distinguir mayúsculas/minúsculas ni acentos):\n                            1) DETECCIÓN DEL TOTAL DE PÁGINAS:\n                            - Busca una línea que indique el total de páginas del interior.\n                            - Prioriza rótulos como: “Nº Páginas”, “No Páginas”, “Número de páginas” o similares.\n                            - Si hay múltiples coincidencias, usa la más clara o la que esté en tablas o encabezados.\n                            - Extrae solo los dígitos. Ejemplo: si dice “0128” → devuelve 128.\n                            2) DETECCIÓN DE ENCUADERNACIÓN:\n                            - Busca una línea que indique el tipo de encuadernación.\n                            - Considera \"Cartoné\" como igual a \"Cartone\" (ignorar acentos y mayúsculas).\n                            3) DETECCIÓN DE GUARDAS INCLUIDAS:\n                            - Sólo cuenta como afirmativo si aparece exactamente una de las siguientes frases:\n                            • “Guardas incluidas: SI”\n                            • “Incluye guardas: SI”\n                            • “Con guardas: SI”\n                            - Si aparece “NO” o “Sin guardas”, cuenta como NO.\n                            - Si no aparece nada, asume NO.\n                            4) DETECCIÓN DE GUARDAS NO INCLUIDAS:\n                            - Sólo se considera afirmativo si aparece:\n                            • “Guardas incluidas: NO”\n                            • “Guardas aparte: SI”\n                            5) CÁLCULO DEL VALOR DE “paginas”:\n                            - Si (Encuadernación = Cartoné) Y (Guardas incluidas = SI) ⇒ paginas = total - 8\n                            - En cualquier otro caso ⇒ paginas = total\n                            6) SALIDA:\n                            Devuelve sólo el siguiente objeto:\n                            { \"paginas\": <número> }\n                            EJEMPLOS:\n                            - Encuadernación: Cartoné; Guardas incluidas: SI; Nº Páginas: 272 → { \"paginas\": 264 }\n                            - Encuadernación: Cartoné; Guardas incluidas: NO; Nº Páginas: 272 → { \"paginas\": 272 }\n                            - Encuadernación: Cartoné; Guardas aparte: SI; Nº Páginas: 272 → { \"paginas\": 272 }\n                            - Encuadernación: Rústica; (sin mención de guardas); Nº Páginas: 128 → { \"paginas\": 128 }\n                            - Encuadernación: Cartoné; (sin mención de guardas); Nº Páginas: 160 → { \"paginas\": 160 }\n                            para obtener número de páginas,\n                \"plegadoOCortado\": 0, // siempre vacío\n                \"maquina\": 0, // siempre vacío\n                \"observaciones\": \"\", // siempre vacío\n                \"papelPedido\": {\n                \"refPedido\": \"\", // siempre vacío\n                \"gramaje\": 0, // devuelve gramaje del papel,\n                \"anchoBobinaCm\": 0, // siempre tiene que aparecer,\n                \"ups\": 0, \n                \"metros\": 0.0, // siempre vacío\n                \"kg\": 0.0 // devuelve el dato que aparece en Cantidad (Ud) del pedido que corresponde a los kilos de papel, aparece con KG, ejemplo 308KG. Si no lo encuentras devuelve 0.0.\n            },\n    }\n  ]\n\n",
+              "type": "string"
+            },
+            {
+              "id": "61b81b8a-7210-47b0-8839-f6cf5cb901c4",
+              "name": "promptCubierta",
+              "value": "Actúas como un extractor de datos de documentos. Tu tarea es analizar el PDF adjunto y devolver EXCLUSIVAMENTE un JSON válido que cumpla ESTRICTAMENTE el esquema proporcionado.\n\n### MODELO DE SALIDA:\n{\n  \"cubierta\": {\n    \"materialCubierta\": 0,         \n    \"propietarioPapel\": 0,         \n    \"plastificado\": 0,             \n    \"uvi\": 0,                  \n    \"impresion\": \"1/1\",           \n    \"codDescarga\": 0,           \n    \"tecnologia\": 0,              \n    \"observaciones\": \"\" \n  }\n}\n\n### REGLAS OBLIGATORIAS:\n1) Devuelve SOLO JSON. Sin texto adicional. Sin markdown. Sin explicaciones.\n2) El JSON debe ser válido (comillas dobles, sin trailing commas).\n3) Cumple el esquema al 100%:\n   - No inventes campos que no existan en el esquema.\n   - No devuelvas claves extra fuera del esquema.\n   - Respeta tipos (string/number/boolean/array/object) y enum si existen.\n4) Si un dato no aparece en el PDF:\n   - Usa null si el esquema lo permite.\n   - Si NO permite null, usa el valor vacío adecuado: \"\" para string, 0 para number, false para boolean, [] para arrays, {} para objetos (solo si el esquema lo permite).\n   - Si un campo indica \"siempre vacío\", debe devolverse como cadena vacía (\"\") aunque se detecte contenido.\n5) Normalización:\n   - Fechas en formato \"YYYY-MM-DD\" si el esquema no indica otro.\n   - Importes numéricos sin símbolo de moneda (ej: 174.00).\n   - Medidas: conserva unidades solo si el esquema lo pide; si no, usa número limpio.\n   - En la recogida de datos mantén tildes y caracteres originales.\n   - Si un texto contiene comillas internas, escápalas con una barra invertida: \\\"\n    EN LA BUSQUEDA DE DATOS:\n        - Coincidencia sin distinguir mayúsculas/minúsculas.\n        - Ignora acentos/diacríticos\n        - Colapsa espacios múltiples y recorta espacios sobrantes\n6) Consistencia:\n   - Si hay tablas/listas (servicios, componentes, direcciones), devuélvelas como arrays.\n   - No mezcles datos de secciones distintas.\n7) Verificación final antes de responder:\n   - Revisa que el JSON parsea.\n   - Revisa que cumple el esquema.\n   - Revisa que no hay texto fuera del JSON\n\n\n### DATOS DE CUBIERTA:\n    Extrae los valores de:\n    - \"propietarioPapel\"\n    - \"plastificado\"\n    - \"uvi\"\n    - \"impresion\"\n    - \"codDescarga\"\n    - \"observaciones\"\n            Usa como referencia el contenido definido en:\n            modo\": \"cubierta\"\n            Si detectas cualquier evidencia de interior, no devuelvas coincidencia; sigue buscando SOLO cubierta.\n\n            NORMALIZACIÓN PREVIA (muy importante para OCR):\n            - Trabaja sin distinguir mayúsculas/minúsculas ni acentos.\n            - Unifica espacios múltiples y saltos de línea en un solo espacio.\n            - Elimina guiones de final de línea por corte (ej.: \"SU- premo\" -> \"Supremo\").\n            - Normaliza símbolos: \"1 / C\" == \"1/C\"; \"GR\" == \"G/GR\".\n            - Cuando compares, usa expresiones tolerantes a espacios, barras y saltos: p.ej. `Supremo\\\\s*SBS\\\\s*1\\\\s*/\\\\s*C\\\\s*250\\\\s*GR` - `MB\\\\s*PRIME\\\\s*BRIGHT\\\\s*NEW\\\\s*235\\\\s*GR` - `CARTULINA\\\\s*DIVA\\s*ART\\\\s*250\\\\s*GR.\n\n            ÁMBITO A IGNORAR:\n            - NO uses texto dentro de la sección \"Observaciones\" para decidir el papel de cubierta.\n            - NO busques frases genéricas del tipo “Material cubierta Cartulina 240 g…”.\n\n            ZONA INICIAL DE ESCANEO RÁPIDO:\n            - Empieza en la página 1, en la mitad de la página (donde suelen aparecer Componentes).\n\n            ORDEN DE BÚSQUEDA (detente en la primera coincidencia):\n\n            1) TABLA \"Componentes\" → columna \"Código\"\n              - Busca C1SBSFG o FBEXFSC (insensible a mayúsculas/acentos y tolerante a espacios/ saltos).\n              - Si encuentras:\n                  • C1SBSFG  ⇒ id=17, materialCubierta=17, propietarioPapel=2\n                  • FBEXFSC  ⇒ id=10, materialCubierta=10, propietarioPapel=2\n                  • C1SBSFG DIVA  ⇒ id=13, materialCubierta=13, propietarioPapel=2\n                Devuelve el JSON y termina.\n\n            2) TABLA \"Componentes\" → columna \"Descripción\" (BÚSQUEDA COMPLEMENTARIA/RESPALDO)\n              - Si NO encontraste códigos en 1), busca las referencias de respaldo:\n                  • \"Supremo SBS 1/C 250GR\"     (también puede verse como \"Supremo SBS 1 / C 250 GR\")\n                    ⇒ corresponde a C1SBSFG ⇒ id=17, materialCubierta=17, propietarioPapel=2\n                  • \"MB PRIME BRIGHT NEW 235 GR\" (también \"MB PRIME BRIGHT NEW 235GR\")\n                    ⇒ corresponde a FBEXFSC ⇒ id=10, materialCubierta=10, propietarioPapel=2\n                  • \"CARTULINA DIVA ART 250 1/C FSC\" (también \"CARTULINA DIVA ART 250 1/C FSC\")\n                    ⇒ corresponde a C1SBSFG-DIVA ⇒ id=13, materialCubierta=13, propietarioPapel=2\n                En cuanto una coincida, devuelve el JSON y termina.\n\n            3) CONFIRMACIÓN Y BÚSQUEDA GLOBAL (solo si 1) y 2) fallan)\n              - Confirma internamente: “no encontrados en Componentes”.\n              - Recorre el documento completo (excluye \"Observaciones\") por si aparecieran los mismos códigos o referencias.\n              - Si encuentras alguna, devuelve el JSON y termina.\n\n            4) SI AÚN ASÍ NO HAY NADA\n              - Entonces aplica las equivalencias genéricas del v2 en TODO el documento (excluye \"Observaciones\"):\n                  • \"ESTUCADO 150 G/GR\"        ⇒ materialCubierta=2  ⇒ propietarioPapel=1\n                  • \"ESTUCADO 170 G/GR\"        ⇒ materialCubierta=15 ⇒ propietarioPapel=1\n                  • \"ESTUCADO 300 G/GR\"        ⇒ materialCubierta=3  ⇒ propietarioPapel=1\n                  • \"SIN CUBIERTA\"             ⇒ materialCubierta=4  ⇒ propietarioPapel=0\n                  • \"CARTULINA 240 G/GR\"       ⇒ materialCubierta=1  ⇒ propietarioPapel=1\n\n            REGLAS DE PARADA:\n            - En cuanto encuentres la primera coincidencia válida en los pasos 1), 2) o 3) o 4), detén TODA búsqueda y devuelve SOLO el JSON.\n\n            EJEMPLOS DE MAPEOS ESPERADOS (basado en PDFs reales)\n              Si ves en Componentes el código FBEXFSC y en descripción “MB PRIME BRIGHT NEW 235 GR (FSC)” ⇒ id=10.\n              Si ves en Componentes el código C1SBSFG y en descripción “SUPREMO SBS 1/C 250GR (FSC)” ⇒ id=17.\n\n      OTROS CAMPOS:\n          - PLASTIFICADO (más específico → genérico; insensible a mayúsculas/acentos):\n                \"MATE SEDOSO\"→3\n                \"MATE ANTIRRAYA\"→4\n                \"BRILLO DIGITAL\"→7\n                \"MATE DIGITAL\"→8,\n                \"GOFRADO\"→5\n                \"NATUREFLEX\"→9\n                \"SANDY\"→10\n                \"BRILLO\"→1\n                \"MATE\"→2, otro→6\n\n    - \"uvi\": Devuelve 1 si aparece referencia UVI o 0 si no aparece.\n    - \"Impresion\": usa literalmente \"4/0\", \"4/1\", \"4/4\", \"1/0\", \"5/0\", si no lo encuentras devuelve 4/0. Si detectas la referencia \"Reverso\" indica 4/4.\n    - \"codDescarga\": Devuelve 1 si aparece \"CODIGO DE DESCARGA\" o \"CÓDIGO DE DESCARGA\" o 0 si no aparece.\n    - \"tecnologia\": Si detectas en el pedido que indica literal \"CUBIERTA IMPRESA EN OFFSET\" refiriendose offset a la cubierta y no al papel de interior devuelve 5, si no 0.\n    - \"Observaciones\": indica \"Recibimos modelo de impresión\" solo si el documento contiene alguna referencia explícita a “enviamos modelo”, \"enviamos prueba\", \"muestra de impresión\" (Coincidencia insensible a mayúsculas/minúsculas ni acentos).",
+              "type": "string"
+            },
+            {
+              "id": "5dab2b9d-9686-473a-85b9-8bfe63dfe1d0",
+              "name": "promptExtras",
+              "value": "Actúas como un extractor de datos de documentos. Tu tarea es analizar el PDF adjunto y devolver EXCLUSIVAMENTE un JSON válido que cumpla ESTRICTAMENTE el esquema proporcionado.\n\n### REGLAS OBLIGATORIAS:\n1) Devuelve SOLO JSON. Sin texto adicional. Sin markdown. Sin explicaciones.\n2) El JSON debe ser válido (comillas dobles, sin trailing commas).\n3) Cumple el esquema al 100%:\n   - No inventes campos que no existan en el esquema.\n   - No devuelvas claves extra fuera del esquema.\n   - Respeta tipos (string/number/boolean/array/object) y enum si existen.\n4) Si un dato no aparece en el PDF:\n   - Usa null si el esquema lo permite.\n   - Si NO permite null, usa el valor vacío adecuado: \"\" para string, 0 para number, false para boolean, [] para arrays, {} para objetos (solo si el esquema lo permite).\n   - Si un campo indica \"siempre vacío\", debe devolverse como cadena vacía (\"\") aunque se detecte contenido.\n5) Normalización:\n   - Fechas en formato \"YYYY-MM-DD\" si el esquema no indica otro.\n   - Importes numéricos sin símbolo de moneda (ej: 174.00).\n   - Medidas: conserva unidades solo si el esquema lo pide; si no, usa número limpio.\n   - En la recogida de datos mantén tildes y caracteres originales.\n   - Si un texto contiene comillas internas, escápalas con una barra invertida: \\\"\n    EN LA BUSQUEDA DE DATOS:\n        - Coincidencia sin distinguir mayúsculas/minúsculas.\n        - Ignora acentos/diacríticos\n        - Colapsa espacios múltiples y recorta espacios sobrantes\n6) Consistencia:\n   - Si hay tablas/listas (servicios, componentes, direcciones), devuélvelas como arrays.\n   - No mezcles datos de secciones distintas.\n7) Verificación final antes de responder:\n   - Revisa que el JSON parsea.\n   - Revisa que cumple el esquema.\n   - Revisa que no hay texto fuera del JSON\n\n\n### MODELO DE SALIDA:\n{\n  \"guardas\": {\n    \"papel_id\": 0,\n    \"propietarioPapel\": 0,\n    \"tipoImpresion\": 0,\n    \"calidad\": 0,\n    \"paginas\": 0,\n    \"plegadoOCortado\": 0,\n    \"maquina\": 0,\n    \"observaciones\": \"\",\n    \"papelPedido\": {\n      \"refPedido\": \"\",\n      \"gramaje\": 0,\n      \"anchoBobinaCm\": 0,\n      \"upsCalc\": 0,\n      \"ups\": 0,\n      \"metros\": 0,\n      \"kg\": 0\n    },\n    \"papelProduccion\": {\n      \"refProduccion\": \"\",\n      \"gramaje\": 0,\n      \"anchoBobinaCm\": 0,\n      \"upsCalc\": 0,\n      \"ups\": 0,\n      \"metros\": 0,\n      \"kg\": 0\n    }\n  },\n  \"sobrecubierta\": {\n    \"materialSobrecubierta\": 0,\n    \"propietarioPapel\": 0,\n    \"plastificado\": 0,\n    \"uvi\": 0,\n    \"impresion\": 0,\n    \"tecnologia\": 0,\n    \"observaciones\": \"\"\n  },\n  \"faja\": {\n    \"materialFaja\": 0,\n    \"propietarioPapel\": 0,\n    \"plastificado\": 0,\n    \"uvi\": 0,\n    \"impresion\": 0,\n    \"tecnologia\": 0,\n    \"observaciones\": \"\"\n  },\n  \"componentesEspeciales\": [\n    {\n      \"material\": 0,\n      \"propietarioPapel\": 0,\n      \"nombre\": \"\",\n      \"plastificado\": 0,\n      \"uvi\": 0,\n      \"impresion\": 0,\n      \"tecnologia\": 0,\n      \"observaciones\": \"\"\n    }\n  ],\n  \"peticionesEspeciales\": [\n    {\n      \"descripcion\": \"\"\n    }\n  ],\n  \"direcciones\": [\n    {\n      \"direccionId\": \"\",\n      \"destinatario\": \"\",\n      \"via\": \"\",\n      \"numero\": \"\",\n      \"piso\": \"\",\n      \"puerta\": \"\",\n      \"cp\": \"\",\n      \"localidad\": \"\",\n      \"provincia\": \"\",\n      \"pais\": \"\",\n      \"contacto\": \"\",\n      \"telefonos\": \"\",\n      \"pallet\": 0,\n      \"encajado\": 0,\n      \"ejemplaresPaquete\": 0,\n      \"ejemplares\": 0,\n      \"envioResto\": 0,\n      \"modelos\": 0,\n      \"observaciones\": \"\"\n    }\n  ]\n}\n\n### GUARDAS:\nInstrucciones:\n    1. SOLO devuelve datos si detectas indicios de guardas (ej. “guardas incluidas”, “guardas aparte”, “guardas impresas”).\n    2. Verifica el tipo de encuadernación:\n      - Si encuadernación = 3 (Rústica), 4 (Espiral), 5 (Grapa) o 6 (Wire-o) → NO lleva guardas → NO devuelvas nada.\n      - Solo lleva guardas si encuadernación = 1 (Cartoné) o 2 (Flexible).\n    3. Si hay referencia válida a guardas, devuelve este bloque JSON con los siguientes valores fijos o vacíos:\n    4. Valor de `\"refPedido\"`:\n      - Si se menciona “guardas aparte”: busca el texto del papel al final de las observaciones y úsalo como descripción.\n      - Si se menciona “guardas incluidas”: usa la descripción del papel del interior como refPedido.\n    5. Usa exactamente estas equivalencias para interpretar descripciones encontradas en observaciones:\n      - \"Ahuesado\" devuelve esto:\n                {\n                  \"guardas\": {\n                    \"papel_id\": 561,\n                    \"propietarioPapel\": 1,\n                    \"tipoImpresion\": 1,\n                    \"calidad\": \"Ahuesado\",\n                    \"paginas\": 8,\n                    \"observaciones\": \"\",\n                    \"papelPedido\": {\n                      \"refPedido\": \"Ahuesado Oria\", \n                      \"gramaje\": 120,\n                      \"anchoBobinaCm\": 54,\n                      \"ups\": 2\n                    }\n                  }\n                }\n    - \"Offset blanco\" devuelve esto:\n                {\n                  \"guardas\": {\n                    \"papel_id\": 620,\n                    \"propietarioPapel\": 1,\n                    \"tipoImpresion\": 1,\n                    \"calidad\": \"Offset blanco\",\n                    \"paginas\": 8,\n                    \"observaciones\": \"\",\n                    \"papelPedido\": {\n                      \"refPedido\": \"Navigator Offset Premium 161\", \n                      \"gramaje\": 120,\n                      \"anchoBobinaCm\": 54,\n                      \"ups\": 2\n                    }\n                  }\n                }\n    - \"Estucado\" devuelve esto:   \n                {\n                  \"guardas\": {\n                    \"papel_id\": 613,\n                    \"propietarioPapel\": 1,\n                    \"tipoImpresion\": 1,\n                    \"calidad\": \"Estucado semimate\",\n                    \"paginas\": 8,\n                    \"observaciones\": \"\",\n                    \"papelPedido\": {\n                      \"refPedido\": \"G-Silk\", \n                      \"gramaje\": 150,\n                      \"anchoBobinaCm\": 54,\n                      \"ups\": 2\n                    }\n                  }\n                }\n\n### SOBRECUBIERTA:\nBasate en este prompt Rellenar solo si el PDF contiene una mención explícita a SOBRECUBIERTA.\n    - Trabaja sin distinguir mayúsculas/minúsculas ni acentos.\n    - Solo cuenta si aparece la palabra “sobrecubierta” o las variantes “sobre cubierta” o “sobre-cubierta” como palabra independiente, en frases tipo: “lleva sobrecubierta”, “colocar sobrecubierta”, “imprimir sobrecubierta”, etc.\n    - No la confundas nunca con la palabra “cubierta” (es otra cosa) ni con “faja”, aunque usen el mismo material, gramaje, plastificado, UVI o cualquier otro dato.\n    - Ignora por completo la información de cubierta, faja, guardas, encuadernación, materiales, gramajes, plastificados y UVI para decidir si hay sobrecubierta:\n    - Si no aparece literalmente “sobrecubierta” / “sobre cubierta” / “sobre-cubierta”, deja todos los valores por defecto.\n    - Si ves negaciones claras como “sin sobrecubierta”, “no lleva sobrecubierta”, “no colocar sobrecubierta”, también debes dejar los valores por defecto.\n\n    No deduzcas ni supongas la existencia de sobrecubierta por contexto: solo decide por la palabra literal indicada.\n      \"materialSobrecubierta\": devuelve 15.\n      \"propietarioPapel\": devuelve 1.\n\n      \"plastificado\":\n          brillo → 1\n          mate → 2\n          mate sedoso → 3\n          mate antirraya → 4\n          gofrado → 5\n          brillo digital → 7\n          mate digital → 8\n          natureflex → 9\n          sandy → 10\n          cualquier otro caso → 6\n\n    - \"uvi\": Devuelve 1 si aparece referencia UVI o 0 si no aparece.\n    - \"Impresion\": Si no detectas \"materialSobrecubierta\" no devuelvas nada, si no usa literalmente \"4/0\", \"4/1\", \"4/4\", \"1/0\", \"5/0\", si no lo encuentras devuelve 4/0. Si detectas la referencia \"Reverso\" indica 4/4.\n    - \"tecnologia\": \n    - \"Observaciones\": indica \"Recibimos modelo de impresión\" solo si el documento contiene alguna referencia explícita a “enviamos modelo”, \"enviamos prueba\", \"muestra de impresión\" (Coincidencia insensible a mayúsculas/minúsculas ni acentos).\n\n    GATE SOBRECUBIERTA (OBLIGATORIO):\n        - Busca SOLO coincidencias literales como palabra independiente: \"sobrecubierta\", \"sobre cubierta\", \"sobre-cubierta\"\n        - Ignora coincidencias donde solo aparezca \"cubierta\".\n        - Si NO hay coincidencia literal -> sobrecubierta = valores por defecto y NO rellenar nada más.\n        - Si hay negación dentro de una ventana de 5 palabras: (\"sin\", \"no\", \"nunca\") -> valores por defecto.\n        Ejemplos de negación: \"sin sobrecubierta\", \"no lleva sobrecubierta\", \"no colocar sobrecubierta\".\n\n    PROHIBICIÓN:\n        - Está prohibido copiar valores de \"cubierta\" a \"sobrecubierta\" o \"faja\".\n        - Aunque haya plastificado, UVI o impresión, si no se supera el GATE literal, deja sobrecubierta/faja por defecto.\n    \n    PRUEBA MÍNIMA (interna):\n        - Para marcar sobrecubierta/faja como presente, debes localizar un fragmento del PDF que contenga la palabra gatillo EXACTA.\n        - Si no puedes señalar internamente esa frase, entonces NO está presente y devuelves valores por defecto.\n        - No devuelvas el fragmento en el JSON.\n    ÁMBITO:\n        - Si detectas \"sobrecubierta\", solo puedes extraer plastificado/uvi/impresion desde:\n            a) la misma línea, o\n            b) las 2 líneas siguientes.\n        - En cualquier otro caso, deja esos campos por defecto.\n\n### FAJA:\nBasate en este prompt Rellenar solo si hay información referente a FAJA o FAJILLA (Coincidencia insensible a mayúsculas/minúsculas ni acentos) en el PDF, ejemplos \"lleva faja\", \"colocar fajilla\", \"imprimir faja\", si no dejar valores por defecto.\n    - \"materialFaja\": devuelve 15.\n    - \"propietarioPapel\": devuelve 1.\n    - \"plastificado\":\n                brillo → 1\n                mate → 2\n                mate sedoso → 3\n                mate antirraya → 4\n                gofrado → 5\n                brillo digital → 7\n                mate digital → 8\n                natureflex → 9\n                sandy → 10\n                cualquier otro caso → 6\n    - \"uvi\": Devuelve 1 si aparece referencia UVI o 0 si no aparece.\n    - \"Impresion\": Si no detectas \"materialFaja\" no devuelvas nada, si no usa literalmente \"4/0\", \"4/1\", \"4/4\", \"1/0\", \"5/0\", si no lo encuentras devuelve 4/0. Si detectas la referencia \"Reverso\" indica 4/4.\n    - \"tecnologia\":   \n    - Observaciones: indica \"Recibimos modelo de impresión\" solo si el documento contiene alguna referencia explícita a “enviamos modelo”, \"enviamos prueba\", \"muestra de impresión\" (Coincidencia insensible a mayúsculas/minúsculas ni acentos)..\n\n    GATE FAJA (OBLIGATORIO):\n        - Solo acepta como evidencia la palabra literal: \"faja\" o \"fajilla\" como palabra independiente.\n        - Si NO aparece -> faja = valores por defecto.\n        - Si aparece negada (\"sin faja\", \"no lleva faja\") -> valores por defecto.\n        - No uses jamás materiales, plastificados o impresión para inferir la existencia de faja.\n    \n    PROHIBICIÓN:\n        - Está prohibido copiar valores de \"cubierta\" a \"sobrecubierta\" o \"faja\".\n        - Aunque haya plastificado, UVI o impresión, si no se supera el GATE literal, deja sobrecubierta/faja por defecto.\n    \n    PRUEBA MÍNIMA (interna):\n        - Para marcar sobrecubierta/faja como presente, debes localizar un fragmento del PDF que contenga la palabra gatillo EXACTA.\n        - Si no puedes señalar internamente esa frase, entonces NO está presente y devuelves valores por defecto.\n        - No devuelvas el fragmento en el JSON.\n    ÁMBITO:\n        - Si detectas \"sobrecubierta\", solo puedes extraer plastificado/uvi/impresion desde:\n            a) la misma línea, o\n            b) las 2 líneas siguientes.\n        - En cualquier otro caso, deja esos campos por defecto.\n\n\n### COMPONENTES ESPECIALES:\nBasate en este prompt Busca en el PDF menciones a elementos especiales como:\n    - \"Cuadernillo\"\n    - \"Encarte\"\n    - \"Pliego\"\n\n    (Sensibilidad: no distingue mayúsculas/minúsculas/acentos)\n\n### Si encuentras una mención, devuelve el siguiente JSON (rellenado):\n\"componentesEspeciales\": [\n  {\n    \"material\": 0,           // Devuelve el papel indicado en esa sección\n    \"propietarioPapel\": 1,   // Devuelve siempre 1\n    \"nombre\": \"ENCARTE\",     // Devuelve literalmente ENCARTE\n    \"plastificado\": 0,       // Siempre vacío\n    \"uvi\": 0,            // Siempre vacío\n    \"impresion\": \"4/0\",      // Usa literalmente lo que indique el pedido (ej.: \"4/0\", \"4/1\", \"4/4\", \"1/0\", \"5/0\"). Si no lo encuentras, devuelve \"4/0\"\n    \"tecnologia\": 1,         // Devuelve siempre 1\n    \"observaciones\": \"\"      // Devuelve la línea o líneas relacionadas al encarte/cuadernillo/pliego detectado\n  }\n]\n\n### Si no encuentras nada, no devuelvas este bloque.\n.\n\n### PETICIONES ESPECIALES:\n\n      ### DIRECCIONES:\n      Reglas:\n          Buscar si existe un alias exacto en el PDF:\n              Usa coincidencia insensible a mayúsculas/minúsculas, acentos y elimina espacios extra.\n              La coincidencia debe ser por frase completa (no dentro de otras palabras).\n          En caso de empate:\n              Prefiere alias completo exacto.\n              Luego la cadena coincidente más larga.\n              Luego el menor direccionId.\n          Si se encuentra un alias:\n            Devuelve un objeto con:\n              \"direccionId\" correspondiente del mapa.\n              Solo el campo \"ejemplares\" con el número de tirada.\n              Todos los demás campos deben ir vacíos (\"\") o en 0.\n              Si NO se encuentra alias:\n              Usa \"direccionId\": 0.\n              Extrae del PDF todos los campos posibles:\n              via, numero, piso, puerta, cp, localidad, provincia, pais, contacto, telefonos, pallet, encajado, ejemplaresPaquete, ejemplares, envioResto, modelos, observaciones.\n              Si algún campo no aparece, déjalo vacío (\"\") o en 0.\n              Regla adicional \"Sin muestras\" o \"Sin muestra\":\n              Si NO se encuentra la referencia \"Sin muestras\" o \"Sin muestra\" en observaciones:\n      Añade una segunda dirección con:\n      {\n      \"direccionId\": 41,\n      \"ejemplares\": 1\n      }\n      Si SÍ aparece \"Sin muestras\", NO añadas esta segunda dirección.\n            Mapa → direccionId:\n                  ALMACEN PALLEJA = 1\n                  OFICINA = 41\n                  DISTRICENTER ZF = 42\n                  DISTRICENTER SABADELL = 43\n                  Penguin Random House Grupo Editorial Portugal = 107\n                  Centro Distribución Barcelona PRHGE CERDANYOLA = 148\n                  GUILLERMO - DOMICILIO PARTICULAR = 225\n                  OFICINA BARCELONA = 249\n                  ESDISTINTO = 250\n                  LAURENS CONCEPTS = 260\n      Formato de salida (idéntico a este):\n      {\n        \"direcciones\": [\n          {\n            \"direccionId\": 0,\n            \"destinatario\": \"\",\n            \"via\": \"\",\n            \"numero\": \"\",\n            \"piso\": \"\",\n            \"puerta\": \"\",\n            \"cp\": \"\",\n            \"localidad\": \"\",\n            \"provincia\": \"\",\n            \"pais\": \"\",\n            \"contacto\": \"\",\n            \"telefonos\": \"\",\n            \"pallet\": 0,\n            \"encajado\": 0,\n            \"ejemplaresPaquete\": 0,\n            \"ejemplares\": 0,\n            \"envioResto\": 0,\n            \"modelos\": 0,\n            \"observaciones\": \"\"\n          }\n        ]\n      }\n      Ejemplo de salida sin \"Sin muestras\":\n      \"direcciones\":[\n        {\n          \"direccionId\": 148,\n          \"ejemplares\": 50\n        },\n        {\n          \"direccionId\": 41,\n          \"ejemplares\": 1\n        }\n      ]\n      Ejemplo de salida si se encuentra \"Sin muestras\" o \"Sin muestra\":\n      \"direcciones\":[\n        {\n          \"direccionId\": 148,\n          \"ejemplares\": 50\n        }\n      ]\n\n      **IMPORTANTE**  \n      Recuerda \"Sin muestras\" o \"Sin muestra\" es lo mismo..\n",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -400,
+        432
+      ],
+      "id": "7562aac6-6f4d-48af-8e29-62d2da454c32",
+      "name": "PromptConfig"
+    },
+    {
+      "parameters": {
+        "content": "## Prompts",
+        "height": 288,
+        "width": 256,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -480,
+        352
+      ],
+      "typeVersion": 1,
+      "id": "5c6cb0d1-b045-4485-ae4c-705bdb90934d",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Cabecera",
+        "height": 224,
+        "width": 672,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "faa9bc84-ee9e-4ecf-a3bf-0352ff767a13",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -720,
+        432
+      ],
+      "id": "15b318fc-eb09-426b-8efe-9ffbc85235a4",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "716a3085-d054-4c2e-95d1-4865cec67f57",
+              "name": "openaiFileId",
+              "value": "={{$json.id}}",
+              "type": "string"
+            },
+            {
+              "id": "2e4e2dd2-a5dc-4e7c-8f3e-6bdcfbb25371",
+              "name": "openaiFilename",
+              "value": "={{$json.filename}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -928,
+        576
+      ],
+      "id": "4f4be821-c66a-4fa8-9487-05876ba393e0",
+      "name": "openaiFileId"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/responses",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{$json.openaiBody}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        256,
+        304
+      ],
+      "id": "fe4abd3e-4d83-4ea7-844f-9554ecc333b7",
+      "name": "OpenAI1",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "retryOnFail": false,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "Fb5EZ7r56FOl5M3A",
+          "name": "Http Open AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const fileId = $items(\"Subir PDF a OpenAI\")[0].json.id; // ✅ file-...\nconst prompt = ($node[\"PromptConfig\"].json.promptInteriores || \"\").trim();\n\nif (!fileId?.startsWith(\"file-\")) {\n  throw new Error(`fileId inválido (esperaba file-...): ${fileId}`);\n}\n\n// --- Schema INTERIORES ---\nconst papelPedidoProps = {\n  refPedido: { type: \"string\" },\n  gramaje: { type: \"integer\" },\n  anchoBobinaCm: { type: \"number\" },\n  upsCalc: { type: \"integer\" },\n  ups: { type: \"integer\" },\n  metros: { type: \"number\" },\n  kg: { type: \"number\" },\n};\n\nconst interiorProps = {\n  papel_id: { type: \"integer\" },\n  propietarioPapel: { type: \"integer\" },\n  tipoImpresion: { type: \"integer\" },\n  calidad: { type: \"string\" },\n  paginas: { type: \"integer\" },\n  plegadoOCortado: { type: \"integer\" },\n  maquina: { type: \"integer\" },\n  observaciones: { type: \"string\" },\n  papelPedido: {\n    type: \"object\",\n    additionalProperties: false,\n    properties: papelPedidoProps,\n    required: Object.keys(papelPedidoProps),\n  },\n};\n\nconst schema = {\n  type: \"object\",\n  additionalProperties: false,\n  properties: {\n    interiores: {\n      type: \"array\",\n      items: {\n        type: \"object\",\n        additionalProperties: false,\n        properties: interiorProps,\n        required: Object.keys(interiorProps),\n      },\n    },\n  },\n  required: [\"interiores\"],\n};\n\nreturn {\n  openaiBody: {\n    model: \"gpt-5.1\",\n    input: [\n      {\n        role: \"user\",\n        content: [\n          { type: \"input_file\", file_id: fileId },\n          { type: \"input_text\", text: prompt },\n        ],\n      },\n    ],\n    text: {\n      format: {\n        type: \"json_schema\",\n        name: \"interiores_pedido\",\n        strict: false,\n        schema,\n      },\n    },\n  },\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        64,
+        304
+      ],
+      "id": "cb1d5bc2-46e6-4cb7-b35e-912cde28587b",
+      "name": "Build OpenAI Body (schema)1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// -----------------------------\n// PARSE + LIMPIEZA (INTERIORES)\n// -----------------------------\n\n// A veces n8n trae el body como string. Lo hacemos robusto:\nlet resp = $json;\nif (typeof resp === \"string\") resp = JSON.parse(resp);\n\n// Soporta \"Full Response\" ON/OFF:\nconst body = resp.body ?? resp;\n\n// En Responses API el texto suele venir en body.output[0..].content[*].text\nconst text =\n  body.output?.flatMap(o => o.content || [])\n    ?.find(c => c.type === \"output_text\")\n    ?.text;\n\nif (!text) throw new Error(\"No encuentro output_text en la respuesta de OpenAI\");\n\nlet parsed;\ntry {\n  parsed = JSON.parse(text);\n} catch (e) {\n  throw new Error(\"El output_text no es JSON parseable: \" + e.message + \"\\n\\n\" + text);\n}\n\n// Esperamos { interiores: [ ... ] } (si el modelo devuelve directo el array, lo aceptamos)\nlet interiores = Array.isArray(parsed?.interiores)\n  ? parsed.interiores\n  : (Array.isArray(parsed) ? parsed : []);\n\n// ---------- LIMPIEZA ----------\n// Borra 0, \"\", null, [], {} excepto estos PATHS (para no romper estructura mínima)\nconst keepAlwaysPaths = new Set([\n  // Mantener siempre el array (aunque quede vacío)\n  \"interiores\",\n\n  // Campos mínimos por interior\n  \"interiores[].papel_id\",\n  \"interiores[].propietarioPapel\",\n  \"interiores[].tipoImpresion\",\n  \"interiores[].paginas\",\n\n  // Mantener siempre el objeto papelPedido y claves útiles\n  \"interiores[].papelPedido\",\n  \"interiores[].papelPedido.gramaje\",\n  \"interiores[].papelPedido.anchoBobinaCm\",\n  \"interiores[].papelPedido.ups\",\n  \"interiores[].papelPedido.kg\",\n]);\n\nfunction isEmpty(v) {\n  if (v === null || v === undefined) return true;\n  if (typeof v === \"string\" && v.trim() === \"\") return true;\n  if (typeof v === \"number\" && v === 0) return true;\n  if (Array.isArray(v) && v.length === 0) return true;\n  if (typeof v === \"object\" && !Array.isArray(v) && Object.keys(v).length === 0) return true;\n  return false;\n}\n\nfunction cleanDeep(value, path) {\n  // Arrays: limpiar elementos y eliminar elementos vacíos\n  if (Array.isArray(value)) {\n    const arr = [];\n    for (const el of value) {\n      const cleaned = cleanDeep(el, path + \"[]\");\n      // si el elemento queda vacío, lo descartamos\n      if (!isEmpty(cleaned)) arr.push(cleaned);\n    }\n    return arr;\n  }\n\n  // Objetos: limpiar claves recursivamente\n  if (value && typeof value === \"object\") {\n    const obj = { ...value };\n    for (const k of Object.keys(obj)) {\n      const childPath = path ? `${path}.${k}` : k;\n\n      obj[k] = cleanDeep(obj[k], childPath);\n\n      // Si está en keepAlwaysPaths, NO lo borramos aunque esté vacío\n      if (keepAlwaysPaths.has(childPath)) continue;\n\n      // Si está vacío, borramos\n      if (isEmpty(obj[k])) delete obj[k];\n    }\n    return obj;\n  }\n\n  // Primitivos\n  return value;\n}\n\n// Aplicar limpieza a cada interior\ninteriores = cleanDeep(interiores, \"interiores\");\n\n// Asegurar que siempre devolvemos el array\nif (!Array.isArray(interiores)) interiores = [];\n\nreturn [{\n  json: {\n    interiores\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        304
+      ],
+      "id": "280349b9-d28d-4b08-be0c-d3a6f8370255",
+      "name": "Parse output_text1"
+    },
+    {
+      "parameters": {
+        "content": "## Interiores",
+        "height": 224,
+        "width": 912,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        256
+      ],
+      "id": "836eee9a-13ee-43d6-a19a-322a4f99ad7c",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/responses",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{$json.openaiBody}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        256,
+        560
+      ],
+      "id": "f9a945e0-2bf6-4ac0-84b5-ff206072fdc6",
+      "name": "OpenAI2",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "retryOnFail": false,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "Fb5EZ7r56FOl5M3A",
+          "name": "Http Open AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const fileId = $items(\"Subir PDF a OpenAI\")[0].json.id; // ✅ file-...\nconst prompt = ($node[\"PromptConfig\"].json.promptCubierta || \"\").trim();\n\nif (!fileId?.startsWith(\"file-\")) {\n  throw new Error(`fileId inválido (esperaba file-...): ${fileId}`);\n}\n\n// --- Schema CUBIERTA ---\nconst cubiertaProps = {\n  materialCubierta: { type: \"integer\" },\n  propietarioPapel: { type: \"integer\" },\n  plastificado: { type: \"integer\" },\n  uvi: { type: \"integer\" },\n  impresion: { type: \"string\" },      // ✅ en tu prompt es tipo \"4/0\", \"4/4\"...\n  codDescarga: { type: \"integer\" },   // si luego quieres omitirlo cuando 0, lo haces al final\n  tecnologia: { type: \"integer\" },\n  observaciones: { type: \"string\" },  // si luego quieres omitirlo cuando \"\", lo haces al final\n};\n\nconst schema = {\n  type: \"object\",\n  additionalProperties: false,\n  properties: {\n    cubierta: {\n      type: \"object\",\n      additionalProperties: false,\n      properties: cubiertaProps,\n      // para evitar errores del validador de schema y para asegurar estructura estable:\n      required: Object.keys(cubiertaProps),\n    },\n  },\n  required: [\"cubierta\"],\n};\n\nreturn {\n  openaiBody: {\n    model: \"gpt-5.1\",\n    input: [{\n      role: \"user\",\n      content: [\n        { type: \"input_file\", file_id: fileId },\n        { type: \"input_text\", text: prompt },\n      ],\n    }],\n    text: {\n      format: {\n        type: \"json_schema\",\n        name: \"cubierta_pedido\",\n        strict: false,\n        schema,\n      },\n    },\n  },\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        64,
+        560
+      ],
+      "id": "aca74ec6-fc38-48fe-b33d-295c9cf36bbe",
+      "name": "Build OpenAI Body (schema)2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ---------------------------\n// PARSE + LIMPIEZA (CUBIERTA)\n// ---------------------------\n\n// A veces n8n trae el body como string. Lo hacemos robusto:\nlet resp = $json;\nif (typeof resp === \"string\") resp = JSON.parse(resp);\n\n// Soporta \"Full Response\" ON/OFF:\nconst body = resp.body ?? resp;\n\n// En Responses API el texto suele venir en body.output[0..].content[*].text\nconst text =\n  body.output?.flatMap(o => o.content || [])\n    ?.find(c => c.type === \"output_text\")\n    ?.text;\n\nif (!text) throw new Error(\"No encuentro output_text en la respuesta de OpenAI (cubierta)\");\n\n// Parse JSON\nlet parsed;\ntry {\n  parsed = JSON.parse(text);\n} catch (e) {\n  throw new Error(\n    `El output_text no es JSON válido: ${e.message}. Primeros 200 chars: ${String(text).slice(0, 200)}`\n  );\n}\n\n// Normaliza salida: esperamos { cubierta: {...} }\n// Si devuelve directamente el objeto de cubierta, lo envolvemos\nconst cubiertaRaw =\n  (parsed && typeof parsed === \"object\" && !Array.isArray(parsed) && parsed.cubierta)\n    ? parsed.cubierta\n    : parsed;\n\n// Validación mínima\nif (!cubiertaRaw || typeof cubiertaRaw !== \"object\" || Array.isArray(cubiertaRaw)) {\n  throw new Error(\"La salida parseada no contiene un objeto 'cubierta' válido\");\n}\n\n// ---------- LIMPIEZA ----------\n// Borra 0, \"\", null, [], {} EXCEPTO campos que deben existir siempre\nconst keepAlways = new Set([\n  \"materialCubierta\",\n  \"propietarioPapel\",\n  \"plastificado\",\n  \"uvi\",\n  \"impresion\",\n  \"codDescarga\",\n  \"tecnologia\",\n  // Si quieres forzar que observaciones siempre exista, añade \"observaciones\" aquí.\n]);\n\nfunction isEmpty(v) {\n  if (v === null || v === undefined) return true;\n  if (typeof v === \"string\" && v.trim() === \"\") return true;\n  if (typeof v === \"number\" && v === 0) return true;\n  if (Array.isArray(v) && v.length === 0) return true;\n  if (typeof v === \"object\" && !Array.isArray(v) && Object.keys(v).length === 0) return true;\n  return false;\n}\n\n// Limpieza superficial (cubierta suele ser plano)\nconst cubierta = { ...cubiertaRaw };\nfor (const k of Object.keys(cubierta)) {\n  if (keepAlways.has(k)) continue;\n  if (isEmpty(cubierta[k])) delete cubierta[k];\n}\n\n// Asegura que los campos \"siempre\" existen aunque el modelo los omitiera\nfor (const k of keepAlways) {\n  if (!(k in cubierta)) {\n    // defaults por tipo esperado\n    if (k === \"impresion\") cubierta[k] = \"\";\n    else cubierta[k] = 0;\n  }\n}\n\n// Devuelve solo el bloque de cubierta\nreturn [{\n  json: {\n    cubierta\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        560
+      ],
+      "id": "41e8580d-be61-428e-a3b4-64532104f603",
+      "name": "Parse output_text2"
+    },
+    {
+      "parameters": {
+        "content": "## Cubierta",
+        "height": 224,
+        "width": 912,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        512
+      ],
+      "id": "640264a9-52e1-4ad1-ae53-bfdabec52e43",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/responses",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{$json.openaiBody}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        256,
+        816
+      ],
+      "id": "066eb2a9-8097-4b51-8caa-89a7e37e7f0e",
+      "name": "OpenAI3",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "retryOnFail": false,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "Fb5EZ7r56FOl5M3A",
+          "name": "Http Open AI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const fileId = $items(\"Subir PDF a OpenAI\")[0].json.id; // ✅ file-...\nconst prompt = ($node[\"PromptConfig\"].json.promptExtras || \"\").trim();\n\nif (!fileId?.startsWith(\"file-\")) {\n  throw new Error(`fileId inválido (esperaba file-...): ${fileId}`);\n}\n\n// ---------- Subschemas ----------\n\n// papelPedido / papelProduccion (idénticos salvo nombre de ref)\nconst papelPedidoProps = {\n  refPedido: { type: \"string\" },\n  gramaje: { type: \"integer\" },\n  anchoBobinaCm: { type: \"number\" },\n  upsCalc: { type: \"integer\" },\n  ups: { type: \"integer\" },\n  metros: { type: \"number\" },\n  kg: { type: \"number\" },\n};\n\nconst papelProduccionProps = {\n  refProduccion: { type: \"string\" },\n  gramaje: { type: \"integer\" },\n  anchoBobinaCm: { type: \"number\" },\n  upsCalc: { type: \"integer\" },\n  ups: { type: \"integer\" },\n  metros: { type: \"number\" },\n  kg: { type: \"number\" },\n};\n\nconst guardasProps = {\n  papel_id: { type: \"integer\" },\n  propietarioPapel: { type: \"integer\" },\n  tipoImpresion: { type: \"integer\" },\n  calidad: { type: \"string\" },          // en tu prompt es texto (\"Ahuesado\", etc.)\n  paginas: { type: \"integer\" },\n  plegadoOCortado: { type: \"integer\" },\n  maquina: { type: \"integer\" },\n  observaciones: { type: \"string\" },\n  papelPedido: {\n    type: \"object\",\n    additionalProperties: false,\n    properties: papelPedidoProps,\n    required: Object.keys(papelPedidoProps),\n  },\n  papelProduccion: {\n    type: \"object\",\n    additionalProperties: false,\n    properties: papelProduccionProps,\n    required: Object.keys(papelProduccionProps),\n  },\n};\n\nconst sobrecubiertaProps = {\n  materialSobrecubierta: { type: \"integer\" },\n  propietarioPapel: { type: \"integer\" },\n  plastificado: { type: \"integer\" },\n  uvi: { type: \"integer\" },\n  impresion: { type: \"string\" },    // \"4/0\", \"4/4\", etc.\n  tecnologia: { type: \"integer\" },\n  observaciones: { type: \"string\" },\n};\n\nconst fajaProps = {\n  materialFaja: { type: \"integer\" },\n  propietarioPapel: { type: \"integer\" },\n  plastificado: { type: \"integer\" },\n  uvi: { type: \"integer\" },\n  impresion: { type: \"string\" },    // \"4/0\", \"4/4\", etc.\n  tecnologia: { type: \"integer\" },\n  observaciones: { type: \"string\" },\n};\n\nconst componenteEspecialProps = {\n  material: { type: \"integer\" },\n  propietarioPapel: { type: \"integer\" },\n  nombre: { type: \"string\" },\n  plastificado: { type: \"integer\" },\n  uvi: { type: \"boolean\" },         // en tu modelo inicial era boolean\n  impresion: { type: \"string\" },    // mejor string (\"4/0\"...)\n  tecnologia: { type: \"integer\" },\n  observaciones: { type: \"string\" },\n};\n\nconst peticionEspecialProps = {\n  descripcion: { type: \"string\" },\n};\n\nconst direccionProps = {\n  direccionId: { type: \"string\" },  // a veces viene como número; si prefieres integer lo cambio\n  destinatario: { type: \"string\" },\n  via: { type: \"string\" },\n  numero: { type: \"string\" },\n  piso: { type: \"string\" },\n  puerta: { type: \"string\" },\n  cp: { type: \"string\" },\n  localidad: { type: \"string\" },\n  provincia: { type: \"string\" },\n  pais: { type: \"string\" },\n  contacto: { type: \"string\" },\n  telefonos: { type: \"string\" },\n  pallet: { type: \"integer\" },\n  encajado: { type: \"integer\" },\n  ejemplaresPaquete: { type: \"integer\" },\n  ejemplares: { type: \"integer\" },\n  envioResto: { type: \"integer\" },\n  modelos: { type: \"integer\" },\n  observaciones: { type: \"string\" },\n};\n\n// ---------- Main schema ----------\nconst schema = {\n  type: \"object\",\n  additionalProperties: false,\n  properties: {\n    guardas: {\n      type: \"object\",\n      additionalProperties: false,\n      properties: guardasProps,\n      required: Object.keys(guardasProps),\n    },\n    sobrecubierta: {\n      type: \"object\",\n      additionalProperties: false,\n      properties: sobrecubiertaProps,\n      required: Object.keys(sobrecubiertaProps),\n    },\n    faja: {\n      type: \"object\",\n      additionalProperties: false,\n      properties: fajaProps,\n      required: Object.keys(fajaProps),\n    },\n    componentesEspeciales: {\n      type: \"array\",\n      items: {\n        type: \"object\",\n        additionalProperties: false,\n        properties: componenteEspecialProps,\n        required: Object.keys(componenteEspecialProps),\n      },\n    },\n    peticionesEspeciales: {\n      type: \"array\",\n      items: {\n        type: \"object\",\n        additionalProperties: false,\n        properties: peticionEspecialProps,\n        required: Object.keys(peticionEspecialProps),\n      },\n    },\n    direcciones: {\n      type: \"array\",\n      items: {\n        type: \"object\",\n        additionalProperties: false,\n        properties: direccionProps,\n        required: Object.keys(direccionProps),\n      },\n    },\n  },\n  required: [\"guardas\", \"sobrecubierta\", \"faja\", \"componentesEspeciales\", \"peticionesEspeciales\", \"direcciones\"],\n};\n\nreturn {\n  openaiBody: {\n    model: \"gpt-5.1\",\n    input: [{\n      role: \"user\",\n      content: [\n        { type: \"input_file\", file_id: fileId },\n        { type: \"input_text\", text: prompt },\n      ],\n    }],\n    text: {\n      format: {\n        type: \"json_schema\",\n        name: \"extras_pedido\",\n        strict: false,\n        schema,\n      },\n    },\n  },\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        64,
+        816
+      ],
+      "id": "5bc64fc2-5d21-40ae-8e63-1e729e8077a4",
+      "name": "Build OpenAI Body (schema)3"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ------------------------\n// PARSE + LIMPIEZA (EXTRAS)\n// ------------------------\n\n// A veces n8n trae el body como string. Lo hacemos robusto:\nlet resp = $json;\nif (typeof resp === \"string\") resp = JSON.parse(resp);\n\n// Soporta \"Full Response\" ON/OFF:\nconst body = resp.body ?? resp;\n\n// En Responses API el texto suele venir en body.output[0..].content[*].text\nconst text =\n  body.output?.flatMap(o => o.content || [])\n    ?.find(c => c.type === \"output_text\")\n    ?.text;\n\nif (!text) {\n  throw new Error(\"No encuentro output_text en la respuesta de OpenAI (extras)\");\n}\n\n// Parse JSON\nlet parsed;\ntry {\n  parsed = JSON.parse(text);\n} catch (e) {\n  throw new Error(\n    `El output_text no es JSON válido: ${e.message}. Primeros 200 chars: ${String(text).slice(0, 200)}`\n  );\n}\n\nif (!parsed || typeof parsed !== \"object\" || Array.isArray(parsed)) {\n  throw new Error(\"La salida parseada de extras no es un objeto JSON válido\");\n}\n\n// -----------------\n// Normalización base\n// -----------------\nconst norm = {\n  guardas: parsed.guardas ?? null,\n  sobrecubierta: parsed.sobrecubierta ?? null,\n  faja: parsed.faja ?? null,\n  componentesEspeciales: Array.isArray(parsed.componentesEspeciales) ? parsed.componentesEspeciales : [],\n  peticionesEspeciales: Array.isArray(parsed.peticionesEspeciales) ? parsed.peticionesEspeciales : [],\n  direcciones: Array.isArray(parsed.direcciones) ? parsed.direcciones : [],\n};\n\n// -----------\n// Limpieza\n// -----------\n// Borra 0, \"\", null, [], {} EXCEPTO algunos campos críticos (por path)\nconst keepAlwaysPaths = new Set([\n  // Arrays raíz: queremos que existan aunque estén vacíos\n  \"componentesEspeciales\",\n  \"peticionesEspeciales\",\n  \"direcciones\",\n\n  // Direcciones: mantener siempre si existen (si vienen vacíos, se limpiarán igual)\n  \"direcciones[].direccionId\",\n  \"direcciones[].ejemplares\",\n]);\n\nfunction isEmpty(v) {\n  if (v === null || v === undefined) return true;\n  if (typeof v === \"string\" && v.trim() === \"\") return true;\n  if (typeof v === \"number\" && v === 0) return true;\n  if (Array.isArray(v) && v.length === 0) return true;\n  if (typeof v === \"object\" && !Array.isArray(v) && Object.keys(v).length === 0) return true;\n  return false;\n}\n\nfunction cleanDeep(value, path) {\n  if (Array.isArray(value)) {\n    const arr = [];\n    for (const el of value) {\n      const cleaned = cleanDeep(el, path + \"[]\");\n      if (!isEmpty(cleaned)) arr.push(cleaned);\n    }\n    return arr;\n  }\n\n  if (value && typeof value === \"object\") {\n    const obj = { ...value };\n    for (const k of Object.keys(obj)) {\n      const childPath = path ? `${path}.${k}` : k;\n      obj[k] = cleanDeep(obj[k], childPath);\n\n      if (keepAlwaysPaths.has(childPath)) continue;\n      if (isEmpty(obj[k])) delete obj[k];\n    }\n    return obj;\n  }\n\n  return value;\n}\n\n// Limpia cada bloque\nconst cleaned = cleanDeep(norm, \"\");\n\n// Post-reglas:\n// - Si guardas/sobrecubierta/faja quedan vacíos => null\nfunction nullIfEmptyObject(v) {\n  if (!v || typeof v !== \"object\" || Array.isArray(v)) return v;\n  return Object.keys(v).length === 0 ? null : v;\n}\n\nconst out = {\n  guardas: nullIfEmptyObject(cleaned.guardas),\n  sobrecubierta: nullIfEmptyObject(cleaned.sobrecubierta),\n  faja: nullIfEmptyObject(cleaned.faja),\n  componentesEspeciales: Array.isArray(cleaned.componentesEspeciales) ? cleaned.componentesEspeciales : [],\n  peticionesEspeciales: Array.isArray(cleaned.peticionesEspeciales) ? cleaned.peticionesEspeciales : [],\n  direcciones: Array.isArray(cleaned.direcciones) ? cleaned.direcciones : [],\n};\n\n// Asegura que las arrays raíz existen siempre\nif (!Array.isArray(out.componentesEspeciales)) out.componentesEspeciales = [];\nif (!Array.isArray(out.peticionesEspeciales)) out.peticionesEspeciales = [];\nif (!Array.isArray(out.direcciones)) out.direcciones = [];\n\nreturn [{ json: out }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        816
+      ],
+      "id": "825a0138-7738-4189-bcfd-b16232187a0f",
+      "name": "Parse output_text3"
+    },
+    {
+      "parameters": {
+        "content": "## Extras",
+        "height": 224,
+        "width": 672,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        768
+      ],
+      "id": "780cd6cf-aeb6-4963-9769-c38fa2cd60b9",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "jsCode": "function safeItems(name) {\n  try {\n    return $items(name);\n  } catch (e) {\n    return null;\n  }\n}\n\nfunction firstJsonFrom(names) {\n  for (const n of names) {\n    const it = safeItems(n);\n    if (it && it[0] && it[0].json) return it[0].json;\n  }\n  return null;\n}\n\n// 1) Base64: prueba nombres posibles\nconst base64Json = firstJsonFrom([\n  \"PDF - Base64\",\n  \"PDF → Base64\",\n  \"PDF a Base64\",\n]);\n\nconst archivoBase64 =\n  base64Json?.archivoBase64 ||\n  base64Json?.pdfBase64 ||\n  null;\n\nif (!archivoBase64) {\n  throw new Error(\n    \"No encuentro archivoBase64. Revisa el nodo de Base64 y el nombre del campo.\"\n  );\n}\n\n// 2) Cabecera / Interiores / Cubierta / Extras\nconst cabecera = firstJsonFrom([\n  \"Parse output_text\",\n  \"Parse output_text (cabecera)\",\n]) || {};\n\n// Interiores: prioriza el nodo que ya recalcula UPS\nconst interioresObj = firstJsonFrom([\n  \"Calcular UPS (interiores)\",\n  \"Parse output_text1\",\n  \"Parse output_text (interiores)\",\n]) || {};\n\n// Cubierta: prioriza el nodo que recalcula tecnologia\nconst cubiertaObj = firstJsonFrom([\n  \"Calcular tecnologia (cubierta)\",\n  \"Parse output_text2\",\n  \"Parse output_text (cubierta)\",\n]) || {};\n\nconst extras = firstJsonFrom([\n  \"Parse output_text3\",\n  \"Parse output_text (extras)\",\n]) || {};\n\nconst interiores = Array.isArray(interioresObj.interiores) ? interioresObj.interiores : [];\nconst cubierta = cubiertaObj.cubierta ?? null;\n\n// 3) Payload final (NO tocamos más)\nconst finalPayload = {\n  archivoBase64,\n  ...cabecera,\n  interiores,\n  cubierta,\n  ...extras,\n};\n\nreturn { json: finalPayload };\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1968,
+        1168
+      ],
+      "id": "4bba8d12-9dc0-44ce-bdd9-17a8d46494b0",
+      "name": "Build JSON completo"
+    },
+    {
+      "parameters": {
+        "jsCode": "const buf = await this.helpers.getBinaryDataBuffer(0, 'data');\nconst b64 = buf.toString('base64');\n\n// Conserva lo que venga en json y añade archivoBase64\nreturn {\n  ...$json,\n  archivoBase64: b64,\n  nombreArchivo: $binary?.data?.fileName || $json.name || 'pedido.pdf',\n  mime: $binary?.data?.mimeType || 'application/pdf',\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1056,
+        352
+      ],
+      "id": "bb0a7da6-5f71-4d95-bb26-37f3c4f63a80",
+      "name": "PDF - Base64"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $json;\n\n// Nombre de archivo (ajústalo a tu gusto)\nconst fileName =\n  `build_json_${data.numeroOtCliente ?? \"sin_ot\"}_${new Date().toISOString().slice(0,19).replace(/[:T]/g,\"-\")}.json`;\n\nconst jsonText = JSON.stringify(data, null, 2);\n\n// Crea binario \"data\" con mime JSON\nreturn [{\n  json: {\n    ...data,\n    _fileName: fileName,\n  },\n  binary: {\n    data: await this.helpers.prepareBinaryData(\n      Buffer.from(jsonText, 'utf8'),\n      fileName,\n      'application/json'\n    )\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2016,
+        784
+      ],
+      "id": "686e4343-edaa-40fb-ad8f-8e1499234415",
+      "name": "jsonBinario"
+    },
+    {
+      "parameters": {
+        "content": "## Sube el PDF a OpenAI, genera el PDF en base64 y los combina\n",
+        "height": 512,
+        "width": 704
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1264,
+        240
+      ],
+      "id": "b1d39e6d-ed46-47a6-a146-a29c1b8f452a",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "jsCode": "// CALCULAR UPS (INTERIORES) - solo modifica papelPedido.ups\n\nfunction toNumber(v) {\n  if (v === null || v === undefined) return NaN;\n  if (typeof v === 'number') return v;\n  if (typeof v === 'string') return Number(v.replace(',', '.').trim());\n  return Number(v);\n}\n\n// 1) Intento sacar anchoPaginaCm y unionPliegos del propio item,\n// y si no están, los saco de la Cabecera (Parse output_text).\nconst cabecera = $items(\"Parse output_text\", 0, 0)[0]?.json ?? {};\n\nconst anchoPaginaCm = toNumber($json.anchoPaginaCm ?? cabecera.anchoPaginaCm);\nconst unionPliegos = toNumber($json.unionPliegos ?? cabecera.unionPliegos);\n\nif (!Number.isFinite(anchoPaginaCm)) {\n  throw new Error(\"Falta o no es numérico: anchoPaginaCm (ni en Interiores ni en Cabecera)\");\n}\nif (!Number.isFinite(unionPliegos)) {\n  throw new Error(\"Falta o no es numérico: unionPliegos (ni en Interiores ni en Cabecera)\");\n}\n\nif (!Array.isArray($json.interiores)) {\n  throw new Error(\"No encuentro $json.interiores como array en el nodo Interiores\");\n}\n\nfor (const interior of $json.interiores) {\n  if (!interior || typeof interior !== 'object') continue;\n\n  const papelPedido = interior.papelPedido ?? {};\n  const anchoBobinaCm = toNumber(papelPedido.anchoBobinaCm);\n\n  if (!Number.isFinite(anchoBobinaCm)) {\n    throw new Error('Falta o no es numérico: interiores[].papelPedido.anchoBobinaCm');\n  }\n\n  // Fórmula base: ups = parte_entera( anchoBobinaCm / (anchoPaginaCm + 1) )\n  const base = Math.floor(anchoBobinaCm / (anchoPaginaCm + 1));\n\n  let ups = base;\n\n  // Reglas según unionPliegos\n  if (unionPliegos === 2) {\n    // FRESADO: se queda tal cual\n    ups = base;\n  } else if (unionPliegos === 1) {\n    // COSIDO: solo 0, 2 o 4\n    if (base >= 4) ups = 4;\n    else if (base >= 2) ups = 2;\n    else ups = 0;\n  } else {\n    throw new Error(`unionPliegos no soportado: ${unionPliegos} (esperaba 1 o 2)`);\n  }\n\n  // Solo tocamos ups\n  interior.papelPedido = { ...papelPedido, ups };\n}\n\nreturn [{ json: $json }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        304
+      ],
+      "id": "0c92a23a-6859-46a9-8b19-9a24ed880005",
+      "name": "Calcular UPS (interiores)"
+    },
+    {
+      "parameters": {
+        "jsCode": "function toNumber(v) {\n  if (v === null || v === undefined) return NaN;\n  if (typeof v === 'number') return v;\n  if (typeof v === 'string') return Number(v.replace(',', '.').trim());\n  return Number(v);\n}\n\nfunction toBool(v) {\n  if (typeof v === 'boolean') return v;\n  if (typeof v === 'number') return v === 1;\n  if (typeof v === 'string') {\n    const s = v.trim().toLowerCase();\n    if (s === 'true' || s === '1' || s === 'sí' || s === 'si') return true;\n    if (s === 'false' || s === '0' || s === 'no') return false;\n  }\n  return Boolean(v);\n}\n\n// Cabecera (ajusta el nombre si tu nodo se llama distinto)\nconst cabecera = $items(\"Parse output_text\", 0, 0)[0]?.json ?? {};\n\nif (!$json.cubierta || typeof $json.cubierta !== 'object') {\n  throw new Error(\"No encuentro $json.cubierta en la salida de Parse output_text2\");\n}\n\nconst encuadernacion = toNumber(cabecera.encuadernacion);\nconst tirada = toNumber(cabecera.tirada);\nconst solapa = toBool(cabecera.solapa);\n\nconst uvi = toNumber($json.cubierta.uvi);\nconst tecnologiaIn = toNumber($json.cubierta.tecnologia);\n\nif (!Number.isFinite(encuadernacion)) throw new Error(\"Cabecera: encuadernacion falta o no es numérico\");\nif (!Number.isFinite(tirada)) throw new Error(\"Cabecera: tirada falta o no es numérico\");\nif (!Number.isFinite(uvi)) throw new Error(\"Cubierta: uvi falta o no es numérico\");\nif (!Number.isFinite(tecnologiaIn)) throw new Error(\"Cubierta: tecnologia falta o no es numérico\");\n\n// 1) Regla especial: si IA detecta offset => 5, lo cambiamos a 2\nlet tecnologia = tecnologiaIn;\n\nif (tecnologiaIn === 5) {\n  tecnologia = 2;\n} else {\n  // 2) Resto de la lógica\n  const c1 = (encuadernacion === 1 && uvi === 1 && tirada > 799);\n  const c2 = (encuadernacion === 1 && uvi === 0 && tirada > 999);\n  const c3 = (encuadernacion === 3 && uvi === 1 && solapa === true && tirada > 799);\n  const c4 = (encuadernacion === 3 && uvi === 0 && solapa === true && tirada > 1499);\n  const c5 = (uvi === 1 && tirada > 799);\n  const c6 = (uvi === 0 && tirada > 1999);\n  const c7 = (tirada > 1999);\n\n  const any = (c1 || c2 || c3 || c4 || c5 || c6 || c7);\n\n  tecnologia = any ? 3 : 1;\n}\n\n// Solo tocamos cubierta.tecnologia\n$json.cubierta = { ...$json.cubierta, tecnologia };\n\nreturn [{ json: $json }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        704,
+        560
+      ],
+      "id": "14d8a423-0a9f-4ce6-9059-d31b96179bff",
+      "name": "Calcular tecnologia (cubierta)"
+    }
+  ],
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "solo PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "PDF - Base64",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Subir PDF a OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Parse output_text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build OpenAI Body (schema)": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "solo PDF": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Subir PDF a OpenAI": {
+      "main": [
+        [
+          {
+            "node": "openaiFileId",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PromptConfig": {
+      "main": [
+        [
+          {
+            "node": "Build OpenAI Body (schema)1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Build OpenAI Body (schema)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Build OpenAI Body (schema)2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Build OpenAI Body (schema)3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "PromptConfig",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "openaiFileId": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Parse output_text1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build OpenAI Body (schema)1": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse output_text1": {
+      "main": [
+        [
+          {
+            "node": "Calcular UPS (interiores)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI2": {
+      "main": [
+        [
+          {
+            "node": "Parse output_text2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build OpenAI Body (schema)2": {
+      "main": [
+        [
+          {
+            "node": "OpenAI2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse output_text2": {
+      "main": [
+        [
+          {
+            "node": "Calcular tecnologia (cubierta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI3": {
+      "main": [
+        [
+          {
+            "node": "Parse output_text3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build OpenAI Body (schema)3": {
+      "main": [
+        [
+          {
+            "node": "OpenAI3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse output_text3": {
+      "main": [
+        [
+          {
+            "node": "Build JSON completo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PDF - Base64": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "6380ea84-a983-47a1-a852-5087d830eb89",
+  "activeVersionId": null,
+  "versionCounter": 2,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-12-25T09:26:48.910Z",
+      "createdAt": "2025-12-25T09:26:48.910Z",
+      "role": "workflow:owner",
+      "workflowId": "mjl6YkaUAAneckil",
+      "projectId": "5DRxsE1egf1baMP6",
+      "project": {
+        "updatedAt": "2025-12-16T07:05:26.416Z",
+        "createdAt": "2025-12-16T07:00:37.382Z",
+        "id": "5DRxsE1egf1baMP6",
+        "name": "P GA <procesos@gomezaparicio.es>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "projectRelations": [
+          {
+            "updatedAt": "2025-12-16T07:00:37.382Z",
+            "createdAt": "2025-12-16T07:00:37.382Z",
+            "userId": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
+            "projectId": "5DRxsE1egf1baMP6",
+            "user": {
+              "updatedAt": "2026-01-03T06:48:17.640Z",
+              "createdAt": "2025-12-16T07:00:36.626Z",
+              "id": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
+              "email": "procesos@gomezaparicio.es",
+              "firstName": "P",
+              "lastName": "GA",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "gR8RJ0nGarvRBlGa",
+                "userActivatedAt": 1766491998544
+              },
+              "disabled": false,
+              "mfaEnabled": true,
+              "lastActiveAt": "2026-01-03",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}
