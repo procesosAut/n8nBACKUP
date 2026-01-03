@@ -1,0 +1,213 @@
+{
+  "updatedAt": "2025-12-30T08:09:51.682Z",
+  "createdAt": "2025-12-30T07:30:55.131Z",
+  "id": "szzg3vsw5VYFmc6Z",
+  "name": "Formulario",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "GRUPO GÓMEZ APARICIO",
+        "formDescription": "Presupuesto",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Cliente",
+              "placeholder": "Indica el cliente",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Contacto",
+              "placeholder": "Indica el contacto",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Título",
+              "placeholder": "Indica el título del libro"
+            },
+            {
+              "fieldLabel": "ISBN",
+              "fieldType": "number",
+              "placeholder": "Indica el ISBN si lo tiene"
+            },
+            {
+              "fieldLabel": "Plastificado",
+              "fieldType": "radio",
+              "defaultValue": "Indica el plastificado de la cubierta",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Brillo"
+                  },
+                  {
+                    "option": "Mate"
+                  },
+                  {
+                    "option": "Mate sedoso"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Papel Interior",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Estucado semimate"
+                  },
+                  {
+                    "option": "Offset blanco"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Fecha de entrega",
+              "fieldType": "date"
+            },
+            {
+              "fieldLabel": "Enviar archivo",
+              "fieldType": "file"
+            },
+            {
+              "fieldLabel": "Comentarios",
+              "fieldType": "textarea",
+              "placeholder": "Escribe aquí tus comentarios"
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "placeholder": "Indica el email del receptor del pedido"
+            },
+            {
+              "fieldType": "html"
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false,
+          "buttonLabel": "Enviar",
+          "ignoreBots": true
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "872776d7-f8f1-4628-ae31-f1ea1ab9fa04",
+      "name": "On form submission",
+      "webhookId": "76a6266b-e91e-474d-89c3-456454eb44da"
+    }
+  ],
+  "connections": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "e5488c40-ee21-443e-a053-bb5507a6cc7e",
+  "activeVersionId": "5fc6a09b-e856-4bbc-a9da-d3627affe018",
+  "versionCounter": 13,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2025-12-30T07:30:55.131Z",
+      "createdAt": "2025-12-30T07:30:55.131Z",
+      "role": "workflow:owner",
+      "workflowId": "szzg3vsw5VYFmc6Z",
+      "projectId": "5DRxsE1egf1baMP6",
+      "project": {
+        "updatedAt": "2025-12-16T07:05:26.416Z",
+        "createdAt": "2025-12-16T07:00:37.382Z",
+        "id": "5DRxsE1egf1baMP6",
+        "name": "P GA <procesos@gomezaparicio.es>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "projectRelations": [
+          {
+            "updatedAt": "2025-12-16T07:00:37.382Z",
+            "createdAt": "2025-12-16T07:00:37.382Z",
+            "userId": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
+            "projectId": "5DRxsE1egf1baMP6",
+            "user": {
+              "updatedAt": "2026-01-03T06:48:17.640Z",
+              "createdAt": "2025-12-16T07:00:36.626Z",
+              "id": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
+              "email": "procesos@gomezaparicio.es",
+              "firstName": "P",
+              "lastName": "GA",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "gR8RJ0nGarvRBlGa",
+                "userActivatedAt": 1766491998544
+              },
+              "disabled": false,
+              "mfaEnabled": true,
+              "lastActiveAt": "2026-01-03",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2025-12-30T07:32:57.045Z",
+    "createdAt": "2025-12-30T07:32:51.089Z",
+    "versionId": "5fc6a09b-e856-4bbc-a9da-d3627affe018",
+    "workflowId": "szzg3vsw5VYFmc6Z",
+    "nodes": [
+      {
+        "parameters": {
+          "formTitle": "Presupuesto",
+          "formDescription": "Presupuestos",
+          "formFields": {
+            "values": [
+              {
+                "fieldLabel": "Cliente",
+                "placeholder": "Indica el cliente",
+                "requiredField": true
+              }
+            ]
+          },
+          "options": {
+            "appendAttribution": true
+          }
+        },
+        "type": "n8n-nodes-base.formTrigger",
+        "typeVersion": 2.3,
+        "position": [
+          0,
+          0
+        ],
+        "id": "872776d7-f8f1-4628-ae31-f1ea1ab9fa04",
+        "name": "On form submission",
+        "webhookId": "76a6266b-e91e-474d-89c3-456454eb44da"
+      }
+    ],
+    "connections": {},
+    "authors": "P GA",
+    "name": "v2",
+    "description": "",
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2025-12-30T07:32:57.043Z",
+        "id": 13,
+        "workflowId": "szzg3vsw5VYFmc6Z",
+        "versionId": "5fc6a09b-e856-4bbc-a9da-d3627affe018",
+        "event": "activated",
+        "userId": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7"
+      }
+    ]
+  }
+}
