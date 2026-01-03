@@ -1,0 +1,110 @@
+{
+  "updatedAt": "2025-12-25T10:25:43.860Z",
+  "createdAt": "2025-12-24T16:33:48.822Z",
+  "id": "nZwMcqCjuyvkxU9p",
+  "name": "test base64",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "recibir-pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "915585cf-2eeb-4f09-b4b5-647d309fd896",
+      "name": "Webhook",
+      "webhookId": "2c554e47-8191-4184-8787-86f3b5b62c82"
+    },
+    {
+      "parameters": {
+        "jsCode": "// En n8n, el Webhook a veces deja el body dentro de $json.body\nconst payload = $json.body ?? $json;\n\n// Soportamos varios nombres por si cambias en Automate\nconst raw =\n  payload.archivoBase64 ??\n  payload.base64 ??\n  payload.contentBytes;\n\nif (!raw) {\n  throw new Error('Falta archivoBase64/base64/contentBytes en el body del webhook');\n}\n\nconst fileName = payload.fileName || 'pedido.pdf';\nconst mimeType = payload.mimeType || 'application/pdf';\n\n// Detecta prefijo tipo RANDOM-xxxx.pdf\nconst m = String(fileName).match(/^([A-Za-z0-9]+)-/);\nconst prefijo = m ? m[1].toUpperCase() : '';\n\nlet base64;\n\n// Caso A: Automate envía base64 real (lo correcto)\nconst s = String(raw);\nif (s.startsWith('%PDF')) {\n  // Caso B (tu captura): Automate está enviando el PDF como texto/binario.\n  // Lo re-codificamos a base64 (latin1 suele ser lo más seguro para bytes 0-255)\n  base64 = Buffer.from(s, 'latin1').toString('base64');\n} else {\n  // Limpia prefijo data: si viniera así\n  base64 = s.replace(/^data:application\\/pdf;base64,/, '');\n}\n\nreturn [\n  {\n    json: {\n      ...payload,\n      fileName,\n      mimeType,\n      prefijo,\n    },\n    binary: {\n      data: {\n        data: base64, // n8n espera base64 aquí\n        fileName,\n        mimeType,\n      },\n    },\n  },\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "e4a60efd-0d8b-48a8-8ae7-bd2d3f77993c",
+      "name": "Base64 a Binary PDF"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Base64 a Binary PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "07c68587-2095-44be-a65e-5f3572f159bd",
+  "activeVersionId": null,
+  "versionCounter": 4,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-12-24T16:33:48.822Z",
+      "createdAt": "2025-12-24T16:33:48.822Z",
+      "role": "workflow:owner",
+      "workflowId": "nZwMcqCjuyvkxU9p",
+      "projectId": "5DRxsE1egf1baMP6",
+      "project": {
+        "updatedAt": "2025-12-16T07:05:26.416Z",
+        "createdAt": "2025-12-16T07:00:37.382Z",
+        "id": "5DRxsE1egf1baMP6",
+        "name": "P GA <procesos@gomezaparicio.es>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "projectRelations": [
+          {
+            "updatedAt": "2025-12-16T07:00:37.382Z",
+            "createdAt": "2025-12-16T07:00:37.382Z",
+            "userId": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
+            "projectId": "5DRxsE1egf1baMP6",
+            "user": {
+              "updatedAt": "2026-01-03T06:48:17.640Z",
+              "createdAt": "2025-12-16T07:00:36.626Z",
+              "id": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
+              "email": "procesos@gomezaparicio.es",
+              "firstName": "P",
+              "lastName": "GA",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "gR8RJ0nGarvRBlGa",
+                "userActivatedAt": 1766491998544
+              },
+              "disabled": false,
+              "mfaEnabled": true,
+              "lastActiveAt": "2026-01-03",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}
