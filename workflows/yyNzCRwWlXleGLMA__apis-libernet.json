@@ -1,0 +1,238 @@
+{
+  "updatedAt": "2025-12-21T11:18:20.569Z",
+  "createdAt": "2025-12-18T15:05:00.006Z",
+  "id": "yyNzCRwWlXleGLMA",
+  "name": "APIs Libernet",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -448,
+        -32
+      ],
+      "id": "2086ba1c-bdf6-440b-80a0-6391a7a86b4c",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://liberdigital.gomezaparicio.es/sw/automatizacion/pedidos/digital",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        176,
+        -192
+      ],
+      "id": "a259f627-4c0d-450d-8642-3a4276d4d06f",
+      "name": "API Pedidos",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "EGTFeBpcDKH8NdqZ",
+          "name": "Apis Libernet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://liberdigital.gomezaparicio.es/sw/automatizacion/bobinas/stock",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -272,
+        -416
+      ],
+      "id": "cb213b92-dec0-4974-83bd-74df6d04d0d8",
+      "name": "API Bobinas Stock",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "EGTFeBpcDKH8NdqZ",
+          "name": "Apis Libernet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://liberdigital.gomezaparicio.es/sw/automatizacion/bobinas/pendientes",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -80,
+        224
+      ],
+      "id": "8b716789-93aa-41d9-9834-95792527781d",
+      "name": "API Bobinas Pendientes Recepcion",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "EGTFeBpcDKH8NdqZ",
+          "name": "Apis Libernet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://liberdigital.gomezaparicio.es/sw/automatizacion/clientes",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -48,
+        -320
+      ],
+      "id": "65e8e345-9f9d-4df8-a00b-c806e2ccd5fc",
+      "name": "API Clientes",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "EGTFeBpcDKH8NdqZ",
+          "name": "Apis Libernet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://liberdigital.gomezaparicio.es/sw/automatizacion/pedidos/digital/fases",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        240,
+        0
+      ],
+      "id": "03713685-4c99-4d4d-85cb-277ab84b64cf",
+      "name": "API Fases",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "EGTFeBpcDKH8NdqZ",
+          "name": "Apis Libernet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://liberdigital.gomezaparicio.es/sw/automatizacion/pedidos/digital/valores",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        272,
+        176
+      ],
+      "id": "c76f0820-5889-4a77-8d5b-13c8a6487a78",
+      "name": "API Valores Ordenes",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "EGTFeBpcDKH8NdqZ",
+          "name": "Apis Libernet"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "API Pedidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "8b4c8e03-fa9f-431d-8232-aea14f8121cb",
+  "activeVersionId": null,
+  "versionCounter": 9,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-12-18T15:05:00.006Z",
+      "createdAt": "2025-12-18T15:05:00.006Z",
+      "role": "workflow:owner",
+      "workflowId": "yyNzCRwWlXleGLMA",
+      "projectId": "5DRxsE1egf1baMP6",
+      "project": {
+        "updatedAt": "2025-12-16T07:05:26.416Z",
+        "createdAt": "2025-12-16T07:00:37.382Z",
+        "id": "5DRxsE1egf1baMP6",
+        "name": "P GA <procesos@gomezaparicio.es>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "projectRelations": [
+          {
+            "updatedAt": "2025-12-16T07:00:37.382Z",
+            "createdAt": "2025-12-16T07:00:37.382Z",
+            "userId": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
+            "projectId": "5DRxsE1egf1baMP6",
+            "user": {
+              "updatedAt": "2026-01-03T06:48:17.640Z",
+              "createdAt": "2025-12-16T07:00:36.626Z",
+              "id": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
+              "email": "procesos@gomezaparicio.es",
+              "firstName": "P",
+              "lastName": "GA",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "gR8RJ0nGarvRBlGa",
+                "userActivatedAt": 1766491998544
+              },
+              "disabled": false,
+              "mfaEnabled": true,
+              "lastActiveAt": "2026-01-03",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}
