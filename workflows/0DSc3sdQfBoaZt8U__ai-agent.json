@@ -1,0 +1,386 @@
+{
+  "updatedAt": "2025-12-20T09:59:12.230Z",
+  "createdAt": "2025-12-19T08:31:51.572Z",
+  "id": "0DSc3sdQfBoaZt8U",
+  "name": "AI Agent",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -624,
+        -48
+      ],
+      "id": "16ccbf80-d5b1-4f02-9f62-1651fd67e2c5",
+      "name": "When chat message received",
+      "webhookId": "f8a7c86b-10c9-4e8f-9eed-8c6a073eecc2"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        864,
+        240
+      ],
+      "id": "35c484f4-33c6-4927-a5fe-9fc835c2edef",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "3hfa30HGe5CECXUn",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1024,
+        240
+      ],
+      "id": "537b19aa-e985-478b-8364-6265119ccda8",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = ($json.chatInput || '').toString().trim();\n\nconst incoming = $input.item.json;\n\nconst question = String(\n  incoming.chatInput ?? incoming.question ?? incoming.text ?? incoming.message ?? \"\"\n).trim();\n\nreturn [{\n  json: {\n    ...incoming,\n    question,\n  }\n}];\n\n\n// Pedido tipo 10/2024\nconst pedidoMatch = text.match(/\\b(\\d{1,6}\\/\\d{4})\\b/);\n\n// OT numérica tipo 6174737 (5-10 dígitos), con o sin “OT”\nconst otMatch = text.match(/\\b(?:OT\\s*)?(\\d{5,10})\\b/i);\n\nif (pedidoMatch) {\n  return [{ json: { question: text, field: 'numeroPedido', value: pedidoMatch[1] } }];\n}\n\nif (otMatch) {\n  return [{ json: { question: text, field: 'numeroOF', value: otMatch[1] } }];\n}\n\nreturn [{\n  json: {\n    error: 'No veo ni número de pedido (10/2024) ni OT numérica (6174737) en tu mensaje.',\n    question: text\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        -48
+      ],
+      "id": "bdc6e1b4-d878-4864-98ef-309c19fa477e",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "url": "https://liberdigital.gomezaparicio.es/sw/automatizacion/pedidos/digital",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "numeroOF",
+              "value": "={{$json.numeroPedido}}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        32,
+        -32
+      ],
+      "id": "e3c2c98e-43f4-464a-af86-075f1753e79d",
+      "name": "API Pedidos",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "EGTFeBpcDKH8NdqZ",
+          "name": "Apis Libernet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Code in JavaScript1 (selecciona OT y guarda \"última OT\" por sesión)\n\n// 1) Texto del usuario (según tu flujo puede venir como chatInput o question)\nconst text = String(\n  $json.chatInput ??\n  $json.question ??\n  $json.input ??\n  $json.text ??\n  $json.message ??\n  \"\"\n).trim();\n\n\n// 2) Identificador de sesión/chat (elige el que tengas disponible en tu trigger)\n// Si no sabes cuál es, mira el JSON del \"When chat message received\" y usa esa key.\nconst sessionKey =\n  String(\n    $json.sessionId ??\n    $json.chatId ??\n    $json.conversationId ??\n    $json.session ??\n    \"default\"\n  );\n\n// 3) Memoria persistente del workflow (global)\nconst store = $getWorkflowStaticData(\"global\");\nstore.lastOTBySession ??= {};\n\n// Helpers\nfunction extractNumeroPedido(t) {\n  // Formato tipo 5/2024\n  const m = t.match(/\\b(\\d{1,5}\\/\\d{4})\\b/);\n  return m ? m[1] : null;\n}\nfunction extractNumeroOF(t) {\n  // OT numérica tipo 6174737 (ajusta dígitos si hace falta)\n  const m = t.match(/\\b(\\d{6,8})\\b/);\n  return m ? m[1] : null;\n}\n\n// Comando opcional para “olvidar” la OT actual\nif (/^(reset|olvida|cambia ot|cambiar ot)\\b/i.test(text)) {\n  delete store.lastOTBySession[sessionKey];\n  return [{ json: { ok: true, question: text, order: null, info: \"OT olvidada\" } }];\n}\n\n// 4) Intento sacar OT del mensaje\nlet numeroPedido = extractNumeroPedido(text);\nlet numeroOF = extractNumeroOF(text);\n\n// 5) Si el usuario no puso OT, recupero la última usada en esta sesión\nif (!numeroPedido && !numeroOF) {\n  const prev = store.lastOTBySession[sessionKey];\n  if (prev?.numeroPedido) numeroPedido = prev.numeroPedido;\n  if (prev?.numeroOF) numeroOF = prev.numeroOF;\n}\n\n// 6) Si aún no hay OT y no hay memoria, error controlado\nif (!numeroPedido && !numeroOF) {\n  return [{\n    json: {\n      ok: false,\n      error: \"No veo número de OT/pedido en tu mensaje y no tengo una OT anterior guardada.\",\n      question: text,\n    }\n  }];\n}\n\n// 7) La API devuelve muchos items (1 por pedido)\nconst rows = $input.all().map(i => i.json);\n\n// 8) Buscar la OT\nlet found = null;\n\nif (numeroPedido) {\n  found = rows.find(r => String(r.numeroPedido).trim() === String(numeroPedido).trim());\n}\nif (!found && numeroOF) {\n  found = rows.find(r => String(r.numeroOF).trim() === String(numeroOF).trim());\n}\n\nif (!found) {\n  return [{\n    json: {\n      ok: false,\n      error: `No encontré la OT/pedido ${numeroPedido ?? numeroOF}.`,\n      question: text,\n    }\n  }];\n}\n\n// 9) Guardar memoria para próximos mensajes\nstore.lastOTBySession[sessionKey] = {\n  numeroPedido: found.numeroPedido ?? numeroPedido ?? null,\n  numeroOF: found.numeroOF ?? numeroOF ?? null,\n  updatedAt: new Date().toISOString(),\n};\n\n// 10) (Opcional) quitar PII\ndelete found.contactoEmail;\ndelete found.contactoNombre;\n\n// 11) Salida final: SIEMPRE dejo order listo para el AI Agent\nreturn [{\n  json: {\n    ok: true,\n    question: text,\n    numeroPedido: found.numeroPedido,\n    order: found,\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        256,
+        -32
+      ],
+      "id": "971517ee-2f2e-419b-9421-14cd21615270",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "a2d01912-76f2-496f-9d29-7a69d3d66f13",
+              "leftValue": "={{$json.error}}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -192,
+        -48
+      ],
+      "id": "c846cfdb-d67a-4863-942d-39a57620bd2c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Pregunta: {{ $json.question || $json.chatInput || '' }}\nJSON: {{ JSON.stringify($json.order) }}\n",
+        "options": {
+          "systemMessage": "=“Responde SOLO usando el JSON order.”\n“Si te preguntan por un dato, devuelve solo el valor exacto.”\n“Si no existe, responde: Ese dato no está disponible en la orden.”\n“No devuelvas el JSON completo.”\n“Si la pregunta está vacía o no menciona un campo, responde: NO_QUESTION.”\n\n“No devuelvas numeroPedido salvo que lo pidan explícitamente.”",
+          "returnIntermediateSteps": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        928,
+        -32
+      ],
+      "id": "18e26417-4006-4f54-a9ea-75cebb636929",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "description": "Input: field (string) must be an exact key from the JSON, e.g. interior1_paginas.\nReturn: a single string with the value, or NO_FIELD / NOT_FOUND.",
+        "jsCode": "// Tool: GetField\nconst field = String($json.field ?? \"\").trim();\nconst order = $input.item.json.order;\n\nif (!field) return \"NO_FIELD\";\nif (!order || typeof order !== \"object\") return \"NO_ORDER\";\n\nif (Object.prototype.hasOwnProperty.call(order, field)) {\n  return String(order[field]);\n}\n\n// aliases típicos\nconst aliases = {\n  estadoInterior: \"faseInterior1\",\n  faseInterior: \"faseInterior1\",\n  interiorEstado: \"faseInterior1\",\n  estadoCubierta: \"faseCubierta\",\n};\n\nif (aliases[field] && Object.prototype.hasOwnProperty.call(order, aliases[field])) {\n  return String(order[aliases[field]]);\n}\n\nreturn \"NOT_FOUND\";\n",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"field\": { \"type\": \"string\" }\n  },\n  \"required\": [\"field\"],\n  \"additionalProperties\": false\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        1184,
+        224
+      ],
+      "id": "54fb13b8-3f71-401c-9dbb-bea6548bd5da",
+      "name": "GetField"
+    },
+    {
+      "parameters": {
+        "description": "Input: query (string).\nReturn: a single string with the field name, e.g. interior1_paginas, or UNKNOWN.",
+        "jsCode": "// Tool: FindField\nconst query = String($json.query ?? \"\").toLowerCase().trim();\n\n// El order debe venir en el item actual (el mismo que llega al AI Agent)\nconst order = $input.item.json.order;\n\nif (!query) return \"NO_QUERY\";\nif (!order || typeof order !== \"object\") return \"NO_ORDER\";\n\n// Atajos directos\nif (query.includes(\"fase\") && query.includes(\"interior\")) return \"faseInterior1\";\nif (query.includes(\"fase\") && query.includes(\"cubierta\")) return \"faseCubierta\";\n\nif (query.includes(\"página\") || query.includes(\"paginas\") || query.includes(\"hojas\")) return \"interior1_paginas\";\nif (query.includes(\"tirada\")) return \"tirada\";\nif (query.includes(\"tirada final\")) return \"tiradaFinal\";\n\nif (query.includes(\"ancho\") && query.includes(\"página\")) return \"anchoPagina\";\nif (query.includes(\"alto\") && query.includes(\"página\")) return \"altoPagina\";\n\n// Si no sabes, intenta una heurística básica contra keys reales del JSON\nconst keys = Object.keys(order);\nconst tokens = query.replace(/[^\\p{L}\\p{N}\\s]/gu, \" \").split(/\\s+/).filter(Boolean);\n\nlet best = null, bestScore = 0;\nfor (const k of keys) {\n  const kl = k.toLowerCase();\n  const score = tokens.reduce((s, t) => s + (kl.includes(t) ? 1 : 0), 0);\n  if (score > bestScore) { bestScore = score; best = k; }\n}\n\nreturn bestScore > 0 ? best : \"UNKNOWN\";\n",
+        "specifyInputSchema": true,
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"query\": { \"type\": \"string\" }\n  },\n  \"required\": [\"query\"],\n  \"additionalProperties\": false\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        1328,
+        224
+      ],
+      "id": "2d5cd230-cfe0-4742-94b8-02048af30113",
+      "name": "FindField"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ✅ Filtra el JSON del pedido a un subconjunto de campos permitidos\nconst incoming = $input.item.json;\n\nconst question =\n  [incoming.question, incoming.chatInput, incoming.text, incoming.message]\n    .map(v => (typeof v === \"string\" ? v.trim() : \"\"))\n    .find(v => v.length) || \"\";\n\nreturn [{\n  json: {\n    ...incoming,\n    question,\n  }\n}];\n\n// 1) Saca la pregunta del usuario de donde esté (ajusta si tu trigger usa otra key)\n const question = String(\n  $json.question ??\n  $json.chatInput ??\n  $json.input ??\n  $json.text ??\n  \"\"\n ).trim();\n\n// 2) Coge el JSON del pedido (elige UNA fuente fiable)\n// Opción A: viene ya en $json.order\n// const fullOrder = $json.order ?? {};\n\n// Opción B: viene de un nodo anterior (recomendado si aquí no te llega):\nconst fullOrder =\n  $items(\"API Pedidos\")[0]?.json ??   // <-- CAMBIA \"API Pedidos\" por tu nodo real\n  $json.order ??\n  {};\n\n// 3) Lista blanca de campos\nconst allowed = [\n  \"numeroPedido\",\n  \"cliente\",\n  \"titulo\",\n  \"faseInterior1\",\n  \"faseCubierta\",\n  \"fechaEntrega\",\n  \"tirada\",\n  \"isbn\",\n  \"anchoPagina\",\n  \"altoPagina\",\n  \"unionPliegos\",\n  \"encuadernacion\",\n];\n\n// 4) Construye el JSON filtrado\nconst order = {};\nfor (const k of allowed) {\n  if (Object.prototype.hasOwnProperty.call(fullOrder, k)) {\n    order[k] = fullOrder[k];\n  }\n}\n\n// 5) Devuelve lo que verá el AI Agent\nreturn [\n  {\n    json: {\n      question,\n      order,\n      allowedFields: allowed,\n    },\n  },\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        512,
+        -32
+      ],
+      "id": "665003ff-1f6b-45ac-a757-4893c3498d7e",
+      "name": "Code in JavaScript2"
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "API Pedidos": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        [
+          {
+            "node": "API Pedidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetField": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "FindField": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "dd0cb8a3-63e0-4c9a-b6f4-ee5ec30402b9",
+  "activeVersionId": null,
+  "versionCounter": 85,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-12-19T08:31:51.572Z",
+      "createdAt": "2025-12-19T08:31:51.572Z",
+      "role": "workflow:owner",
+      "workflowId": "0DSc3sdQfBoaZt8U",
+      "projectId": "5DRxsE1egf1baMP6",
+      "project": {
+        "updatedAt": "2025-12-16T07:05:26.416Z",
+        "createdAt": "2025-12-16T07:00:37.382Z",
+        "id": "5DRxsE1egf1baMP6",
+        "name": "P GA <procesos@gomezaparicio.es>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "projectRelations": [
+          {
+            "updatedAt": "2025-12-16T07:00:37.382Z",
+            "createdAt": "2025-12-16T07:00:37.382Z",
+            "userId": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
+            "projectId": "5DRxsE1egf1baMP6",
+            "user": {
+              "updatedAt": "2026-01-04T07:22:52.745Z",
+              "createdAt": "2025-12-16T07:00:36.626Z",
+              "id": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
+              "email": "procesos@gomezaparicio.es",
+              "firstName": "P",
+              "lastName": "GA",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "gR8RJ0nGarvRBlGa",
+                "userActivatedAt": 1766491998544
+              },
+              "disabled": false,
+              "mfaEnabled": true,
+              "lastActiveAt": "2026-01-04",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}
