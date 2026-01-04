@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-02T19:48:16.069Z",
+  "updatedAt": "2026-01-04T10:56:20.539Z",
   "createdAt": "2025-12-31T10:07:03.414Z",
   "id": "K9UDY6hPoyI4yT6L",
   "name": "test Anaya Multi",
@@ -21,8 +21,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        2336,
-        -1568
+        1744,
+        -1520
       ],
       "id": "8b2cfcc1-2f80-47dd-a021-936bd3d2dc4e",
       "name": "OpenAI",
@@ -60,8 +60,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1984,
-        -1568
+        1392,
+        -1520
       ],
       "id": "78fb9fdb-f39d-4508-8996-2e30b1c2d55e",
       "name": "Build OpenAI Body (schema)"
@@ -92,7 +92,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        -1472,
+        -1680,
         560
       ],
       "id": "06569543-b4c1-4635-a2fb-5e191c91d769",
@@ -116,8 +116,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1088,
-        -704
+        336,
+        -160
       ],
       "typeVersion": 1,
       "id": "e5526111-51ed-4f96-8f2b-3643c064715e",
@@ -133,8 +133,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1888,
-        -1664
+        1296,
+        -1616
       ],
       "id": "c008bff4-147c-415d-91b6-d1e631ba216c",
       "name": "Sticky Note2"
@@ -148,7 +148,7 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        -832,
+        -1056,
         416
       ],
       "id": "e8b788c7-7137-440a-9c22-3875086b2a1c",
@@ -177,7 +177,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1072,
+        -1280,
         560
       ],
       "id": "0e314d80-14c6-4829-a90f-f82dc4791df7",
@@ -197,8 +197,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        2256,
-        -1168
+        1664,
+        -1120
       ],
       "id": "a41e6b7b-034e-48b8-93b1-b64d033eeb63",
       "name": "OpenAI1",
@@ -220,8 +220,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1984,
-        -1168
+        1392,
+        -1120
       ],
       "id": "3a199b38-3fc2-4a31-99ce-b3880b8317a6",
       "name": "Build OpenAI Body (schema)1"
@@ -236,8 +236,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1888,
-        -1248
+        1296,
+        -1200
       ],
       "id": "a1d5489f-efce-4f40-be0d-fd187325d01f",
       "name": "Sticky Note3"
@@ -256,8 +256,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        2240,
-        -752
+        1648,
+        -704
       ],
       "id": "708f0f47-c0f4-4d6c-b46c-b5f01a5e7740",
       "name": "OpenAI2",
@@ -279,8 +279,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1984,
-        -752
+        1392,
+        -704
       ],
       "id": "493ad846-b658-48c8-b1f0-9e88d1acebd7",
       "name": "Build OpenAI Body (schema)2"
@@ -295,8 +295,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1888,
-        -848
+        1296,
+        -800
       ],
       "id": "b3dda410-a609-4918-a8f6-0046f9b43aec",
       "name": "Sticky Note4"
@@ -315,8 +315,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        2272,
-        -336
+        1680,
+        -288
       ],
       "id": "507685d6-90c0-4e9e-b6fd-f912426e1811",
       "name": "OpenAI3",
@@ -338,8 +338,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1984,
-        -336
+        1392,
+        -288
       ],
       "id": "c1ff06cc-3eec-41e9-b3ac-0a4f9fe143af",
       "name": "Build OpenAI Body (schema)3"
@@ -351,8 +351,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2544,
-        -336
+        1952,
+        -288
       ],
       "id": "fb69b146-d123-489b-bc29-7647cca07a05",
       "name": "Parse output_text3"
@@ -367,8 +367,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1888,
-        -432
+        1296,
+        -384
       ],
       "id": "7eaec399-a177-48f5-95a5-bb0a55c61195",
       "name": "Sticky Note5"
@@ -380,7 +380,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1280,
+        -1488,
         352
       ],
       "id": "55e0c9ac-ca5c-41ee-ab74-a3fe6b47f01f",
@@ -390,12 +390,12 @@
       "parameters": {
         "content": "## Sube el PDF a OpenAI, genera el PDF en base64 y los combina\n",
         "height": 560,
-        "width": 992
+        "width": 944
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -1648,
+        -1808,
         224
       ],
       "id": "ea2ca3e6-16c7-400e-88cf-ad08cdf5ddfe",
@@ -408,8 +408,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3200,
-        -752
+        2608,
+        -704
       ],
       "id": "8eaaa8b9-b8b5-4bbf-85b5-a4de606e2947",
       "name": "Calcular tecnologia (cubierta)"
@@ -441,8 +441,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        5280,
-        -672
+        4096,
+        -1088
       ],
       "id": "b0451f67-a5db-4a49-8ae3-48cbf2b3c062",
       "name": "¿papel_id > 0?"
@@ -464,8 +464,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        5616,
-        -224
+        4400,
+        -720
       ],
       "id": "402d30f8-536e-424f-8bd0-a674402364bb",
       "name": "API Bobinas Stock",
@@ -485,8 +485,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5904,
-        -224
+        4640,
+        -720
       ],
       "id": "3539550d-d7e1-4e14-8f34-578fc1109209",
       "name": "Agrupar stock"
@@ -498,8 +498,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        6496,
-        -256
+        5072,
+        -896
       ],
       "id": "970328b4-f5be-4439-9e3e-42a48ff5597f",
       "name": "Seleccionar bobina (JS)"
@@ -511,8 +511,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3200,
-        -1168
+        2608,
+        -1120
       ],
       "id": "912854f8-deef-4cc8-93fd-d58d0c53fce7",
       "name": "Calcular UPS (interiores)"
@@ -526,8 +526,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        2976,
-        -1168
+        2384,
+        -1120
       ],
       "id": "a300e01c-1802-429a-b15a-d6f4e05019a9",
       "name": "Merge2"
@@ -555,8 +555,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        8080,
-        -352
+        6112,
+        -624
       ],
       "id": "89daa8fc-fe12-4535-86b0-ac9d2d63a2ad",
       "name": "Desarrollo1",
@@ -707,8 +707,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1968,
-        560
+        -2064,
+        608
       ],
       "id": "698adc9e-09fa-4501-a35c-bd7a7a4cfb5e",
       "name": "Renombrar binario"
@@ -755,8 +755,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1184,
-        -592
+        432,
+        -16
       ],
       "id": "72052f08-6ce7-4dd8-ba22-afdbccaad45d",
       "name": "PromptConfig_ANAYA"
@@ -768,8 +768,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2688,
-        -1568
+        2096,
+        -1520
       ],
       "id": "594c5297-d8d5-42e0-abb1-7db53dadd722",
       "name": "Parse cabecera"
@@ -781,8 +781,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2992,
-        -1568
+        2400,
+        -1520
       ],
       "id": "ccf21aab-aef8-409f-a898-e3948fad51bc",
       "name": "Split Out Items"
@@ -794,8 +794,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2512,
-        -1168
+        1920,
+        -1120
       ],
       "id": "92a16fe1-d2ff-4a49-a282-1e87441c61c2",
       "name": "Parse interiores"
@@ -807,8 +807,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2720,
-        -1168
+        2128,
+        -1120
       ],
       "id": "c3c8b42d-0999-4ff3-a766-ee4e0361f515",
       "name": "Split Out Items1"
@@ -820,8 +820,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2464,
-        -752
+        1872,
+        -704
       ],
       "id": "e77d6689-4187-42f1-a75c-b0dcb9805a1c",
       "name": "Parse cubierta"
@@ -833,8 +833,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2704,
-        -752
+        2112,
+        -704
       ],
       "id": "74c89b19-b9d8-495a-ab57-fcffe8862a60",
       "name": "Split Out Items2"
@@ -848,8 +848,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        2944,
-        -752
+        2352,
+        -704
       ],
       "id": "9961cfad-aedf-4974-ab91-e1f886b449f2",
       "name": "Merge5"
@@ -861,8 +861,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2784,
-        -336
+        2192,
+        -288
       ],
       "id": "153f235e-09c2-4180-8174-ff37658cc7d8",
       "name": "Split Out Items3"
@@ -874,8 +874,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3520,
-        -1568
+        2944,
+        -1520
       ],
       "id": "21b97c0a-75e4-45f5-bc65-c8cf4601f0d5",
       "name": "idElemento"
@@ -887,8 +887,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3552,
-        -1168
+        2944,
+        -1120
       ],
       "id": "7af5aa57-00fb-4db2-ab34-acf057445de8",
       "name": "idElemento1"
@@ -900,8 +900,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3520,
-        -752
+        2944,
+        -704
       ],
       "id": "0a3777ed-52b2-481d-8ea6-119821bdee26",
       "name": "idElemento2"
@@ -913,8 +913,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3168,
-        -336
+        2944,
+        -288
       ],
       "id": "fdc79839-193f-4f7c-9b5e-a27a84c39ebd",
       "name": "idElemento3"
@@ -928,8 +928,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        3824,
-        -1376
+        3232,
+        -1328
       ],
       "id": "33de18f9-2122-48f8-85ee-c30fbbc33f70",
       "name": "Merge6"
@@ -943,8 +943,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        4032,
-        -1040
+        3232,
+        -912
       ],
       "id": "769f82de-bc5d-4b0a-a4d4-0bbf92b914c6",
       "name": "Merge7"
@@ -958,8 +958,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        4304,
-        -688
+        3248,
+        -496
       ],
       "id": "8a8d2e73-6f4d-461a-b762-7efc7673fedc",
       "name": "Merge8"
@@ -971,8 +971,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        4832,
-        -688
+        3824,
+        -1104
       ],
       "id": "4f1885ef-cdf9-4a1d-ac5f-59bcf3b23842",
       "name": "Loop Over Items"
@@ -986,8 +986,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        6240,
-        -256
+        4848,
+        -896
       ],
       "id": "3908a244-4a78-4693-ac66-bdd8f9eb6641",
       "name": "Unir pedido + stock"
@@ -999,8 +999,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7120,
-        -384
+        5600,
+        -1104
       ],
       "id": "4df42c95-88db-4749-bfc3-c22bd22e3d20",
       "name": "const id = String($json.idElemento || 'sin-id'); const now = new Date().toISOString().slice(0,19).re"
@@ -1032,8 +1032,8 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1.1,
       "position": [
-        7696,
-        -144
+        5856,
+        -624
       ],
       "id": "bf55f2b6-9edc-444a-adf1-c5f732f9c447",
       "name": "Create a file",
@@ -1052,8 +1052,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7424,
-        -384
+        5840,
+        -1104
       ],
       "id": "1a348955-11fd-4030-89e9-c61f4592ab57",
       "name": "Code in JavaScript"
@@ -1065,8 +1065,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        6800,
-        -384
+        5312,
+        -1104
       ],
       "id": "5302b4ed-4aac-4f69-880f-85264443ffee",
       "name": "limpieza"
@@ -1078,8 +1078,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4528,
-        -688
+        3552,
+        -1104
       ],
       "id": "265295f3-e2be-40b5-93c8-bbb28563115d",
       "name": "añade PDF"
@@ -1091,8 +1091,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2800,
-        592
+        2224,
+        800
       ],
       "id": "b5925e31-b1ba-4c1b-9aca-9f2f41006bc8",
       "name": "Parse output_text"
@@ -1104,8 +1104,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2512,
-        992
+        1936,
+        1200
       ],
       "id": "5953cf26-e186-43fd-a6fb-b5246aad9b30",
       "name": "Parse output_text1"
@@ -1117,8 +1117,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2688,
-        1408
+        2112,
+        1616
       ],
       "id": "bed43574-e0e7-4005-af94-5008c3a090d6",
       "name": "Parse output_text2"
@@ -1130,8 +1130,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3696,
-        1824
+        3168,
+        944
       ],
       "id": "89a477ee-21e9-4ba0-bf2c-007955bf5422",
       "name": "Build JSON completo"
@@ -1148,8 +1148,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        4480,
-        2208
+        3952,
+        1328
       ],
       "id": "6a3e1325-f8ad-499e-bc41-c6e32afefd04",
       "name": "API Pedidos",
@@ -1168,8 +1168,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4048,
-        2208
+        3520,
+        1328
       ],
       "id": "5c56b561-3a6d-4bf8-92da-64a486bb1af3",
       "name": "Normalizar pedido"
@@ -1181,8 +1181,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4832,
-        2208
+        4304,
+        1328
       ],
       "id": "4afd0b72-ae19-43d0-bae4-be9ef176114b",
       "name": "Validar duplicados",
@@ -1216,8 +1216,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        5136,
-        2208
+        4608,
+        1328
       ],
       "id": "7154726e-fdb9-400a-b019-c9b2aaeee361",
       "name": "If",
@@ -1232,8 +1232,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        4320,
-        2064
+        3792,
+        1184
       ],
       "id": "c9fd60d4-f4bb-41a1-8f05-3c9155542093",
       "name": "Sticky Note6"
@@ -1317,8 +1317,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        6272,
-        3120
+        5744,
+        2240
       ],
       "id": "e56d989e-6514-4d2e-bf75-aaa818f75cbf",
       "name": "Switch"
@@ -1333,8 +1333,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        6208,
-        2000
+        5680,
+        1120
       ],
       "id": "f029a9fe-ce16-44cd-8b75-2502dbac3942",
       "name": "Sticky Note8"
@@ -1348,8 +1348,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        5792,
-        1840
+        5264,
+        960
       ],
       "id": "216b86dd-9181-4580-b6e4-31db83faf7db",
       "name": "Merge1"
@@ -1377,8 +1377,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        4976,
-        3104
+        4448,
+        2224
       ],
       "id": "1106cfda-3af3-4fc8-a376-ff2bcd7099c6",
       "name": "Desarrollo",
@@ -1398,8 +1398,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        4032,
-        2992
+        3504,
+        2112
       ],
       "id": "c024551c-7e4b-4b3b-8bc1-aeabd619e61d",
       "name": "Sticky Note9"
@@ -1414,8 +1414,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        4848,
-        2992
+        4320,
+        2112
       ],
       "id": "7756a985-441f-46ec-859f-0dc7f434e1d6",
       "name": "Sticky Note10"
@@ -1443,8 +1443,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        4976,
-        3344
+        4448,
+        2464
       ],
       "id": "7aa2b3f2-3ef3-4b47-97c0-bfa172d60461",
       "name": "Producción",
@@ -1465,8 +1465,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        7280,
-        1840
+        6752,
+        960
       ],
       "id": "c1aeb8bc-5a3b-435e-99d6-a206134ec1fa",
       "name": "Sticky Note11"
@@ -1494,8 +1494,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        7408,
-        2192
+        6880,
+        1312
       ],
       "id": "177414ae-e624-4c44-be1a-d62f0b8616e1",
       "name": "Producción1",
@@ -1529,8 +1529,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        6608,
-        2944
+        6080,
+        2064
       ],
       "id": "3b689f94-f010-4761-8e77-b04bd5178928",
       "name": "OT_DUPLICADA"
@@ -1570,8 +1570,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        8512,
-        3632
+        7984,
+        2752
       ],
       "id": "cbac6834-0954-4f0a-86e0-f34ca84d49d9",
       "name": "email AUTOMATE"
@@ -1599,8 +1599,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        6608,
-        3136
+        6080,
+        2256
       ],
       "id": "6b618530-4b02-457d-8fe5-c3f4e5ac3112",
       "name": "ISBN_EN_PRODUCCION"
@@ -1628,8 +1628,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        6608,
-        3344
+        6080,
+        2464
       ],
       "id": "cb2bb70e-6966-49ec-b777-a42916ffa939",
       "name": "DATOS_INCOMPLETOS"
@@ -1643,8 +1643,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        6192,
-        2848
+        5664,
+        1968
       ],
       "id": "53af4175-edf2-4e97-8695-0321e18f7da0",
       "name": "Sticky Note14"
@@ -1678,8 +1678,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        5840,
-        3616
+        5312,
+        2736
       ],
       "id": "1260df2e-379e-40cc-a931-71e8e8428500",
       "name": "INFORME DE REGISTRO 2"
@@ -1693,8 +1693,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        8096,
-        1776
+        7568,
+        896
       ],
       "id": "5da1fb90-7fd3-4bb4-814b-4be2529029bd",
       "name": "Sticky Note13"
@@ -1708,8 +1708,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        5744,
-        3504
+        5216,
+        2624
       ],
       "id": "013e40f7-6dbf-452c-a759-c66ef9dfe805",
       "name": "Sticky Note15"
@@ -1721,8 +1721,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4624,
-        3632
+        4096,
+        2752
       ],
       "id": "a281d5a3-0c74-45df-9c3c-5abc913f3240",
       "name": "json para email"
@@ -1736,8 +1736,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        5408,
-        3616
+        4880,
+        2736
       ],
       "id": "d7ee5556-c188-4112-b287-20e02f3d8afa",
       "name": "Merge3"
@@ -1749,8 +1749,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7408,
-        1616
+        6880,
+        736
       ],
       "id": "c53c1298-98b4-4e23-b57f-e117a3ea00f5",
       "name": "json para email1"
@@ -1784,8 +1784,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        8176,
-        1888
+        7648,
+        1008
       ],
       "id": "5898b20d-7038-4ef6-83fe-20d241a7420d",
       "name": "INFORME DE REGISTRO "
@@ -1799,8 +1799,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        7856,
-        1888
+        7328,
+        1008
       ],
       "id": "18add2f4-946e-4407-aff8-1ef5b415dbe4",
       "name": "Merge4"
@@ -1819,8 +1819,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        2384,
-        592
+        1808,
+        800
       ],
       "id": "0c5c516e-02e1-4547-8710-a6c3e31fb1f3",
       "name": "OpenAI4",
@@ -1842,8 +1842,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1984,
-        592
+        1408,
+        800
       ],
       "id": "05dc0555-ef15-4bc3-ba93-c1192930c5f1",
       "name": "Build OpenAI Body (schema)4"
@@ -1858,8 +1858,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1888,
-        496
+        1312,
+        704
       ],
       "id": "2ce4cfbb-7b03-4c95-88a9-28a29100f6ff",
       "name": "Sticky Note12"
@@ -1878,8 +1878,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        2256,
-        992
+        1680,
+        1200
       ],
       "id": "1d2dfaea-a7bf-4990-b7f2-b264355dc539",
       "name": "OpenAI5",
@@ -1901,8 +1901,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1984,
-        992
+        1408,
+        1200
       ],
       "id": "1e138879-9335-40d1-87ac-18ccb9d12247",
       "name": "Build OpenAI Body (schema)5"
@@ -1917,8 +1917,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1888,
-        912
+        1312,
+        1120
       ],
       "id": "17980c77-ce13-4397-8b30-6e8b1eb68f8c",
       "name": "Sticky Note17"
@@ -1937,8 +1937,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        2352,
-        1408
+        1776,
+        1616
       ],
       "id": "06c25031-e3e6-4f02-9beb-0ad99a43b0db",
       "name": "OpenAI6",
@@ -1960,8 +1960,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1984,
-        1408
+        1408,
+        1616
       ],
       "id": "c97124b0-e253-412f-8da9-5c292bc52bdb",
       "name": "Build OpenAI Body (schema)6"
@@ -1976,8 +1976,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1888,
-        1312
+        1312,
+        1520
       ],
       "id": "f3193804-f85d-4f9a-9e1b-7172339c562c",
       "name": "Sticky Note18"
@@ -1996,8 +1996,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        2368,
-        1824
+        1936,
+        2032
       ],
       "id": "9b5edf55-defc-451a-86a0-7aba50d21e66",
       "name": "OpenAI7",
@@ -2019,8 +2019,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1984,
-        1824
+        1408,
+        2032
       ],
       "id": "ee7eda0b-1a0c-400f-8776-2a93122d40e2",
       "name": "Build OpenAI Body (schema)7"
@@ -2032,8 +2032,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2816,
-        1824
+        2464,
+        2032
       ],
       "id": "72e5d322-8e60-4861-bd98-b30cb1e69808",
       "name": "Parse output_text4"
@@ -2048,8 +2048,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1888,
-        1728
+        1312,
+        1936
       ],
       "id": "6ff5c09e-68be-48a7-a940-b802610516da",
       "name": "Sticky Note19"
@@ -2061,8 +2061,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3024,
-        1408
+        2448,
+        1616
       ],
       "id": "dc40d2d8-afc0-4f0e-ade3-b5bd8237514b",
       "name": "Calcular tecnologia (cubierta)1"
@@ -2094,8 +2094,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        6320,
-        2144
+        5792,
+        1264
       ],
       "id": "346162fb-7bcf-48d1-9acf-0c07e3aba930",
       "name": "¿papel_id > 0?1"
@@ -2117,8 +2117,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        6720,
-        2416
+        6192,
+        1536
       ],
       "id": "032c2e9f-30bd-4e6f-a59b-59db895e7eb0",
       "name": "API Bobinas Stock1",
@@ -2138,8 +2138,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7104,
-        2528
+        6576,
+        1648
       ],
       "id": "cabcc54e-11a4-4a2d-977b-fbc46346d0ec",
       "name": "Agrupar stock1"
@@ -2153,8 +2153,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        3696,
-        3104
+        3168,
+        2224
       ],
       "id": "0397886d-42f4-4e42-bb30-b01ced711474",
       "name": "Unir pedido + stock1"
@@ -2166,8 +2166,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4192,
-        3104
+        3664,
+        2224
       ],
       "id": "5eebf258-684d-4c0b-ba7d-242b27b68df4",
       "name": "Seleccionar bobina (JS)1"
@@ -2179,8 +2179,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3024,
-        992
+        2448,
+        1200
       ],
       "id": "d959ec20-67dc-45b1-9b21-ef5582d38b19",
       "name": "Calcular UPS (interiores)1"
@@ -2194,8 +2194,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        2800,
-        992
+        2224,
+        1200
       ],
       "id": "8662ebf4-975d-4935-9da7-2ec792780fce",
       "name": "Merge9"
@@ -2223,8 +2223,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        7408,
-        1952
+        6880,
+        1072
       ],
       "id": "bd6583a8-6080-4f03-b74e-1e96f8b22183",
       "name": "Desarrollo2",
@@ -2277,8 +2277,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1392,
-        1408
+        432,
+        800
       ],
       "id": "9dfce2fd-ef78-4a8e-b325-6c8b341fa02c",
       "name": "PromptConfig_ANAYA1"
@@ -2292,8 +2292,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1296,
-        1248
+        336,
+        656
       ],
       "typeVersion": 1,
       "id": "39d4caf9-9128-4995-8189-f884df7618c6",
@@ -2313,7 +2313,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        -240,
+        -512,
         416
       ],
       "id": "ab533acc-413a-4b39-9d72-1fb0386e4250",
@@ -2335,7 +2335,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        0,
+        -304,
         416
       ],
       "id": "7a32aae1-1f90-4ba2-af8a-bc17b60540bf",
@@ -2370,7 +2370,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        224,
+        -112,
         416
       ],
       "id": "8d11c6ab-cd2d-4eba-8c32-1b2947b1c905",
@@ -2396,7 +2396,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -512,
+        -704,
         416
       ],
       "id": "dca8e124-3435-4d9e-87c1-8791c51055e3",
@@ -2404,16 +2404,64 @@
     },
     {
       "parameters": {
-        "jsCode": "const s = ($json.openaiFileIdClean || $json.openaiFileId || \"\");\nreturn [{\n  json: {\n    openaiFileId: s,\n    length: s.length,\n    charCodes: s.split(\"\").map(c => c.charCodeAt(0))\n  }\n}];\n"
+        "content": "## Filtra por cantidad de títulos\nSi hay mas de un título tira por arriba, si no por abajo",
+        "height": 320,
+        "width": 880
       },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
       "position": [
-        -384,
-        128
+        -800,
+        288
       ],
-      "id": "f845bf3b-6231-4931-b612-d0215740f657",
-      "name": "tmp"
+      "id": "e4ea8e65-e533-4237-a6d5-0eea542da208",
+      "name": "Sticky Note21"
+    },
+    {
+      "parameters": {
+        "content": "## Procesa pedidos con solo un título",
+        "height": 2624,
+        "width": 7184,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1152,
+        512
+      ],
+      "id": "1f209267-ca75-4359-9454-8e8182a2cf2b",
+      "name": "Sticky Note22"
+    },
+    {
+      "parameters": {
+        "content": "## id por Elemento",
+        "height": 1520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2880,
+        -1600
+      ],
+      "typeVersion": 1,
+      "id": "00fa7ba4-d236-465a-b9a9-66e77bb61593",
+      "name": "Sticky Note23"
+    },
+    {
+      "parameters": {
+        "content": "## Procesa pedidos con varios títulos",
+        "height": 2080,
+        "width": 5312,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        -1808
+      ],
+      "id": "30a32411-eb68-4af9-911e-cde3f3419951",
+      "name": "Sticky Note24"
     }
   ],
   "connections": {
@@ -2968,7 +3016,13 @@
     },
     "añade PDF": {
       "main": [
-        []
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Parse output_text": {
@@ -3464,16 +3518,18 @@
         ]
       ]
     },
-    "tmp": {
-      "main": [
-        []
-      ]
-    },
     "If1": {
       "main": [
         [
           {
             "node": "PromptConfig_ANAYA",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "PromptConfig_ANAYA1",
             "type": "main",
             "index": 0
           }
@@ -3501,9 +3557,9 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "add9b2c1-388a-4f5e-944c-1d575925ab6f",
+  "versionId": "c057e1e2-a5f5-4d58-8442-d1479d682cb3",
   "activeVersionId": null,
-  "versionCounter": 461,
+  "versionCounter": 467,
   "triggerCount": 2,
   "shared": [
     {
