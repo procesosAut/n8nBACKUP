@@ -1,0 +1,439 @@
+{
+  "updatedAt": "2026-01-04T10:31:00.378Z",
+  "createdAt": "2025-12-27T10:57:29.154Z",
+  "id": "R2WKD5gIegY9tpV8",
+  "name": "Backup con Github",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        160,
+        -704
+      ],
+      "id": "8fd543b8-707e-41dc-9452-7bfb650b0109",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "filters": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        416,
+        -704
+      ],
+      "id": "20d76f95-f74c-4b59-a9f1-b2b2450c95a8",
+      "name": "Get many workflows",
+      "credentials": {
+        "n8nApi": {
+          "id": "s5G9sfPMKURyuvag",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "workflowId": {
+          "__rl": true,
+          "value": "={{$json.id}}",
+          "mode": "id"
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        1168,
+        -464
+      ],
+      "id": "49a88a10-ddc4-43bf-9933-21ff2f1c47cd",
+      "name": "Get a workflow",
+      "credentials": {
+        "n8nApi": {
+          "id": "s5G9sfPMKURyuvag",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        880,
+        -704
+      ],
+      "id": "fb4e7e20-839f-42c6-9930-c7519f26f583",
+      "name": "Loop Over Items2"
+    },
+    {
+      "parameters": {
+        "jsCode": "function slugify(str = '') {\n  return str\n    .normalize('NFD').replace(/[\\u0300-\\u036f]/g, '')\n    .toLowerCase()\n    .replace(/[^a-z0-9]+/g, '-')\n    .replace(/(^-|-$)+/g, '')\n    .slice(0, 80);\n}\n\nconst wf = $json;\n\nconst id = String(wf.id ?? 'unknown');\nconst safeName = slugify(wf.name || 'workflow');\n\nreturn [{\n  json: {\n    id: wf.id,\n    name: wf.name,\n    filePath: `workflows/${id}__${safeName}.json`,\n    content: JSON.stringify(wf, null, 2),\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1424,
+        -464
+      ],
+      "id": "ce86bded-0ecd-4571-8d56-1f86f8eb246b",
+      "name": "Build file"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "value": "procesosAut",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "n8nBACKUP",
+          "mode": "name"
+        },
+        "filePath": "={{$json.filePath}}",
+        "additionalParameters": {
+          "reference": "main"
+        }
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        1632,
+        -464
+      ],
+      "id": "a26872d2-cb6b-4f56-9bc2-aa6425ff59cb",
+      "name": "GitHub → File → Get",
+      "webhookId": "6b395419-7c68-4bc6-b17a-66a4b2a017d2",
+      "retryOnFail": false,
+      "credentials": {
+        "githubApi": {
+          "id": "gBIpGSWvt2k6gco0",
+          "name": "GitHub backup"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4336855d-aa8a-47f4-8f48-c02e431d65ab",
+              "leftValue": "={{ !!$binary?.data }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1840,
+        -464
+      ],
+      "id": "e0225659-9742-4364-aa4e-57712fc81488",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "edit",
+        "owner": {
+          "__rl": true,
+          "value": "procesosAut",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "n8nBACKUP",
+          "mode": "name"
+        },
+        "filePath": "={{$node[\"Build file\"].json.filePath}}",
+        "fileContent": "={{$node[\"Build file\"].json.content}}",
+        "commitMessage": "=Backup workflow {{$node[\"Build file\"].json.name}} ({{$node[\"Build file\"].json.id}})",
+        "additionalParameters": {
+          "branch": {
+            "branch": "main"
+          }
+        }
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        2112,
+        -704
+      ],
+      "id": "df48dcbc-fe75-4e54-8860-3ffa1544a208",
+      "name": "GitHub → File → Edit",
+      "webhookId": "6b395419-7c68-4bc6-b17a-66a4b2a017d2",
+      "retryOnFail": false,
+      "credentials": {
+        "githubApi": {
+          "id": "gBIpGSWvt2k6gco0",
+          "name": "GitHub backup"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "procesosAut",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "n8nBACKUP",
+          "mode": "name"
+        },
+        "filePath": "={{$node[\"Build file\"].json.filePath}}",
+        "fileContent": "={{$node[\"Build file\"].json.content}}",
+        "commitMessage": "=Backup workflow {{$node[\"Build file\"].json.name}} ({{$node[\"Build file\"].json.id}})",
+        "additionalParameters": {
+          "branch": {
+            "branch": "main"
+          }
+        }
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        2128,
+        -336
+      ],
+      "id": "77e5d768-94e9-4c06-905d-43d2edbfa781",
+      "name": "GitHub → File → Create",
+      "webhookId": "6b395419-7c68-4bc6-b17a-66a4b2a017d2",
+      "retryOnFail": false,
+      "credentials": {
+        "githubApi": {
+          "id": "gBIpGSWvt2k6gco0",
+          "name": "GitHub backup"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Deja solo los NO archivados\nreturn items.filter(i => i.json.isArchived !== true);\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        656,
+        -704
+      ],
+      "id": "c1832832-bae2-46b1-9d25-433fbf6c8cfc",
+      "name": "Filter out archived"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many workflows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many workflows": {
+      "main": [
+        []
+      ]
+    },
+    "Get a workflow": {
+      "main": [
+        [
+          {
+            "node": "Build file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items2": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get a workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build file": {
+      "main": [
+        [
+          {
+            "node": "GitHub → File → Get",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub → File → Get": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "GitHub → File → Edit",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "GitHub → File → Create",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub → File → Create": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub → File → Edit": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter out archived": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "e865b235-26e1-469e-97a7-82c25d05bbe9",
+  "activeVersionId": null,
+  "versionCounter": 30,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-12-27T10:57:29.154Z",
+      "createdAt": "2025-12-27T10:57:29.154Z",
+      "role": "workflow:owner",
+      "workflowId": "R2WKD5gIegY9tpV8",
+      "projectId": "5DRxsE1egf1baMP6",
+      "project": {
+        "updatedAt": "2025-12-16T07:05:26.416Z",
+        "createdAt": "2025-12-16T07:00:37.382Z",
+        "id": "5DRxsE1egf1baMP6",
+        "name": "P GA <procesos@gomezaparicio.es>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "projectRelations": [
+          {
+            "updatedAt": "2025-12-16T07:00:37.382Z",
+            "createdAt": "2025-12-16T07:00:37.382Z",
+            "userId": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
+            "projectId": "5DRxsE1egf1baMP6",
+            "user": {
+              "updatedAt": "2026-01-04T07:22:52.745Z",
+              "createdAt": "2025-12-16T07:00:36.626Z",
+              "id": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
+              "email": "procesos@gomezaparicio.es",
+              "firstName": "P",
+              "lastName": "GA",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "gR8RJ0nGarvRBlGa",
+                "userActivatedAt": 1766491998544
+              },
+              "disabled": false,
+              "mfaEnabled": true,
+              "lastActiveAt": "2026-01-04",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}
