@@ -1,0 +1,418 @@
+{
+  "updatedAt": "2025-12-25T10:25:56.664Z",
+  "createdAt": "2025-12-22T06:56:55.423Z",
+  "id": "3UIFa70sNgyGEuoH",
+  "name": "Bobinas",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Conexión con Google DRIVE\nRecoge el PDF de la carpeta ",
+        "height": 336,
+        "width": 768,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1792,
+        -128
+      ],
+      "id": "6db7ee90-2081-47f3-bd93-374d9e44b915",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "authentication": "serviceAccount",
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1smrlCg21824bYsPj893nrI3asY49MNCg",
+          "mode": "list",
+          "cachedResultName": "RandomBOBINAS",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1smrlCg21824bYsPj893nrI3asY49MNCg"
+        },
+        "event": "fileCreated",
+        "options": {
+          "fileType": "all"
+        }
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1728,
+        16
+      ],
+      "id": "f1f1ff4c-a92f-4c7f-923e-13552aeea2d5",
+      "name": "Google Drive Trigger1",
+      "credentials": {
+        "googleApi": {
+          "id": "ePv2Ty1cw3gq6g7N",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {
+          "binaryPropertyName": "data"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -1456,
+        16
+      ],
+      "id": "7765a54a-fa20-4d9e-b29a-6506f49b8a6d",
+      "name": "Download file1",
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleApi": {
+          "id": "ePv2Ty1cw3gq6g7N",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Lee el binario real aunque n8n lo guarde en filesystem\nconst buffer = await this.helpers.getBinaryDataBuffer(0, 'data');\n\nconst text = buffer\n  .toString('utf8')\n  .replace(/^\\uFEFF/, '')\n  .trim();\n\nlet parsed;\ntry {\n  parsed = JSON.parse(text);\n} catch (e) {\n  throw new Error(`El archivo no es JSON válido: ${e.message}. Inicio: ${text.slice(0, 200)}`);\n}\n\nreturn Array.isArray(parsed) ? parsed : [parsed];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1200,
+        16
+      ],
+      "id": "07309022-b51b-49e1-a7c7-8f686a58e226",
+      "name": "Parse JSON pedido",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "059e152e-2548-4983-add7-2d9f28cc9968",
+              "leftValue": "={{ $json.interiores[0].papel_id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -896,
+        16
+      ],
+      "id": "6dbe2ff7-d0a6-47fd-9446-fe4e50a46931",
+      "name": "¿papel_id > 0?"
+    },
+    {
+      "parameters": {
+        "url": "https://liberdigital.gomezaparicio.es/sw/automatizacion/bobinas/stock",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -576,
+        96
+      ],
+      "id": "08274155-c071-4e8e-a787-a95c5d980197",
+      "name": "API Bobinas Stock",
+      "alwaysOutputData": true,
+      "notesInFlow": false,
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "EGTFeBpcDKH8NdqZ",
+          "name": "Apis Libernet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// items = lista de items que vienen del HTTP (117 bobinas)\nconst stock = items.map(i => i.json);\n\n// devolvemos 1 solo item con un campo stock = [ ...bobinas ]\nreturn [{ json: { stock } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        96
+      ],
+      "id": "0390d1fe-a3ba-4b9e-947f-f1a2c4021688",
+      "name": "Agrupar stock"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -256,
+        -160
+      ],
+      "id": "eb044a19-d007-461e-81f3-2ca66de1c62d",
+      "name": "Unir pedido + stock"
+    },
+    {
+      "parameters": {
+        "content": "## Condición\nsi viene id (su papel) o no viene (nuestro papel)",
+        "height": 336,
+        "width": 256,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -976,
+        -128
+      ],
+      "id": "5e7867c4-7df6-4927-8fa0-f639c8ce8a23",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const pedido = { ...$json };\n\n// 1) Validaciones mínimas\nconst interior0 = pedido?.interiores?.[0];\nif (!interior0) throw new Error('No existe interiores[0]');\n\nconst anchoLibroCm = Number(pedido.anchoPaginaCm);\nif (!Number.isFinite(anchoLibroCm)) throw new Error(\"anchoPaginaCm no es numérico\");\n\nconst bobinas = pedido.stock;\nif (!Array.isArray(bobinas) || bobinas.length === 0) {\n  pedido.seleccionBobina = {\n    hayCoincidencias: false,\n    mensaje: 'No se recibió stock de bobinas',\n    mejorBobina: null,\n    bobinasValidas: [],\n  };\n  return [{ json: pedido }];\n}\n\n// 2) Certificación (mismo mapeo que tu Azure Function)\nconst mapaCert = {\n  2: 'FSC MIX CREDIT',\n  3: '100% PEFC CERTIFICADO',\n  4: '70% PEFC CERTIFICADO',\n  5: 'FSC Reciclado 100%',\n};\n\nlet certTexto = null;\nif (pedido.certificacion !== undefined && pedido.certificacion !== null) {\n  const c = Number(pedido.certificacion);\n  if (Number.isFinite(c)) certTexto = mapaCert[c] ?? null;\n}\n\n// 3) Cosido vs Fresado\n// - unionPliegos: 1 = cosido, otros = fresado (como tu Python)\nlet esCosido = false;\nconst unionPliegos = pedido.unionPliegos;\nif (unionPliegos !== undefined && unionPliegos !== null) {\n  const u = Number(unionPliegos);\n  if (Number.isFinite(u) && u === 1) esCosido = true;\n}\nconst tipoEncu = esCosido ? 'cosido' : 'fresado';\n\n// 4) Filtros principales (según tu función)\nconst propietarioDeseado = 'Liberdigital';\nconst gramajeDeseado = interior0?.papelPedido?.gramaje ?? null;\nconst calidadPedido = interior0?.calidad ?? null;\n\n// 5) Fórmula de copias\nconst anchoEfectivo = anchoLibroCm + 1;\nif (!(anchoEfectivo > 0)) throw new Error('Ancho efectivo inválido');\n\nconst candidatos = [];\n\nfor (const b of bobinas) {\n  const anchoBobina = Number(b?.ancho);\n  if (!Number.isFinite(anchoBobina)) continue;\n\n  const prop = b?.propietario ?? null;\n  const gram = b?.gramaje ?? null;\n  const cert = b?.certificacion ?? null;\n  const calidad = b?.calidad ?? null;\n  const papelId = b?.papelId ?? null;\n\n  // Propietario\n  if (propietarioDeseado && prop && prop !== propietarioDeseado) continue;\n\n  // Gramaje\n  if (gramajeDeseado !== null && gramajeDeseado !== undefined && gram !== null && gram !== undefined) {\n    if (String(gram) !== String(gramajeDeseado)) continue;\n  }\n\n  // Certificación\n  if (certTexto !== null && cert) {\n    if (certTexto === 'FSC MIX CREDIT') {\n      if (!['FSC MIX CREDIT', 'FSC MIX 70%'].includes(cert)) continue;\n    } else {\n      if (cert !== certTexto) continue;\n    }\n  }\n\n  // Calidad (match exacto)\n  if (calidadPedido && calidad) {\n    if (calidad !== calidadPedido) continue;\n  }\n\n  // Copias base\n  const maxCopias = Math.floor(anchoBobina / anchoEfectivo);\n  if (maxCopias <= 0) continue;\n\n  // Ajuste cosido/fresado\n  let ups;\n  if (esCosido) {\n    const posibles = [4, 2].filter(x => x <= maxCopias);\n    if (posibles.length === 0) continue;\n    ups = Math.max(...posibles);\n  } else {\n    ups = maxCopias;\n  }\n\n  const sobrante = anchoBobina - ups * anchoEfectivo;\n\n  candidatos.push({\n    propietario: prop,\n    calidad,\n    referencia: b?.referencia ?? null,\n    certificacion: cert,\n    gramaje: gram,\n    anchoBobina,\n    ups,\n    sobrante,\n    papelId,\n  });\n}\n\n// 6) Si no hay candidatos\nif (candidatos.length === 0) {\n  pedido.seleccionBobina = {\n    hayCoincidencias: false,\n    mensaje: 'No hay bobinas válidas con filtros y fórmula',\n    mejorBobina: null,\n    bobinasValidas: [],\n  };\n  return [{ json: pedido }];\n}\n\n// 7) Elegir mejor: 1º más ups, 2º menor ancho\ncandidatos.sort((a, b) => {\n  if (b.ups !== a.ups) return b.ups - a.ups;\n  return a.anchoBobina - b.anchoBobina;\n});\nconst mejor = candidatos[0];\n\n// 8) Guardar respuesta y actualizar el pedido final\npedido.seleccionBobina = {\n  hayCoincidencias: true,\n  mensaje: 'Bobina seleccionada correctamente',\n  mejorBobina: mejor,\n  bobinasValidas: candidatos,\n};\n\nif (!pedido.interiores[0].papelPedido) pedido.interiores[0].papelPedido = {};\n\n// ✅ actualizamos SOLO lo necesario\npedido.interiores[0].papel_id = mejor.papelId;\npedido.interiores[0].papelPedido.anchoBobinaCm = mejor.anchoBobina;\n\n// ❌ NO tocamos ups (lo calcula un flujo anterior)\n// pedido.interiores[0].papelPedido.ups = mejor.ups;\n\nreturn [{ json: pedido }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -48,
+        -160
+      ],
+      "id": "1f54bb85-6b66-4a5c-a99d-d400d86db4e4",
+      "name": "Seleccionar bobina (JS)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "bd937279-e2bb-4f7f-951f-a4fe4d54853f",
+              "leftValue": "={{ $json.seleccionBobina.hayCoincidencias }}",
+              "rightValue": "=true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        160,
+        -160
+      ],
+      "id": "831cb41f-b79f-4f02-9926-d5618962801a",
+      "name": "If"
+    }
+  ],
+  "connections": {
+    "Google Drive Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Download file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file1": {
+      "main": [
+        [
+          {
+            "node": "Parse JSON pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse JSON pedido": {
+      "main": [
+        [
+          {
+            "node": "¿papel_id > 0?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿papel_id > 0?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "API Bobinas Stock",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Unir pedido + stock",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "API Bobinas Stock": {
+      "main": [
+        [
+          {
+            "node": "Agrupar stock",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agrupar stock": {
+      "main": [
+        [
+          {
+            "node": "Unir pedido + stock",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Unir pedido + stock": {
+      "main": [
+        [
+          {
+            "node": "Seleccionar bobina (JS)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Seleccionar bobina (JS)": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "5418ee6f-e968-4642-beae-c4b627711afa",
+  "activeVersionId": null,
+  "versionCounter": 42,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-12-22T06:56:55.423Z",
+      "createdAt": "2025-12-22T06:56:55.423Z",
+      "role": "workflow:owner",
+      "workflowId": "3UIFa70sNgyGEuoH",
+      "projectId": "5DRxsE1egf1baMP6",
+      "project": {
+        "updatedAt": "2025-12-16T07:05:26.416Z",
+        "createdAt": "2025-12-16T07:00:37.382Z",
+        "id": "5DRxsE1egf1baMP6",
+        "name": "P GA <procesos@gomezaparicio.es>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "projectRelations": [
+          {
+            "updatedAt": "2025-12-16T07:00:37.382Z",
+            "createdAt": "2025-12-16T07:00:37.382Z",
+            "userId": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
+            "projectId": "5DRxsE1egf1baMP6",
+            "user": {
+              "updatedAt": "2026-01-04T07:22:52.745Z",
+              "createdAt": "2025-12-16T07:00:36.626Z",
+              "id": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
+              "email": "procesos@gomezaparicio.es",
+              "firstName": "P",
+              "lastName": "GA",
+              "personalizationAnswers": null,
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "gR8RJ0nGarvRBlGa",
+                "userActivatedAt": 1766491998544
+              },
+              "disabled": false,
+              "mfaEnabled": true,
+              "lastActiveAt": "2026-01-04",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": null
+}
