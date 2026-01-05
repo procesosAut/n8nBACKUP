@@ -2390,7 +2390,7 @@
             "userId": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
             "projectId": "5DRxsE1egf1baMP6",
             "user": {
-              "updatedAt": "2026-01-04T07:22:52.745Z",
+              "updatedAt": "2026-01-05T07:25:02.786Z",
               "createdAt": "2025-12-16T07:00:36.626Z",
               "id": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
               "email": "procesos@gomezaparicio.es",
@@ -2405,7 +2405,7 @@
               },
               "disabled": false,
               "mfaEnabled": true,
-              "lastActiveAt": "2026-01-04",
+              "lastActiveAt": "2026-01-05",
               "isPending": false
             }
           }
