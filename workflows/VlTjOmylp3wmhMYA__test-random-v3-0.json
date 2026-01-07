@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-05T17:30:55.871Z",
+  "updatedAt": "2026-01-07T10:07:07.184Z",
   "createdAt": "2025-12-27T19:28:32.160Z",
   "id": "VlTjOmylp3wmhMYA",
   "name": "test Random v3.0",
@@ -1110,7 +1110,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        3248,
+        3056,
         1744
       ],
       "id": "4d30939c-a6ca-4718-b008-b2682445b6b2",
@@ -1227,7 +1227,7 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        2528,
+        3040,
         -80
       ],
       "id": "3b1cc433-fd5d-4885-ba2c-f9a4ce27dde6",
@@ -1258,7 +1258,7 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -1136,
+        -1232,
         -560
       ],
       "id": "86b50266-49c3-48b2-9058-d08211d10c14",
@@ -1388,7 +1388,7 @@
       "typeVersion": 2,
       "position": [
         -448,
-        -560
+        -512
       ],
       "id": "6ef43013-45bb-4072-9954-a38cf4c2094c",
       "name": "Renombrar binario"
@@ -1416,11 +1416,237 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2608,
+        3120,
         32
       ],
       "id": "96103571-f390-4e12-b847-0beac291a6dc",
       "name": "INFORME DE REGISTRO "
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "98cf025c-b3f8-45f2-9619-753880758830",
+              "name": "emailId",
+              "value": "={{$json.query.emailId}}",
+              "type": "string"
+            },
+            {
+              "id": "f12123de-1745-42e0-b041-fdd1a0bf8d2a",
+              "name": "fileName",
+              "value": "={{ $json.headers?.['x-file-name'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -944,
+        -560
+      ],
+      "id": "92f70a4a-02fd-4ddb-ba42-b2e2a85c367f",
+      "name": "Normalizar entrada"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://default90419c2b07624d6fb6a1aca6fc3084.80.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/90db2f27340a448eb18b222624ed663a/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=r6FcfmTqDqmfUQoOhijtrpjK7gB-ZOiyG0Mn18AFWLo",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "emailId",
+              "value": "={{$json.emailId}}"
+            },
+            {
+              "name": "status",
+              "value": "={{$json.status}}"
+            },
+            {
+              "name": "destFolder",
+              "value": "={{$json.destFolder}}"
+            },
+            {
+              "name": "fileName",
+              "value": "={{$json.fileName}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2816,
+        368
+      ],
+      "id": "d5b0870b-8469-4e05-9e61-88d983cd9224",
+      "name": "mover Email Pedido"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "2abdb97b-8fd6-480b-9780-417d2c611a62",
+              "leftValue": "={{ $json.resultado }}",
+              "rightValue": "OK",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2368,
+        384
+      ],
+      "id": "1d01eee1-25c6-40a0-8cd8-adf5d4716793",
+      "name": "es OK"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://default90419c2b07624d6fb6a1aca6fc3084.80.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/90db2f27340a448eb18b222624ed663a/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=r6FcfmTqDqmfUQoOhijtrpjK7gB-ZOiyG0Mn18AFWLo",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"emailId\": \"{{$node['Normalizar entrada'].json.query.emailId}}\",\n  \"status\": \"OK\",\n  \"destFolder\": \"{{$node['Normalizar entrada'].json.query.resultFolderOk ?? 'Procesados'}}\",\n  \"fileName\": \"{{$node['Normalizar entrada'].json.fileName ?? $node['Normalizar entrada'].json.headers?.['x-file-name'] ?? ''}}\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        560,
+        1232
+      ],
+      "id": "492afc07-a2a4-4f6b-8b80-dda3b84159b4",
+      "name": "mover Email Pedido1"
+    },
+    {
+      "parameters": {
+        "content": "## Mueve el email del pedido a procesados",
+        "height": 240,
+        "width": 496,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        256,
+        1168
+      ],
+      "id": "80fb8e23-d668-4cf8-afb0-1e6aeb08c572",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "2abdb97b-8fd6-480b-9780-417d2c611a62",
+              "leftValue": "={{ $json.resultado }}",
+              "rightValue": "OK",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        320,
+        1248
+      ],
+      "id": "05a2714a-19ee-45a0-9182-849570ad1d0f",
+      "name": "es OK1"
+    },
+    {
+      "parameters": {
+        "content": "## Mueve el email del pedido a procesados",
+        "height": 240,
+        "width": 496,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2304,
+        304
+      ],
+      "id": "09b34af7-fe5b-4aa3-a7ad-53d1748393c1",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "623005ec-df55-40e9-9d8f-619959781dbb",
+              "name": "emailId",
+              "value": "={{$node['Normalizar entrada'].json.query.emailId}}",
+              "type": "string"
+            },
+            {
+              "id": "732966b2-4255-4f91-883a-5c29a1ac715f",
+              "name": "fileName",
+              "value": "={{$node['Normalizar entrada'].json.fileName ?? $node['Normalizar entrada'].json.headers?.['x-file-name'] ?? ''}}",
+              "type": "string"
+            },
+            {
+              "id": "2c5838b5-c10e-46c1-9588-daaede2e7daa",
+              "name": "status",
+              "value": "OK",
+              "type": "string"
+            },
+            {
+              "id": "2b6dbcb9-ad70-4f1a-92d1-0683ded6945f",
+              "name": "destFolder",
+              "value": "={{$node['Normalizar entrada'].json.query.resultFolderOk ?? 'Procesados'}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2608,
+        368
+      ],
+      "id": "a8d80d34-7cac-4ad1-beac-cc49caf7ed95",
+      "name": "Normalizar entrada1"
     }
   ],
   "connections": {
@@ -1852,6 +2078,11 @@
             "node": "INFORME DE REGISTRO ",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "es OK",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -1866,6 +2097,11 @@
         [
           {
             "node": "INFORME DE REGISTRO 2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "es OK1",
             "type": "main",
             "index": 0
           }
@@ -1892,7 +2128,7 @@
       "main": [
         [
           {
-            "node": "Renombrar binario",
+            "node": "Normalizar entrada",
             "type": "main",
             "index": 0
           }
@@ -1958,6 +2194,55 @@
           }
         ]
       ]
+    },
+    "Normalizar entrada": {
+      "main": [
+        [
+          {
+            "node": "Renombrar binario",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "PDF - Base64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "es OK": {
+      "main": [
+        [
+          {
+            "node": "Normalizar entrada1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "es OK1": {
+      "main": [
+        [
+          {
+            "node": "mover Email Pedido1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizar entrada1": {
+      "main": [
+        [
+          {
+            "node": "mover Email Pedido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -1980,9 +2265,9 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "5cdf59aa-0b57-4a0b-8fa4-b696a62204d4",
+  "versionId": "cefae28f-a702-4871-9694-686521384b52",
   "activeVersionId": "7887ed11-9441-446a-9009-27227f6ebefc",
-  "versionCounter": 374,
+  "versionCounter": 395,
   "triggerCount": 2,
   "shared": [
     {
@@ -2006,7 +2291,7 @@
             "userId": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
             "projectId": "5DRxsE1egf1baMP6",
             "user": {
-              "updatedAt": "2026-01-06T11:00:52.232Z",
+              "updatedAt": "2026-01-07T06:18:32.967Z",
               "createdAt": "2025-12-16T07:00:36.626Z",
               "id": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
               "email": "procesos@gomezaparicio.es",
@@ -2021,7 +2306,7 @@
               },
               "disabled": false,
               "mfaEnabled": true,
-              "lastActiveAt": "2026-01-06",
+              "lastActiveAt": "2026-01-07",
               "isPending": false
             }
           }
