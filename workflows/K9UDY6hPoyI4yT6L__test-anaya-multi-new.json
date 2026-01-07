@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-04T18:37:22.752Z",
+  "updatedAt": "2026-01-06T11:41:34.074Z",
   "createdAt": "2025-12-31T10:07:03.414Z",
   "id": "K9UDY6hPoyI4yT6L",
   "name": "test Anaya Multi new",
@@ -3580,7 +3580,7 @@
   "pinData": {},
   "versionId": "b41df342-2f2e-4892-9507-a6a72a85bee0",
   "activeVersionId": null,
-  "versionCounter": 494,
+  "versionCounter": 495,
   "triggerCount": 2,
   "shared": [
     {
@@ -3604,7 +3604,7 @@
             "userId": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
             "projectId": "5DRxsE1egf1baMP6",
             "user": {
-              "updatedAt": "2026-01-06T11:00:52.232Z",
+              "updatedAt": "2026-01-07T06:18:32.967Z",
               "createdAt": "2025-12-16T07:00:36.626Z",
               "id": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
               "email": "procesos@gomezaparicio.es",
@@ -3619,7 +3619,7 @@
               },
               "disabled": false,
               "mfaEnabled": true,
-              "lastActiveAt": "2026-01-06",
+              "lastActiveAt": "2026-01-07",
               "isPending": false
             }
           }
