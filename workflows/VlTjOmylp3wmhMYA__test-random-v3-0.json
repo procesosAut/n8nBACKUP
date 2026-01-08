@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-07T10:07:07.184Z",
+  "updatedAt": "2026-01-07T16:53:07.544Z",
   "createdAt": "2025-12-27T19:28:32.160Z",
   "id": "VlTjOmylp3wmhMYA",
   "name": "test Random v3.0",
@@ -21,7 +21,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        2432,
+        2544,
         -1696
       ],
       "id": "0c44de6e-1256-40d7-80db-05efe3266d96",
@@ -60,7 +60,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2032,
+        2064,
         -1696
       ],
       "id": "883cfc30-6329-428b-9238-a2ea3c29f845",
@@ -73,7 +73,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2848,
+        3024,
         -1696
       ],
       "id": "2af40cd6-048e-41b6-8d8d-1b60ba12c66b",
@@ -233,7 +233,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2032,
+        2064,
         -1296
       ],
       "id": "14f19f55-9937-42f6-bc7e-85afdab50f0d",
@@ -305,7 +305,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2032,
+        2064,
         -880
       ],
       "id": "c060732e-3aea-4139-b3fc-3bdc65d97d10",
@@ -354,7 +354,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        2416,
+        2560,
         -464
       ],
       "id": "2470f308-955a-48c8-8db6-24785df94ff4",
@@ -377,7 +377,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2032,
+        2064,
         -464
       ],
       "id": "6346f962-96f8-4a38-aafe-a7b0ab5506c5",
@@ -390,7 +390,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2864,
+        3072,
         -464
       ],
       "id": "457d1547-81c5-4f2f-b237-8d478606b9b5",
@@ -488,8 +488,7 @@
           "id": "EGTFeBpcDKH8NdqZ",
           "name": "Apis Libernet"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -515,8 +514,7 @@
         352
       ],
       "id": "a5f18149-2b34-403c-bce0-71668fd9663d",
-      "name": "Validar duplicados",
-      "disabled": true
+      "name": "Validar duplicados"
     },
     {
       "parameters": {
@@ -550,8 +548,7 @@
         352
       ],
       "id": "51f292b8-41eb-4697-87de-70e44463c959",
-      "name": "If",
-      "disabled": true
+      "name": "If"
     },
     {
       "parameters": {
@@ -647,8 +644,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        1200,
-        1264
+        1488,
+        1248
       ],
       "id": "7ddc9c3e-0d44-402b-b367-8931d1c68770",
       "name": "Switch"
@@ -840,8 +837,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        -96,
-        1248
+        -224,
+        1168
       ],
       "id": "a71d6dd5-abc6-4e0a-8157-bc3c85ba0a75",
       "name": "Desarrollo",
@@ -877,8 +874,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -224,
-        1136
+        -352,
+        1056
       ],
       "id": "13b15c7a-c39d-4c9d-816a-081a9bc9cb9b",
       "name": "Sticky Note10"
@@ -901,13 +898,15 @@
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{$json}}",
-        "options": {}
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        -96,
-        1488
+        -224,
+        1408
       ],
       "id": "4f3cad83-ba47-4be9-81b2-3feb0542b030",
       "name": "Producción",
@@ -941,7 +940,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        1984,
+        1840,
         32
       ],
       "id": "a23b1a45-b7e3-402f-968a-41947f5df6c7",
@@ -963,7 +962,7 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1856,
+        1712,
         -80
       ],
       "id": "29fb4b58-2881-4c7e-98f8-1b2f839cb56a",
@@ -987,12 +986,14 @@
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{$json}}",
-        "options": {}
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        1984,
+        1840,
         272
       ],
       "id": "7339dc54-8cd3-406f-8e97-c241e2c13c59",
@@ -1011,7 +1012,7 @@
             {
               "id": "f0ce385a-7aee-445a-9af9-1acee2a8952e",
               "name": "promptCabecera",
-              "value": "## RANDOM v1\n\nActúa como un extractor de datos. Tu tarea es analizar el PDF adjunto y devolver exclusivamente un JSON válido conforme al siguiente esquema:\n\n## MODELO DE SALIDA\n{\n  \"cliente\": 18,\n  \"contacto\": 0,\n  \"suReferencia\": \"\",\n  \"numeroOf\": \"\",\n  \"numeroOtCliente\": \"\",\n  \"isbnPack\": \"\",\n  \"fechaEntrega\": \"\",\n  \"sinRetraso\": false,\n  \"tirada\": 0,\n  \"precioUnitarioSinIVA\": 0,\n  \"precioToltalSinIVA\": 0,\n  \"quiereVerFerros\": 3,\n  \"certificacion\": 0,\n  \"observacionesPedido\": \"\",\n  \"titulo\": \"\",\n  \"sello\": \"\",\n  \"isbn\": \"\",\n  \"codProyecto\": \"\",\n  \"anchoPaginaCm\": 0,\n  \"altoPaginaCm\": 0,\n  \"unionPliegos\": 0,\n  \"encuadernacion\": 0,\n  \"cabezada\": 0,\n  \"cabezadaColor\": 0,\n  \"cabezadaColorOtro\": \"\",\n  \"guardasAparte\": 0,\n  \"guardasImpresas\": 0,\n  \"cintaRegistro\": 0,\n  \"cintaRegistroColor\": 0,\n  \"cintaRegistroColorOtro\": \"\",\n  \"calibreCarton\": 0,\n  \"tipoLomo\": 0,\n  \"solapa\": false,\n  \"hendidoCortesia\": false,\n  \"espiralMaterial\": 0,\n  \"espiralColor\": 0,\n  \"espiralColorOtro\": \"\",\n  \"espiralLado\": 0,\n  \"wireoMaterial\": 0,\n  \"wireoColor\": 0,\n  \"wireoColorOtro\": \"\",\n  \"wireoLado\": 0,\n  \"observacionesEncuadernacion\": \"\"\n}\n\n## REGLAS OBLIGATORIAS\n1) Devuelve SOLO JSON. Sin texto adicional. Sin markdown. Sin explicaciones.  \n2) El JSON debe ser válido (comillas dobles, sin trailing commas).  \n3) Cumple el esquema al 100%:  \n   - No inventes campos que no existan en el esquema.  \n   - No devuelvas claves extra fuera del esquema.  \n   - Respeta tipos (string/number/boolean/array/object) y enum si existen.  \n4) Si un dato no aparece en el PDF:  \n   - Usa null si el esquema lo permite.  \n   - Si NO permite null, usa el valor vacío adecuado: \"\" para string, 0 para number, false para boolean, [] para arrays, {} para objetos (solo si el esquema lo permite).  \n   - Si un campo indica \"siempre vacío\", debe devolverse como cadena vacía (\"\") aunque se detecte contenido.  \n5) Normalización:  \n   - Fechas en formato \"YYYY-MM-DD\" si el esquema no indica otro.  \n   - Importes numéricos sin símbolo de moneda (ej: 174.00).  \n   - Medidas: conserva unidades solo si el esquema lo pide; si no, usa número limpio.  \n   - Ignora acentos SOLO para detectar coincidencias; el valor devuelto mantiene tildes originales.  \n   - Si un texto contiene comillas internas, escápalas con una barra invertida: \\\"  \n   - Acepta SI/Sí/No/NO sin importar mayúsculas/acentos.  \n   EN LA BUSQUEDA DE DATOS:  \n   - Coincidencia sin distinguir mayúsculas/minúsculas.  \n   - Ignora acentos/diacríticos.  \n   - Colapsa espacios múltiples y recorta espacios sobrantes.  \n6) Verificación final antes de responder:  \n   - Revisa que el JSON parsea.  \n   - Revisa que cumple el esquema.  \n   - Revisa que no hay texto fuera del JSON.\n\n## REGLAS POR CAMPO\n- \"cliente\": Devuelve 18.  \n- \"contacto\": Usa el prompt de CONTACTO.  \n- \"numeroOf\": Números debajo de Ed/Enc (ej.: \"001/001\").  \n- \"numeroOtCliente\": Número de Pedido.  \n- \"fechaEntrega\": Fecha prevista fin (AAAA-MM-DD).  \n- \"sinRetraso\": true si aparece la palabra literal \"URGENTE\", si no aparece ninguna refenrencia devuelve false.  \n- \"tirada\": Valor del tiraje.  \n- \"precioUnitarioSinIVA\": // no devuelvas nada. Dejalo a 0.  \n- \"precioToltalSinIVA\": // Si aparece, devuelve número con 2 decimales; si no aparece, 0.  \n- \"quiereVerFerros\": 1 = “ferro digital”, 2 = “ferro físico”, 3 si no se menciona.  \n- \"certificacion\": Usa el prompt de CERTIFICACION.  \n- \"observacionesPedido\": Usa el prompt de OBSERVACIONES.  \n- \"titulo\": Descripción del artículo. Si aparece FSC Mix al lado o debajo, ignóralo.  \n- \"isbn\": segunda línea debajo de Código Artículo.  \n- \"codProyecto\": primera línea debajo de Código Artículo.  \n- \"anchoPaginaCm\"/\"altoPaginaCm\": Convierte mm a cm (1 decimal. Si decimal es 0, devuelve entero).  \n- \"unionPliegos\": 2 si contiene “FRESADO”, 1 si contiene “COSIDO”.  \n- \"encuadernacion\": 1=Cartoné, 2=Flexible, 3=Rústica, 4=Espiral, 5=Grapa, 6=Wire-o, 7=Otro.  \n- \"cabezada\": 1 si aparece \"Cabezada SI/SÍ\" y encuadernación es 1 o 2, si no 0.  \n- \"cabezadaColorOtro\":  \n  - Si aparece “Cabezada Sí” y encuadernacion ∈ {1,2} ⇒ cabezada = 1.  \n    - Extrae el texto después de “Sí” (ej.: Politi 1 - Blanco).  \n    - Guarda ese color en cabezadaColorOtro (string).  \n    - cabezadaColor debe ser 0 siempre.  \n  - Si aparece “Cabezada No” o no hay “Cabezada” ⇒ cabezada = 0, cabezadaColorOtro = \"\" y cabezadaColor = 0.  \n  - Scope: Evalúa “Sí/No” y el texto asociado solo en la misma línea donde aparezca “Cabezada” (o 1 línea debajo). Ignora “sí/no” en otras secciones.  \n  - Si cabezada=1 y no hay texto después de “Sí”, entonces cabezadaColorOtro=\"\" (vacío).  \n- \"guardasAparte\": 1 si encuadernación ∈ {1,2}, si no 0.  \n- \"guardasImpresas\": 1 si aparece “guardas impresas” y encuadernación ∈ {1,2}, si no 0.  \n- \"cintaRegistro\": 1 si aparece “Cinta de registro SI” o \"Cinta registro SI/SÍ\" y encuadernación ∈ {1,2}, si aparece “Cinta de registro NO\" o \"Cinta registro NO\" devuelve 0.  \n- \"cintaRegistroColorOtro\":  \n  - Si aparece “Sí” y encuadernacion ∈ {1,2} ⇒ cintaRegistro = 1.  \n    - Extrae el texto después de “Sí” (ej.: Politi 8 - Blanco).  \n    - Guarda ese color en cintaRegistroColorOtro (string).  \n    - cintaRegistroColor debe ser 0 siempre.  \n  - Si aparece “No” o no hay mención ⇒ cintaRegistro = 0, cintaRegistroColorOtro = \"\", cintaRegistroColor = 0.  \n  - Importante: NO pongas cintaRegistro = 0 solo porque no encuentres el color. Son cosas independientes.  \n  - Scope: Evalúa “Sí/No” y el texto asociado solo en la misma línea donde aparezca “Cinta de registro” (o 1 línea debajo). Ignora “sí/no” en otras secciones.  \n  - Si cintaRegistro=1 y no hay texto después de “Sí”, entonces cintaRegistroColorOtro=\"\" (vacío).  \n- \"calibreCarton\": Usa el prompt de CALIBRE.  \n- \"tipoLomo\": 1 = “lomo cuadrado”, 2 = “lomo redondo” y encuadernación ∈ {1,2}, si no 0.  \n- \"solapa\": Devuelve siempre este campo (boolean).\n      Normaliza el texto antes de decidir:\n      - pásalo a minúsculas\n      - elimina acentos\n      - trata cualquier salto de línea como un espacio\n      Reglas (en este orden):\n      1) Si aparece \"sin solapa\" o \"sin solapas\" → devuelve false.\n      2) Si aparece cualquiera de estas formas → devuelve true:\n        - \"solapa si\" / \"solapas si\"\n        - \"con solapa\" / \"con solapas\"\n        - \"fresado con solapa(s)\"\n        - \"rustica con solapa(s)\" (o \"rústica ... con solapas\")\n        - \"cosida con solapa(s)\"\n        - \"con solapas con hendido\" / \"con solapas sin hendido\"\n      3) Regla de respaldo:\n        - Si aparece la palabra \"solapa\" o \"solapas\" en cualquier parte\n          y NO aparece \"sin\" en las 3 palabras anteriores o posteriores a \"solapa(s)\",\n          entonces devuelve true.\n      4) En caso contrario\n        - Si aparece la palabra \"solapa\" o \"solapas\" en cualquier parte\n          y aparece NO en las 3 palabras anteriores o posteriores a \"solapa(s)\",\n          entonces devuelve false.\n         - \"solapa no\" / \"solapas no\"\n         - Si no aparece nada de lo anterior → devuelve false.\n- \"hendidoCortesia\": Devuelve siempre este campo. true si aparece literalmente \"CON HENDIDO\" o no aparece nada. false si aparece \"SIN HENDIDO\" o encuadernación = Cartoné, Flexible, Espiral. Coincidencia insensible a mayúsculas/minúsculas ni acentos. Si aparece \"HENDIDO\" y no aparece CON o SIN devuelve true.  \n- Los campos como “espiral...” o “wireo...” solo se rellenan si aparecen explícitamente en el PDF, si no mantener en 0 o \"\".  \n- \"observacionesEncuadernacion\": Solo si detectas \"Guardas impresas NO\" busca referencia al material de impresión, ejemplo \"Geltex\".\n\n## PROMPTS\n\n### CONTACTO\nBusca en el PDF solo en la parte inferior de la orden (el último cuarto de la página). Dentro de ese bloque, localiza el nombre y apellidos juntos.\n\nReglas:\n- Coincidencia sin distinguir mayúsculas/minúsculas.\n- Ignora acentos/diacríticos (Á= A, É= E, Í= I, Ó= O, Ú= U, Ü= U, Ñ= N).\n- Colapsa espacios múltiples y recorta espacios sobrantes.\n- Si varias líneas del mapa coinciden tras normalizar (por ejemplo, duplicados con y sin acento), devuelve el usuarioId menor.\n- Si no hay coincidencia, devuelve 0.\n\nSalida: devuelve solo el número usuarioId (entero, sin comillas).\n\nMapa nombre → usuarioId:\n- Marta Álvarez = 3\n- Víctor Benayas = 4\n- Raúl Bernardo = 5\n- José Antonio Cabezas = 7\n- Sonia López = 18\n- Rocío Martínez = 21\n- Daniel Pamos = 26\n- Víctor Benayas = 38\n- Guillermo Manzano = 283\n- Cecilia Porzio = 335\n- Wilfred Santana = 415\n- Sarai Paz = 477\n- Juan Jose Hernandez = 485\n- Judit Franco = 498\n- CAROLINA JIMÉNEZ = 507\n\nDevuelve únicamente el número.\n\n### CERTIFICACION\nIdentifica el bloque correcto “Descripción (del artículo)” siguiendo esta lógica:\n\n1. LOCALIZACIÓN DEL BLOQUE:\n- Busca una línea exacta con el texto “Descripción”.\n- Dentro de las 10 líneas siguientes, debe aparecer al menos uno de estos rótulos de ficha:\n  Autor, Ed/Enc, Colección, Tiraje, Formato, Nº Páginas, Solapa, Grosor, Código Barras.\n- Si “Descripción” forma parte de una tabla o cabecera (por ejemplo en “Servicios” o “Componentes”), descártalo: no es el bloque de ficha del artículo.\n\n2. DEFINICIÓN DEL BLOQUE:\n- El bloque comienza en la línea inmediatamente posterior a “Descripción”.\n- Finaliza al encontrar alguno de estos rótulos:\n  Autor, Ed/Enc, Colección, Tiraje, Formato, Nº Páginas, Solapa, Grosor, Código Barras, Servicios, Componentes, Observaciones.\n\n3. ALCANCE DE BÚSQUEDA:\n- La búsqueda de certificación se limita únicamente a ese bloque validado.\n\n4. DETECCIÓN DE CERTIFICACIÓN (valores literales y sensibles a mayúsculas/minúsculas):\n- Si aparece exactamente “FSC Mix” ⇒ devuelve 2.\n- Si no aparece “FSC Mix” pero sí aparece exactamente “PEFC” ⇒ devuelve 4.\n- En cualquier otro caso ⇒ devuelve 0.\n- Si ambos aparecen ⇒ da prioridad a “FSC Mix” (devuelve 2).\n\n5. EXCLUSIONES EXPLÍCITAS:\nIgnora cualquier mención a “FSC”, “FSC®”, “FSC Mix”, “PEFC” si:\n- Está en cabeceras, pies de página o notas legales (ej.: “empresa certificada FSC®…”).\n- Está dentro de las tablas o secciones “Servicios” o “Componentes” (ej.: “MB PRIME BRIGHT… (FSC)”).\n\n6. SALIDA:\nDevuelve únicamente el valor en “certificacion”: 2, 4 o 0. No devuelvas ningún texto adicional.\n\n### OBSERVACIONES\n\n      **Objetivo:** construir `observacionesPedido` con **(A) cabecera fija** + **(B) notas de impresión relevantes**.\n\n      A) Cabecera fija (SIEMPRE)\n      1) Localiza el bloque titulado exactamente **“Observaciones”**.  \n      2) Devuelve **SIEMPRE las 2 primeras líneas con texto** de ese bloque.  \n        - Si hay renglones vacíos entre medias, **no cuentan**.  \n        - Respeta mayúsculas/minúsculas originales.\n\n      B) Observaciones de impresión (además de A)\n      Después, analiza **TODO el documento (todas las páginas)** y añade **SOLO** líneas que sean **instrucciones / advertencias de impresión**, aunque estén fuera del bloque “Observaciones”.\n\n      Incluye una línea si cumple **cualquiera**:\n\n      - Es una **instrucción**, **cuidado**, **advertencia**, **nota de calidad**, **registro** o **indicaciones de control**  \n        (ej.: “cuidado que no oscurezcan”, “lleva imágenes”, “vigilar registro”, “no variar color”, etc.).\n      - Contiene estas palabras clave (o variantes):  \n        `imagen`, `imágenes`, `color`, `colores`, `tinta`, `tintas`, `pantone`, `cmyk`, `registro`, `cabezada`, `cinta`, `sangrado`, `oscurezcan`, `no oscure`, `cuidado`, `advertencia`, `muestra`, `normativa`, `plastificado`, `laminado`, `barniz`, `UVI`.\n      - Está dentro de un bloque técnico tipo **CUBIERTA:** / **INTERIOR:** y aporta una **indicación** (no solo descripción).\n\n      Evita duplicados\n      - Si una línea **SOLO** repite datos ya estructurados  \n        (p.ej. “Impresión 4/0”, “Impresión 1/1”, “Plastificado mate”) **NO la incluyas**,  \n        **salvo** que venga acompañada de una indicación adicional (ej.: “4/0… y cuidado con…”).\n\n      Regla “topo”\n      - Solo cuenta “topo” como palabra independiente.  \n      - Si aparece una mención válida (no negada), añade exactamente: **`Colocar topo`**.\n\n      Estilo de salida\n      - Devuelve un único texto con líneas separadas por `\\n`.  \n      - Elimina relleno (“gracias”, “saludos”) y frases irrelevantes.  \n      - Mantén ortografía original salvo limpieza mínima de espacios.  \n      - No inventes datos; no infieras campos técnicos.  \n      - No repitas la misma idea con otras palabras.\n\n      Prohibido\n      - NO REGISTRES datos referentes a entrega, muestra, coste.\n\n      Recordatorio final\n      - Acuérdate: las **2 primeras líneas del bloque Observaciones** van siempre, aunque luego no haya nada más.\n\n\n### CALIBRE\nObjetivo:\nDevuelve exclusivamente el ID correspondiente al calibreCarton según la tabla. Si no se encuentra una coincidencia inequívoca, devuelve 0.\n\nMAPEO (calibre → ID):\n- 1,5 → 1\n- 2,0 → 2\n- 2,5 → 3\n- 3,0 → 4\n- 2,0 + espuma 3 → 5\n- 2,5 + espuma 3 → 6\n- 3,0 + espuma 3 → 7\n- 1,75 → 8\n- 2,25 → 9\n- 2,75 → 10\n\nREGLAS DE DETECCIÓN:\n1. Scope:\n- Prioriza coincidencias cercanas a palabras clave como: “calibre”, “cartón”, “cartone”, “tapa”, “cubierta”, “caja rígida”.\n- Si no se encuentran cerca de esas palabras, busca en todo el PDF.\n\n2. Normalización previa:\n- Ignora mayúsculas, minúsculas y acentos.\n- Considera \".\" igual a \",\" (ej.: “2.5” se interpreta como “2,5”).\n- Elimina espacios innecesarios.\n- “foam”, “esp.” y “espuma” se consideran equivalentes.\n- “mm” es opcional y puede omitirse.\n\n3. Orden de detección (prioridad):\na) Detecta primero patrones que indiquen combinaciones con espuma 3 (acepta formatos con \"+\", \"con\", \"y\", incluso en orden invertido).\nb) Si no hay espuma, busca solo el calibre exacto (usando el mapeo anterior).\n\n4. Desempate:\n- Si aparecen varios valores posibles:\n  - Prioriza el más específico (el que incluye espuma).\n  - Si tienen misma especificidad, elige el más cercano al contexto (palabras clave del Scope).\n  - Si persiste el empate → devuelve 0.\n\nSALIDA:\nDevuelve únicamente el número del ID (ej.: 3). Si no hay coincidencia inequívoca, devuelve 0.\n\nEJEMPLOS:\n- “2,5 mm” → 3\n- “3,0 + espuma 3” → 7\n- “2.0 + FOAM 3” → 5\n- “1,75” → 8\n- “2,0 y 2,5 sin claridad” → 0\n\nsolo si encuadernación ∈ {1,2}, si no 0.\n\n## IMPORTANTE\nDevuelve todos los valores del esquema aunque esten vacios o sin datos\n",
+              "value": "## RANDOM v1\n\nActúa como un extractor de datos. Tu tarea es analizar el PDF adjunto y devolver exclusivamente un JSON válido conforme al siguiente esquema:\n\n## MODELO DE SALIDA\n{\n  \"cliente\": 18,\n  \"contacto\": 0,\n  \"suReferencia\": \"\",\n  \"numeroOf\": \"\",\n  \"numeroOtCliente\": \"\",\n  \"isbnPack\": \"\",\n  \"fechaEntrega\": \"\",\n  \"sinRetraso\": false,\n  \"tirada\": 0,\n  \"precioUnitarioSinIVA\": 0,\n  \"precioToltalSinIVA\": 0,\n  \"quiereVerFerros\": 3,\n  \"certificacion\": 0,\n  \"observacionesPedido\": \"\",\n  \"titulo\": \"\",\n  \"sello\": \"\",\n  \"isbn\": \"\",\n  \"codProyecto\": \"\",\n  \"anchoPaginaCm\": 0,\n  \"altoPaginaCm\": 0,\n  \"unionPliegos\": 0,\n  \"encuadernacion\": 0,\n  \"cabezada\": 0,\n  \"cabezadaColor\": 0,\n  \"cabezadaColorOtro\": \"\",\n  \"guardasAparte\": 0,\n  \"guardasImpresas\": 0,\n  \"cintaRegistro\": 0,\n  \"cintaRegistroColor\": 0,\n  \"cintaRegistroColorOtro\": \"\",\n  \"calibreCarton\": 0,\n  \"tipoLomo\": 0,\n  \"solapa\": false,\n  \"hendidoCortesia\": false,\n  \"espiralMaterial\": 0,\n  \"espiralColor\": 0,\n  \"espiralColorOtro\": \"\",\n  \"espiralLado\": 0,\n  \"wireoMaterial\": 0,\n  \"wireoColor\": 0,\n  \"wireoColorOtro\": \"\",\n  \"wireoLado\": 0,\n  \"observacionesEncuadernacion\": \"\"\n}\n\n## REGLAS OBLIGATORIAS\n1) Devuelve SOLO JSON. Sin texto adicional. Sin markdown. Sin explicaciones.  \n2) El JSON debe ser válido (comillas dobles, sin trailing commas).  \n3) Cumple el esquema al 100%:  \n   - No inventes campos que no existan en el esquema.  \n   - No devuelvas claves extra fuera del esquema.  \n   - Respeta tipos (string/number/boolean/array/object) y enum si existen.  \n4) Si un dato no aparece en el PDF:  \n   - Usa null si el esquema lo permite.  \n   - Si NO permite null, usa el valor vacío adecuado: \"\" para string, 0 para number, false para boolean, [] para arrays, {} para objetos (solo si el esquema lo permite).  \n   - Si un campo indica \"siempre vacío\", debe devolverse como cadena vacía (\"\") aunque se detecte contenido.  \n5) Normalización:  \n   - Fechas en formato \"YYYY-MM-DD\" si el esquema no indica otro.  \n   - Importes numéricos sin símbolo de moneda (ej: 174.00).  \n   - Medidas: conserva unidades solo si el esquema lo pide; si no, usa número limpio.  \n   - Ignora acentos SOLO para detectar coincidencias; el valor devuelto mantiene tildes originales.  \n   - Si un texto contiene comillas internas, escápalas con una barra invertida: \\\"  \n   - Acepta SI/Sí/No/NO sin importar mayúsculas/acentos.  \n   EN LA BUSQUEDA DE DATOS:  \n   - Coincidencia sin distinguir mayúsculas/minúsculas.  \n   - Ignora acentos/diacríticos.  \n   - Colapsa espacios múltiples y recorta espacios sobrantes.  \n6) Verificación final antes de responder:  \n   - Revisa que el JSON parsea.  \n   - Revisa que cumple el esquema.  \n   - Revisa que no hay texto fuera del JSON.\n\n## REGLAS POR CAMPO\n- \"cliente\": Devuelve 18.  \n- \"contacto\": Usa el prompt de CONTACTO.  \n- \"numeroOf\": Números debajo de Ed/Enc (ej.: \"001/001\").  \n- \"numeroOtCliente\": Número de Pedido.  \n- \"fechaEntrega\": Fecha prevista fin (AAAA-MM-DD).  \n- \"sinRetraso\": true si aparece la palabra literal \"URGENTE\", si no aparece ninguna refenrencia devuelve false.  \n- \"tirada\": Valor del tiraje.  \n- \"precioUnitarioSinIVA\": // no devuelvas nada. Dejalo a 0.  \n- \"precioToltalSinIVA\": // Si aparece, devuelve número con 2 decimales; si no aparece, 0.  \n- \"quiereVerFerros\": 1 = “ferro digital”, 2 = “ferro físico”, 3 si no se menciona.  \n- \"certificacion\": Usa el prompt de CERTIFICACION.  \n- \"observacionesPedido\": Usa el prompt de OBSERVACIONES.  \n- \"titulo\": Descripción del artículo. Si aparece FSC Mix al lado o debajo, ignóralo.  \n- \"isbn\": segunda línea debajo de Código Artículo.  \n- \"codProyecto\": primera línea debajo de Código Artículo.  \n- \"anchoPaginaCm\"/\"altoPaginaCm\": Convierte mm a cm (1 decimal. Si decimal es 0, devuelve entero).  \n- \"unionPliegos\": (solo por palabras clave; no inferir)\n        - Normaliza el texto: mayúsc/minúsc, acentos y espacios.\n        - **Prioridad (si hay varias coincidencias, aplica la primera que aparezca):**\n          1) **1 (COSIDO)** si aparece cualquiera de:\n            - `COSIDO`, `COSIDA`, `COSED.*`, `HILO`, `THREAD-SEWN`, `SEWN`\n          2) **2 (FRESADO / ENCOLADO)** si aparece cualquiera de:\n            - `FRESADO`, `FRESAR`, `ENCOLADO`, `ENCUADERNADO A LA COLA`, `PUR`, `HOTMELT`, `COLA`\n          3) **0** si no aparece nada de lo anterior (si tu esquema no permite 0, usa el valor vacío que corresponda).\n        > Nota: “CON/SIN SOLAPAS”, “RÚSTICA”, “CARTONÉ”, etc. **no** determinan `unionPliegos`.  \n        > Solo cuentan las palabras clave de cosido o cola.\n- \"encuadernacion\": 1=Cartoné, 2=Flexible, 3=Rústica, 4=Espiral, 5=Grapa, 6=Wire-o, 7=Otro.  \n        - Busca **solo** por palabras clave (no deducir por códigos o por solapas).\n        - **Prioridad (más específico primero):**\n          1) **1 Cartoné** si aparece:\n            - `CARTONÉ`, `TAPA DURA`, `TAPA RÍGIDA`, `CASEBOUND`\n          2) **3 Rústica** si aparece:\n            - `RÚSTICA`, `TAPA BLANDA`, `RUSTICA`\n          3) **2 Flexible** si aparece:\n            - `FLEXIBLE`, `TAPA FLEXIBLE`\n          4) **6 Wire-o** si aparece:\n            - `WIRE-O`, `WIREO`, `DOBLE ANILLA`, `DOBLE ESPIRAL METÁLICA`\n          5) **4 Espiral** si aparece:\n            - `ESPIRAL`, `ESPIRALADO`, `CANUTILLO`\n          6) **5 Grapa** si aparece:\n            - `GRAPA`, `GRAPADO`, `CABALLETE`, `SADDLE STITCH`\n          7) **7 Otro** si aparece “ENCUADERNACIÓN:” pero no coincide con nada de lo anterior, o si no hay info suficiente.\n          > Importante: “CON SOLAPAS / SIN HENDIDO” **no cambia** `encuadernacion`; eso va en sus propios campos.\n- \"cabezada\": 1 si aparece \"Cabezada SI/SÍ\" y encuadernación es 1 o 2, si no 0.  \n- \"cabezadaColorOtro\":  \n  - Si aparece “Cabezada Sí” y encuadernacion ∈ {1,2} ⇒ cabezada = 1.  \n    - Extrae el texto después de “Sí” (ej.: Politi 1 - Blanco).  \n    - Guarda ese color en cabezadaColorOtro (string).  \n    - cabezadaColor debe ser 0 siempre.  \n  - Si aparece “Cabezada No” o no hay “Cabezada” ⇒ cabezada = 0, cabezadaColorOtro = \"\" y cabezadaColor = 0.  \n  - Scope: Evalúa “Sí/No” y el texto asociado solo en la misma línea donde aparezca “Cabezada” (o 1 línea debajo). Ignora “sí/no” en otras secciones.  \n  - Si cabezada=1 y no hay texto después de “Sí”, entonces cabezadaColorOtro=\"\" (vacío).  \n- \"guardasAparte\": 1 si encuadernación ∈ {1,2}, si no 0.  \n- \"guardasImpresas\": 1 si aparece “guardas impresas” y encuadernación ∈ {1,2}, si no 0.  \n- \"cintaRegistro\": 1 si aparece “Cinta de registro SI” o \"Cinta registro SI/SÍ\" y encuadernación ∈ {1,2}, si aparece “Cinta de registro NO\" o \"Cinta registro NO\" devuelve 0.  \n- \"cintaRegistroColorOtro\":  \n  - Si aparece “Sí” y encuadernacion ∈ {1,2} ⇒ cintaRegistro = 1.  \n    - Extrae el texto después de “Sí” (ej.: Politi 8 - Blanco).  \n    - Guarda ese color en cintaRegistroColorOtro (string).  \n    - cintaRegistroColor debe ser 0 siempre.  \n  - Si aparece “No” o no hay mención ⇒ cintaRegistro = 0, cintaRegistroColorOtro = \"\", cintaRegistroColor = 0.  \n  - Importante: NO pongas cintaRegistro = 0 solo porque no encuentres el color. Son cosas independientes.  \n  - Scope: Evalúa “Sí/No” y el texto asociado solo en la misma línea donde aparezca “Cinta de registro” (o 1 línea debajo). Ignora “sí/no” en otras secciones.  \n  - Si cintaRegistro=1 y no hay texto después de “Sí”, entonces cintaRegistroColorOtro=\"\" (vacío).  \n- \"calibreCarton\": Usa el prompt de CALIBRE.  \n- \"tipoLomo\": 1 = “lomo cuadrado”, 2 = “lomo redondo” y encuadernación ∈ {1,2}, si no 0.  \n- \"solapa\": Devuelve siempre este campo (boolean).\n      Normaliza el texto antes de decidir:\n      - pásalo a minúsculas\n      - elimina acentos\n      - trata cualquier salto de línea como un espacio\n      Reglas (en este orden):\n      1) Si aparece \"sin solapa\" o \"sin solapas\" → devuelve false.\n      2) Si aparece cualquiera de estas formas → devuelve true:\n        - \"solapa si\" / \"solapas si\"\n        - \"con solapa\" / \"con solapas\"\n        - \"fresado con solapa(s)\"\n        - \"rustica con solapa(s)\" (o \"rústica ... con solapas\")\n        - \"cosida con solapa(s)\"\n        - \"con solapas con hendido\" / \"con solapas sin hendido\"\n      3) Regla de respaldo:\n        - Si aparece la palabra \"solapa\" o \"solapas\" en cualquier parte\n          y NO aparece \"sin\" en las 3 palabras anteriores o posteriores a \"solapa(s)\",\n          entonces devuelve true.\n      4) En caso contrario\n        - Si aparece la palabra \"solapa\" o \"solapas\" en cualquier parte\n          y aparece NO en las 3 palabras anteriores o posteriores a \"solapa(s)\",\n          entonces devuelve false.\n         - \"solapa no\" / \"solapas no\"\n         - Si no aparece nada de lo anterior → devuelve false.\n- \"hendidoCortesia\": Devuelve siempre este campo. true si aparece literalmente \"CON HENDIDO\" o no aparece nada. false si aparece \"SIN HENDIDO\" o encuadernación = Cartoné, Flexible, Espiral. Coincidencia insensible a mayúsculas/minúsculas ni acentos. Si aparece \"HENDIDO\" y no aparece CON o SIN devuelve true.  \n- Los campos como “espiral...” o “wireo...” solo se rellenan si aparecen explícitamente en el PDF, si no mantener en 0 o \"\".  \n- \"observacionesEncuadernacion\": Solo si detectas \"Guardas impresas NO\" busca referencia al material de impresión, ejemplo \"Geltex\".\n\n## PROMPTS\n\n### CONTACTO\nBusca en el PDF solo en la parte inferior de la orden (el último cuarto de la página). Dentro de ese bloque, localiza el nombre y apellidos juntos.\n\nReglas:\n- Coincidencia sin distinguir mayúsculas/minúsculas.\n- Ignora acentos/diacríticos (Á= A, É= E, Í= I, Ó= O, Ú= U, Ü= U, Ñ= N).\n- Colapsa espacios múltiples y recorta espacios sobrantes.\n- Si varias líneas del mapa coinciden tras normalizar (por ejemplo, duplicados con y sin acento), devuelve el usuarioId menor.\n- Si no hay coincidencia, devuelve 0.\n\nSalida: devuelve solo el número usuarioId (entero, sin comillas).\n\nMapa nombre → usuarioId:\n- Marta Álvarez = 3\n- Víctor Benayas = 4\n- Raúl Bernardo = 5\n- José Antonio Cabezas = 7\n- Sonia López = 18\n- Rocío Martínez = 21\n- Daniel Pamos = 26\n- Víctor Benayas = 38\n- Guillermo Manzano = 283\n- Cecilia Porzio = 335\n- Wilfred Santana = 415\n- Sarai Paz = 477\n- Juan Jose Hernandez = 485\n- Judit Franco = 498\n- CAROLINA JIMÉNEZ = 507\n\nDevuelve únicamente el número.\n\n### CERTIFICACION\nIdentifica el bloque correcto “Descripción (del artículo)” siguiendo esta lógica:\n\n1. LOCALIZACIÓN DEL BLOQUE:\n- Busca una línea exacta con el texto “Descripción”.\n- Dentro de las 10 líneas siguientes, debe aparecer al menos uno de estos rótulos de ficha:\n  Autor, Ed/Enc, Colección, Tiraje, Formato, Nº Páginas, Solapa, Grosor, Código Barras.\n- Si “Descripción” forma parte de una tabla o cabecera (por ejemplo en “Servicios” o “Componentes”), descártalo: no es el bloque de ficha del artículo.\n\n2. DEFINICIÓN DEL BLOQUE:\n- El bloque comienza en la línea inmediatamente posterior a “Descripción”.\n- Finaliza al encontrar alguno de estos rótulos:\n  Autor, Ed/Enc, Colección, Tiraje, Formato, Nº Páginas, Solapa, Grosor, Código Barras, Servicios, Componentes, Observaciones.\n\n3. ALCANCE DE BÚSQUEDA:\n- La búsqueda de certificación se limita únicamente a ese bloque validado.\n\n4. DETECCIÓN DE CERTIFICACIÓN (valores literales y sensibles a mayúsculas/minúsculas):\n- Si aparece exactamente “FSC Mix” ⇒ devuelve 2.\n- Si no aparece “FSC Mix” pero sí aparece exactamente “PEFC” ⇒ devuelve 4.\n- En cualquier otro caso ⇒ devuelve 0.\n- Si ambos aparecen ⇒ da prioridad a “FSC Mix” (devuelve 2).\n\n5. EXCLUSIONES EXPLÍCITAS:\nIgnora cualquier mención a “FSC”, “FSC®”, “FSC Mix”, “PEFC” si:\n- Está en cabeceras, pies de página o notas legales (ej.: “empresa certificada FSC®…”).\n- Está dentro de las tablas o secciones “Servicios” o “Componentes” (ej.: “MB PRIME BRIGHT… (FSC)”).\n\n6. SALIDA:\nDevuelve únicamente el valor en “certificacion”: 2, 4 o 0. No devuelvas ningún texto adicional.\n\n### OBSERVACIONES\n\n      **Objetivo:** construir `observacionesPedido` con **(A) cabecera fija** + **(B) notas de impresión relevantes**.\n\n      A) Cabecera fija (SIEMPRE)\n      1) Localiza el bloque titulado exactamente **“Observaciones”**.  \n      2) Devuelve **SIEMPRE las 2 primeras líneas con texto** de ese bloque.  \n        - Si hay renglones vacíos entre medias, **no cuentan**.  \n        - Respeta mayúsculas/minúsculas originales.\n\n      B) Observaciones de impresión (además de A)\n      Después, analiza **TODO el documento (todas las páginas)** y añade **SOLO** líneas que sean **instrucciones / advertencias de impresión**, aunque estén fuera del bloque “Observaciones”.\n\n      Incluye una línea si cumple **cualquiera**:\n\n      - Es una **instrucción**, **cuidado**, **advertencia**, **nota de calidad**, **registro** o **indicaciones de control**  \n        (ej.: “cuidado que no oscurezcan”, “lleva imágenes”, “vigilar registro”, “no variar color”, etc.).\n      - Contiene estas palabras clave (o variantes):  \n        `imagen`, `imágenes`, `color`, `colores`, `tinta`, `tintas`, `pantone`, `cmyk`, `registro`, `cabezada`, `cinta`, `sangrado`, `oscurezcan`, `no oscure`, `cuidado`, `advertencia`, `muestra`, `normativa`, `plastificado`, `laminado`, `barniz`, `UVI`.\n      - Está dentro de un bloque técnico tipo **CUBIERTA:** / **INTERIOR:** y aporta una **indicación** (no solo descripción).\n\n      Evita duplicados\n      - Si una línea **SOLO** repite datos ya estructurados  \n        (p.ej. “Impresión 4/0”, “Impresión 1/1”, “Plastificado mate”) **NO la incluyas**,  \n        **salvo** que venga acompañada de una indicación adicional (ej.: “4/0… y cuidado con…”).\n\n      Regla “topo”\n      - Solo cuenta “topo” como palabra independiente.  \n      - Si aparece una mención válida (no negada), añade exactamente: **`Colocar topo`**.\n\n      Estilo de salida\n      - Devuelve un único texto con líneas separadas por `\\n`.  \n      - Elimina relleno (“gracias”, “saludos”) y frases irrelevantes.  \n      - Mantén ortografía original salvo limpieza mínima de espacios.  \n      - No inventes datos; no infieras campos técnicos.  \n      - No repitas la misma idea con otras palabras.\n\n      Prohibido\n      - NO REGISTRES datos referentes a entrega, muestra, coste.\n\n      Recordatorio final\n      - Acuérdate: las **2 primeras líneas del bloque Observaciones** van siempre, aunque luego no haya nada más.\n\n\n### CALIBRE\nObjetivo:\nDevuelve exclusivamente el ID correspondiente al calibreCarton según la tabla. Si no se encuentra una coincidencia inequívoca, devuelve 0.\n\nMAPEO (calibre → ID):\n- 1,5 → 1\n- 2,0 → 2\n- 2,5 → 3\n- 3,0 → 4\n- 2,0 + espuma 3 → 5\n- 2,5 + espuma 3 → 6\n- 3,0 + espuma 3 → 7\n- 1,75 → 8\n- 2,25 → 9\n- 2,75 → 10\n\nREGLAS DE DETECCIÓN:\n1. Scope:\n- Prioriza coincidencias cercanas a palabras clave como: “calibre”, “cartón”, “cartone”, “tapa”, “cubierta”, “caja rígida”.\n- Si no se encuentran cerca de esas palabras, busca en todo el PDF.\n\n2. Normalización previa:\n- Ignora mayúsculas, minúsculas y acentos.\n- Considera \".\" igual a \",\" (ej.: “2.5” se interpreta como “2,5”).\n- Elimina espacios innecesarios.\n- “foam”, “esp.” y “espuma” se consideran equivalentes.\n- “mm” es opcional y puede omitirse.\n\n3. Orden de detección (prioridad):\na) Detecta primero patrones que indiquen combinaciones con espuma 3 (acepta formatos con \"+\", \"con\", \"y\", incluso en orden invertido).\nb) Si no hay espuma, busca solo el calibre exacto (usando el mapeo anterior).\n\n4. Desempate:\n- Si aparecen varios valores posibles:\n  - Prioriza el más específico (el que incluye espuma).\n  - Si tienen misma especificidad, elige el más cercano al contexto (palabras clave del Scope).\n  - Si persiste el empate → devuelve 0.\n\nSALIDA:\nDevuelve únicamente el número del ID (ej.: 3). Si no hay coincidencia inequívoca, devuelve 0.\n\nEJEMPLOS:\n- “2,5 mm” → 3\n- “3,0 + espuma 3” → 7\n- “2.0 + FOAM 3” → 5\n- “1,75” → 8\n- “2,0 y 2,5 sin claridad” → 0\n\nsolo si encuadernación ∈ {1,2}, si no 0.\n\n## IMPORTANTE\nDevuelve todos los valores del esquema aunque esten vacios o sin datos\n",
               "type": "string"
             },
             {
@@ -1069,52 +1070,11 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1536,
-        1088
+        1824,
+        1072
       ],
       "id": "c2151e50-df00-4d4d-92c9-cdd7422c8c07",
       "name": "OT_DUPLICADA"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://default90419c2b07624d6fb6a1aca6fc3084.80.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/b8ed51b3f3514e6f8835627e068fe901/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=8nyoBAiRe-vHc4jKd_eLpw_R5BPIg-GxP32JL1lYr4s",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Content-Type",
-              "value": "application/json"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "asunto",
-              "value": "={{$json.asunto}}"
-            },
-            {
-              "name": "texto",
-              "value": "={{$json.texto}}"
-            },
-            {
-              "name": "json",
-              "value": "={{$json.json}}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.3,
-      "position": [
-        3056,
-        1744
-      ],
-      "id": "4d30939c-a6ca-4718-b008-b2682445b6b2",
-      "name": "email AUTOMATE"
     },
     {
       "parameters": {
@@ -1139,8 +1099,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1536,
-        1280
+        1824,
+        1264
       ],
       "id": "281b0c8e-b3c3-49d1-a3fd-d3263fe457f5",
       "name": "ISBN_EN_PRODUCCION"
@@ -1168,8 +1128,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1536,
-        1488
+        1824,
+        1472
       ],
       "id": "9ac89cfa-dc2b-4395-a366-54b930a8b5d2",
       "name": "DATOS_INCOMPLETOS"
@@ -1183,8 +1143,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1120,
-        992
+        1408,
+        976
       ],
       "id": "bbbae99d-1f2c-43b6-a0fa-19a0ed408ab8",
       "name": "Sticky Note14"
@@ -1236,7 +1196,7 @@
     {
       "parameters": {
         "content": "## Texto Informe\nCuando el papel es nuestro",
-        "height": 352,
+        "height": 320,
         "width": 294
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -1387,8 +1347,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -448,
-        -512
+        -320,
+        -560
       ],
       "id": "6ef43013-45bb-4072-9954-a38cf4c2094c",
       "name": "Renombrar binario"
@@ -1454,42 +1414,6 @@
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://default90419c2b07624d6fb6a1aca6fc3084.80.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/90db2f27340a448eb18b222624ed663a/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=r6FcfmTqDqmfUQoOhijtrpjK7gB-ZOiyG0Mn18AFWLo",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "emailId",
-              "value": "={{$json.emailId}}"
-            },
-            {
-              "name": "status",
-              "value": "={{$json.status}}"
-            },
-            {
-              "name": "destFolder",
-              "value": "={{$json.destFolder}}"
-            },
-            {
-              "name": "fileName",
-              "value": "={{$json.fileName}}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.3,
-      "position": [
-        2816,
-        368
-      ],
-      "id": "d5b0870b-8469-4e05-9e61-88d983cd9224",
-      "name": "mover Email Pedido"
-    },
-    {
-      "parameters": {
         "conditions": {
           "options": {
             "caseSensitive": true,
@@ -1516,92 +1440,24 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        2368,
-        384
+        2320,
+        432
       ],
       "id": "1d01eee1-25c6-40a0-8cd8-adf5d4716793",
       "name": "es OK"
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://default90419c2b07624d6fb6a1aca6fc3084.80.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/90db2f27340a448eb18b222624ed663a/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=r6FcfmTqDqmfUQoOhijtrpjK7gB-ZOiyG0Mn18AFWLo",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"emailId\": \"{{$node['Normalizar entrada'].json.query.emailId}}\",\n  \"status\": \"OK\",\n  \"destFolder\": \"{{$node['Normalizar entrada'].json.query.resultFolderOk ?? 'Procesados'}}\",\n  \"fileName\": \"{{$node['Normalizar entrada'].json.fileName ?? $node['Normalizar entrada'].json.headers?.['x-file-name'] ?? ''}}\"\n}\n",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.3,
-      "position": [
-        560,
-        1232
-      ],
-      "id": "492afc07-a2a4-4f6b-8b80-dda3b84159b4",
-      "name": "mover Email Pedido1"
-    },
-    {
-      "parameters": {
-        "content": "## Mueve el email del pedido a procesados",
+        "content": "## Marca como leido el email del pedido si es Ok",
         "height": 240,
-        "width": 496,
+        "width": 704,
         "color": 3
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        256,
-        1168
-      ],
-      "id": "80fb8e23-d668-4cf8-afb0-1e6aeb08c572",
-      "name": "Sticky Note12"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
-            {
-              "id": "2abdb97b-8fd6-480b-9780-417d2c611a62",
-              "leftValue": "={{ $json.resultado }}",
-              "rightValue": "OK",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
-      "position": [
-        320,
-        1248
-      ],
-      "id": "05a2714a-19ee-45a0-9182-849570ad1d0f",
-      "name": "es OK1"
-    },
-    {
-      "parameters": {
-        "content": "## Mueve el email del pedido a procesados",
-        "height": 240,
-        "width": 496,
-        "color": 3
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        2304,
-        304
+        2256,
+        352
       ],
       "id": "09b34af7-fe5b-4aa3-a7ad-53d1748393c1",
       "name": "Sticky Note17"
@@ -1642,11 +1498,257 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2608,
-        368
+        2560,
+        416
       ],
       "id": "a8d80d34-7cac-4ad1-beac-cc49caf7ed95",
       "name": "Normalizar entrada1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "2abdb97b-8fd6-480b-9780-417d2c611a62",
+              "leftValue": "={{ $json.resultado }}",
+              "rightValue": "OK",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        288,
+        1216
+      ],
+      "id": "e50471f8-5d33-48a9-8247-176fe5737151",
+      "name": "es OK1"
+    },
+    {
+      "parameters": {
+        "content": "## Mueve el email del pedido a procesados",
+        "height": 240,
+        "width": 704,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        224,
+        1136
+      ],
+      "id": "14b76172-368b-4805-a0b0-497c94619b9a",
+      "name": "Sticky Note18"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "623005ec-df55-40e9-9d8f-619959781dbb",
+              "name": "emailId",
+              "value": "={{$node['Normalizar entrada'].json.query.emailId}}",
+              "type": "string"
+            },
+            {
+              "id": "732966b2-4255-4f91-883a-5c29a1ac715f",
+              "name": "fileName",
+              "value": "={{$node['Normalizar entrada'].json.fileName ?? $node['Normalizar entrada'].json.headers?.['x-file-name'] ?? ''}}",
+              "type": "string"
+            },
+            {
+              "id": "2c5838b5-c10e-46c1-9588-daaede2e7daa",
+              "name": "status",
+              "value": "OK",
+              "type": "string"
+            },
+            {
+              "id": "2b6dbcb9-ad70-4f1a-92d1-0683ded6945f",
+              "name": "destFolder",
+              "value": "={{$node['Normalizar entrada'].json.query.resultFolderOk ?? 'Procesados'}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        528,
+        1200
+      ],
+      "id": "5293d1e2-2637-44c3-bf1c-7844c27f1820",
+      "name": "Normalizar entrada2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://default90419c2b07624d6fb6a1aca6fc3084.80.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/b8ed51b3f3514e6f8835627e068fe901/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=8nyoBAiRe-vHc4jKd_eLpw_R5BPIg-GxP32JL1lYr4s",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "asunto",
+              "value": "={{$json.asunto}}"
+            },
+            {
+              "name": "texto",
+              "value": "={{$json.texto}}"
+            },
+            {
+              "name": "json",
+              "value": "={{$json.json}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        3120,
+        1744
+      ],
+      "id": "4d30939c-a6ca-4718-b008-b2682445b6b2",
+      "name": "email AUTOMATE a PROCESOS"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://default90419c2b07624d6fb6a1aca6fc3084.80.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/dfc5bcbc17154be2a369075cee701009/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=v_mKrBXRf8NH_GFOH_18YkEBN6ZwupuA2oj2N7BTtUY",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "asunto",
+              "value": "={{$json.asunto}}"
+            },
+            {
+              "name": "texto",
+              "value": "={{$json.texto}}"
+            },
+            {
+              "name": "json",
+              "value": "={{$json.json}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2592,
+        1072
+      ],
+      "id": "19ddb03c-790d-461c-b218-67ecc09aa889",
+      "name": "email AUTOMATE a PRODUCCION"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://default90419c2b07624d6fb6a1aca6fc3084.80.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/90db2f27340a448eb18b222624ed663a/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=r6FcfmTqDqmfUQoOhijtrpjK7gB-ZOiyG0Mn18AFWLo",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "emailId",
+              "value": "={{$json.emailId}}"
+            },
+            {
+              "name": "status",
+              "value": "={{$json.status}}"
+            },
+            {
+              "name": "destFolder",
+              "value": "={{$json.destFolder}}"
+            },
+            {
+              "name": "fileName",
+              "value": "={{$json.fileName}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2768,
+        416
+      ],
+      "id": "d5b0870b-8469-4e05-9e61-88d983cd9224",
+      "name": "Marca como Leido el Email Pedido"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://default90419c2b07624d6fb6a1aca6fc3084.80.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/90db2f27340a448eb18b222624ed663a/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=r6FcfmTqDqmfUQoOhijtrpjK7gB-ZOiyG0Mn18AFWLo",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "emailId",
+              "value": "={{$json.emailId}}"
+            },
+            {
+              "name": "status",
+              "value": "={{$json.status}}"
+            },
+            {
+              "name": "destFolder",
+              "value": "={{$json.destFolder}}"
+            },
+            {
+              "name": "fileName",
+              "value": "={{$json.fileName}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        736,
+        1200
+      ],
+      "id": "3fb03231-b002-464f-9947-11d6188cff5c",
+      "name": "Marca como Leido el Email Pedido1"
     }
   ],
   "connections": {
@@ -1902,7 +2004,7 @@
       "main": [
         [
           {
-            "node": "Desarrollo1",
+            "node": "Producción1",
             "type": "main",
             "index": 0
           }
@@ -1953,7 +2055,7 @@
       "main": [
         [
           {
-            "node": "Desarrollo",
+            "node": "Producción",
             "type": "main",
             "index": 0
           }
@@ -2042,7 +2144,12 @@
       "main": [
         [
           {
-            "node": "email AUTOMATE",
+            "node": "email AUTOMATE a PRODUCCION",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "email AUTOMATE a PROCESOS",
             "type": "main",
             "index": 0
           }
@@ -2053,7 +2160,12 @@
       "main": [
         [
           {
-            "node": "email AUTOMATE",
+            "node": "email AUTOMATE a PRODUCCION",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "email AUTOMATE a PROCESOS",
             "type": "main",
             "index": 0
           }
@@ -2064,7 +2176,12 @@
       "main": [
         [
           {
-            "node": "email AUTOMATE",
+            "node": "email AUTOMATE a PRODUCCION",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "email AUTOMATE a PROCESOS",
             "type": "main",
             "index": 0
           }
@@ -2072,6 +2189,11 @@
       ]
     },
     "Desarrollo1": {
+      "main": [
+        []
+      ]
+    },
+    "Producción1": {
       "main": [
         [
           {
@@ -2087,32 +2209,16 @@
         ]
       ]
     },
-    "Producción1": {
-      "main": [
-        []
-      ]
-    },
     "Desarrollo": {
       "main": [
-        [
-          {
-            "node": "INFORME DE REGISTRO 2",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "es OK1",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "INFORME DE REGISTRO 2": {
       "main": [
         [
           {
-            "node": "email AUTOMATE",
+            "node": "email AUTOMATE a PROCESOS",
             "type": "main",
             "index": 0
           }
@@ -2121,7 +2227,18 @@
     },
     "Producción": {
       "main": [
-        []
+        [
+          {
+            "node": "es OK1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "INFORME DE REGISTRO 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Webhook": {
@@ -2188,7 +2305,7 @@
       "main": [
         [
           {
-            "node": "email AUTOMATE",
+            "node": "email AUTOMATE a PROCESOS",
             "type": "main",
             "index": 0
           }
@@ -2222,22 +2339,33 @@
         ]
       ]
     },
-    "es OK1": {
+    "Normalizar entrada1": {
       "main": [
         [
           {
-            "node": "mover Email Pedido1",
+            "node": "Marca como Leido el Email Pedido",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Normalizar entrada1": {
+    "es OK1": {
       "main": [
         [
           {
-            "node": "mover Email Pedido",
+            "node": "Normalizar entrada2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizar entrada2": {
+      "main": [
+        [
+          {
+            "node": "Marca como Leido el Email Pedido1",
             "type": "main",
             "index": 0
           }
@@ -2265,9 +2393,9 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "cefae28f-a702-4871-9694-686521384b52",
+  "versionId": "a82aa6ac-4c1d-4394-a88d-99f0a4378435",
   "activeVersionId": "7887ed11-9441-446a-9009-27227f6ebefc",
-  "versionCounter": 395,
+  "versionCounter": 415,
   "triggerCount": 2,
   "shared": [
     {
@@ -2291,7 +2419,7 @@
             "userId": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
             "projectId": "5DRxsE1egf1baMP6",
             "user": {
-              "updatedAt": "2026-01-07T06:18:32.967Z",
+              "updatedAt": "2026-01-08T05:53:53.798Z",
               "createdAt": "2025-12-16T07:00:36.626Z",
               "id": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
               "email": "procesos@gomezaparicio.es",
@@ -2306,7 +2434,7 @@
               },
               "disabled": false,
               "mfaEnabled": true,
-              "lastActiveAt": "2026-01-07",
+              "lastActiveAt": "2026-01-08",
               "isPending": false
             }
           }
