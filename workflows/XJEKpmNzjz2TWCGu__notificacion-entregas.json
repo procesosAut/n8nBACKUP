@@ -1,17 +1,20 @@
 {
-  "updatedAt": "2026-01-08T10:24:14.936Z",
+  "updatedAt": "2026-01-08T12:21:36.820Z",
   "createdAt": "2026-01-08T09:23:23.401Z",
   "id": "XJEKpmNzjz2TWCGu",
   "name": "Notificacion Entregas",
   "description": null,
-  "active": false,
+  "active": true,
   "isArchived": false,
   "nodes": [
     {
       "parameters": {
         "rule": {
           "interval": [
-            {}
+            {
+              "triggerAtHour": 13,
+              "triggerAtMinute": 25
+            }
           ]
         }
       },
@@ -36,7 +39,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        -624,
+        -640,
         -64
       ],
       "id": "c962f7bc-aad1-4dea-84fe-2c9ab70adb7b",
@@ -86,11 +89,24 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        0,
+        304,
         -64
       ],
       "id": "6aaa2e84-bf77-4b19-b64b-cfb70498deaa",
       "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Leer el payload (1 item) que contiene { generatedAt, totalPedidos, pedidos: [...] }\nconst payload = $input.first().json;\n\n// Asegurar que exista el array\nconst pedidos = Array.isArray(payload.pedidos) ? payload.pedidos : [];\n\n// Ordenar por cliente (ES) y luego por fechaPrevistaEntrega\npedidos.sort((a, b) => {\n  const c = String(a.cliente || '').localeCompare(String(b.cliente || ''), 'es', { sensitivity: 'base' });\n  if (c !== 0) return c;\n\n  return String(a.fechaPrevistaEntrega || '').localeCompare(String(b.fechaPrevistaEntrega || ''));\n});\n\n// Devolver el mismo payload, con pedidos ya ordenado\nreturn [{\n  json: {\n    ...payload,\n    pedidos,\n    totalPedidos: payload.totalPedidos ?? pedidos.length, // por si acaso\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        16,
+        -64
+      ],
+      "id": "da2d0ebe-babc-465b-bfb2-00a4bfb0fc03",
+      "name": "ordenado por cliente"
     }
   ],
   "connections": {
@@ -131,6 +147,17 @@
       "main": [
         [
           {
+            "node": "ordenado por cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ordenado por cliente": {
+      "main": [
+        [
+          {
             "node": "HTTP Request",
             "type": "main",
             "index": 0
@@ -140,15 +167,23 @@
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "timezone": "Europe/Madrid",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
   },
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
   "meta": null,
   "pinData": {},
-  "versionId": "c42a9e34-5891-44c4-bd79-a9b416d8016d",
-  "activeVersionId": null,
-  "versionCounter": 13,
-  "triggerCount": 0,
+  "versionId": "3889757e-2963-4f5c-95a0-19df456fedf5",
+  "activeVersionId": "3889757e-2963-4f5c-95a0-19df456fedf5",
+  "versionCounter": 22,
+  "triggerCount": 1,
   "shared": [
     {
       "updatedAt": "2026-01-08T09:23:23.401Z",
@@ -195,5 +230,183 @@
     }
   ],
   "tags": [],
-  "activeVersion": null
+  "activeVersion": {
+    "updatedAt": "2026-01-08T12:21:43.154Z",
+    "createdAt": "2026-01-08T12:21:36.822Z",
+    "versionId": "3889757e-2963-4f5c-95a0-19df456fedf5",
+    "workflowId": "XJEKpmNzjz2TWCGu",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "triggerAtHour": 13,
+                "triggerAtMinute": 25
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          -880,
+          -64
+        ],
+        "id": "c905faaf-16e4-494f-a52a-dcf665e92e20",
+        "name": "Schedule Trigger"
+      },
+      {
+        "parameters": {
+          "url": "https://liberdigital.gomezaparicio.es/sw/automatizacion/pedidos/digital",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBasicAuth",
+          "options": {
+            "allowUnauthorizedCerts": true
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          -640,
+          -64
+        ],
+        "id": "c962f7bc-aad1-4dea-84fe-2c9ab70adb7b",
+        "name": "API Pedidos",
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "EGTFeBpcDKH8NdqZ",
+            "name": "Apis Libernet"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const items = $input.all().map(i => i.json);\n\n// Nos quedamos SOLO con los campos necesarios\nconst pedidos = items.map(r => ({\n  numeroPedido: r.numeroPedido,\n  cliente: r.cliente,\n  titulo: r.titulo,\n  faseInterior1: r.faseInterior1,\n  faseCubierta: r.faseCubierta,\n  fechaPrevistaEntrega: String(r.fechaPrevistaEntrega || \"\").slice(0, 10),\n  sinRetraso: r.sinRetraso,\n  encuadernacion: r.encuadernacion,\n  unionPliegos: r.unionPliegos,\n}));\n\n// Ordenar por fecha y luego por cliente (opcional, muy útil)\npedidos.sort((a, b) => {\n  const d = String(a.fechaPrevistaEntrega).localeCompare(String(b.fechaPrevistaEntrega));\n  if (d !== 0) return d;\n  return String(a.cliente).localeCompare(String(b.cliente));\n});\n\nreturn [{\n  json: {\n    generatedAt: new Date().toISOString(),\n    totalPedidos: pedidos.length,\n    pedidos,\n  }\n}];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -208,
+          -64
+        ],
+        "id": "d0e6b4ef-f95d-4c49-a495-f510bba232e0",
+        "name": "payload"
+      },
+      {
+        "parameters": {
+          "jsCode": "const excluded = new Set([\n  \"10.0. Facturado\",\n  \"99.0. Cancelado\",\n  \"9.0. Mercancía entregada\",\n]);\n\nconst input = $input.all().map(i => i.json);\n\n// Normalizar: si viene un array dentro de 1 solo item\nlet rows = [];\nif (input.length === 1 && Array.isArray(input[0])) {\n  rows = input[0];\n} else {\n  rows = input;\n}\n\n// --- Helpers fechas (sin librerías) ---\nfunction startOfDayLocal(d) {\n  return new Date(d.getFullYear(), d.getMonth(), d.getDate());\n}\n\nfunction parseDateOnlyLocal(dateStr) {\n  const s = String(dateStr || \"\").slice(0, 10); // YYYY-MM-DD\n  const [y, m, d] = s.split(\"-\").map(Number);\n  if (!y || !m || !d) return null;\n  return new Date(y, m - 1, d); // local midnight\n}\n\nfunction addBusinessDaysLocal(startDate, days) {\n  let d = startOfDayLocal(startDate);\n  let added = 0;\n\n  while (added < days) {\n    d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1);\n    const wd = d.getDay(); // 0=Dom, 6=Sáb\n    if (wd !== 0 && wd !== 6) added++;\n  }\n  return d;\n}\n\n// Umbral = hoy + 5 días laborables\nconst today = startOfDayLocal(new Date());\nconst threshold = addBusinessDaysLocal(today, 5);\n\n// Filtrar: estados + fechaAlta año 2026 + fechaPrevistaEntrega (hoy..umbral)\nconst filtered = rows.filter(r => {\n  const faseInterior1 = String(r.faseInterior1 || \"\").trim();\n  const faseCubierta  = String(r.faseCubierta  || \"\").trim();\n\n  // Excluir si cualquiera está en la lista\n  if (excluded.has(faseInterior1) || excluded.has(faseCubierta)) return false;\n\n  // fechaAlta año 2026 (formato \"YYYY-MM-DD HH:mm:ss\")\n  const fechaAlta = String(r.fechaAlta || \"\");\n  const yearAlta = Number(fechaAlta.slice(0, 4));\n  if (yearAlta !== 2026) return false;\n\n  // fechaPrevistaEntrega dentro de 5 días laborables (incluye hoy)\n  const fpe = parseDateOnlyLocal(r.fechaPrevistaEntrega);\n  if (!fpe) return false;\n\nreturn fpe <= threshold;\n\n});\n\n// Devolver items (uno por pedido)\nreturn filtered.map(r => ({ json: r }));\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -416,
+          -64
+        ],
+        "id": "5a297371-29b6-48e4-be42-cd5b4b9dc80e",
+        "name": "filtro"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://default90419c2b07624d6fb6a1aca6fc3084.80.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/051b4cff31424654ac69a8820532af8a/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Dm5m867cXktcbDrCiTUJLHvP1VAsUd4MXA4Sk7T69sI",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{JSON.stringify($json)}}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          304,
+          -64
+        ],
+        "id": "6aaa2e84-bf77-4b19-b64b-cfb70498deaa",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Leer el payload (1 item) que contiene { generatedAt, totalPedidos, pedidos: [...] }\nconst payload = $input.first().json;\n\n// Asegurar que exista el array\nconst pedidos = Array.isArray(payload.pedidos) ? payload.pedidos : [];\n\n// Ordenar por cliente (ES) y luego por fechaPrevistaEntrega\npedidos.sort((a, b) => {\n  const c = String(a.cliente || '').localeCompare(String(b.cliente || ''), 'es', { sensitivity: 'base' });\n  if (c !== 0) return c;\n\n  return String(a.fechaPrevistaEntrega || '').localeCompare(String(b.fechaPrevistaEntrega || ''));\n});\n\n// Devolver el mismo payload, con pedidos ya ordenado\nreturn [{\n  json: {\n    ...payload,\n    pedidos,\n    totalPedidos: payload.totalPedidos ?? pedidos.length, // por si acaso\n  }\n}];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          16,
+          -64
+        ],
+        "id": "da2d0ebe-babc-465b-bfb2-00a4bfb0fc03",
+        "name": "ordenado por cliente"
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "API Pedidos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "API Pedidos": {
+        "main": [
+          [
+            {
+              "node": "filtro",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "filtro": {
+        "main": [
+          [
+            {
+              "node": "payload",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "payload": {
+        "main": [
+          [
+            {
+              "node": "ordenado por cliente",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ordenado por cliente": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "P GA",
+    "name": "Version 3889757e",
+    "description": "",
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-01-08T12:21:43.149Z",
+        "id": 23,
+        "workflowId": "XJEKpmNzjz2TWCGu",
+        "versionId": "3889757e-2963-4f5c-95a0-19df456fedf5",
+        "event": "activated",
+        "userId": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7"
+      }
+    ]
+  }
 }
