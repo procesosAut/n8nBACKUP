@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-08T12:21:36.820Z",
+  "updatedAt": "2026-01-09T08:13:51.198Z",
   "createdAt": "2026-01-08T09:23:23.401Z",
   "id": "XJEKpmNzjz2TWCGu",
   "name": "Notificacion Entregas",
@@ -12,8 +12,15 @@
         "rule": {
           "interval": [
             {
-              "triggerAtHour": 13,
-              "triggerAtMinute": 25
+              "field": "weeks",
+              "triggerAtDay": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "triggerAtHour": 9
             }
           ]
         }
@@ -180,9 +187,9 @@
   },
   "meta": null,
   "pinData": {},
-  "versionId": "3889757e-2963-4f5c-95a0-19df456fedf5",
-  "activeVersionId": "3889757e-2963-4f5c-95a0-19df456fedf5",
-  "versionCounter": 22,
+  "versionId": "530b7a33-81f6-49c4-afa2-9e643600dd4a",
+  "activeVersionId": "530b7a33-81f6-49c4-afa2-9e643600dd4a",
+  "versionCounter": 26,
   "triggerCount": 1,
   "shared": [
     {
@@ -206,7 +213,7 @@
             "userId": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
             "projectId": "5DRxsE1egf1baMP6",
             "user": {
-              "updatedAt": "2026-01-08T05:53:53.798Z",
+              "updatedAt": "2026-01-09T07:58:34.143Z",
               "createdAt": "2025-12-16T07:00:36.626Z",
               "id": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7",
               "email": "procesos@gomezaparicio.es",
@@ -221,7 +228,7 @@
               },
               "disabled": false,
               "mfaEnabled": true,
-              "lastActiveAt": "2026-01-08",
+              "lastActiveAt": "2026-01-09",
               "isPending": false
             }
           }
@@ -231,9 +238,9 @@
   ],
   "tags": [],
   "activeVersion": {
-    "updatedAt": "2026-01-08T12:21:43.154Z",
-    "createdAt": "2026-01-08T12:21:36.822Z",
-    "versionId": "3889757e-2963-4f5c-95a0-19df456fedf5",
+    "updatedAt": "2026-01-09T08:14:14.254Z",
+    "createdAt": "2026-01-09T08:13:51.201Z",
+    "versionId": "530b7a33-81f6-49c4-afa2-9e643600dd4a",
     "workflowId": "XJEKpmNzjz2TWCGu",
     "nodes": [
       {
@@ -241,8 +248,15 @@
           "rule": {
             "interval": [
               {
-                "triggerAtHour": 13,
-                "triggerAtMinute": 25
+                "field": "weeks",
+                "triggerAtDay": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ],
+                "triggerAtHour": 9
               }
             ]
           }
@@ -396,14 +410,14 @@
       }
     },
     "authors": "P GA",
-    "name": "Version 3889757e",
+    "name": "Version 530b7a33",
     "description": "",
     "workflowPublishHistory": [
       {
-        "createdAt": "2026-01-08T12:21:43.149Z",
-        "id": 23,
+        "createdAt": "2026-01-09T08:14:14.246Z",
+        "id": 25,
         "workflowId": "XJEKpmNzjz2TWCGu",
-        "versionId": "3889757e-2963-4f5c-95a0-19df456fedf5",
+        "versionId": "530b7a33-81f6-49c4-afa2-9e643600dd4a",
         "event": "activated",
         "userId": "9a4e2f29-7a97-4add-ba5c-b1a99dee84e7"
       }
